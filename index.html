@@ -643,6 +643,37 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 .add.slf input[type="time"] { width: 104px; flex: none; min-height: 40px; font-size: 14px; border-radius: 12px; background: var(--soft); border: 0; padding: 0 8px; }
 .slw { border: 1px solid var(--line); border-radius: 12px; }
 .slw input[type="time"] { width: 104px; flex: none; min-height: 40px; padding: 0 8px; font-size: 14px; border-radius: 12px; background: var(--soft); border: 0; }
+
+/* ===== v22 : Ensemble ===== */
+.nav button span { font-size: 10.5px; }
+.nav button[aria-current="page"]::before { width: 46px; }
+.nav button { padding-left: 0; padding-right: 0; }
+.sphero { text-align: center; justify-items: center; background: linear-gradient(160deg, var(--accent-soft), var(--surface)); }
+.spbig { font-size: 44px; }
+.codein { font-family: var(--font-clock); font-size: 28px !important; letter-spacing: .3em; text-align: center; }
+.spchips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.spchips .chip { flex: none; }
+.sphead { gap: 12px; }
+.sph1 { display: flex; align-items: center; gap: 12px; }
+.sph1 > div { flex: 1; min-width: 0; }
+.sph1 h2 { font-size: 22px; overflow-wrap: anywhere; }
+.spe { font-size: 34px; }
+.live { color: var(--ok); font-weight: 700; }
+.spmem { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.spm { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; background: var(--soft); border-radius: 999px; padding: 4px 12px 4px 4px; }
+.spm i { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-style: normal; font-size: 13px; font-weight: 800; }
+.spm.me i { background: var(--ok); }
+.seg button small { font-size: 11px; background: var(--accent); color: var(--on-accent); border-radius: 999px; padding: 0 6px; margin-left: 2px; }
+.aisle { display: grid; gap: 6px; }
+.ait { font-size: 13.5px; font-weight: 700; color: var(--muted); padding: 2px 4px; }
+.spform { gap: 10px; }
+.cols3 { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+.cols3 input, .cols3 select, .cols3 .btn { min-height: 44px; font-size: 14px; padding: 0 8px; }
+.score { gap: 6px; background: color-mix(in srgb, #F5A400 10%, var(--surface)); }
+.scr { display: flex; justify-content: space-between; font-size: 15px; }
+.bigcode { font-family: var(--font-clock); font-size: 46px; font-weight: 500; letter-spacing: .12em; text-align: center; background: var(--accent-soft); color: var(--accent); border-radius: 18px; padding: 18px 0; }
+.card.spadd { display: flex; padding: 8px; }
+.seg button { white-space: nowrap; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -651,7 +682,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 <script>
 (function () {
   'use strict';
-  var APP_VER = 21;
+  var APP_VER = 22;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -681,6 +712,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   var ICON = {
     today: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>',
     notes: '<path d="M6 3.5h9l3.5 3.5V20a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/><path d="M14.5 3.5V7.5h4M8.5 11.5h7M8.5 15h7"/>',
+    space: '<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.5-3.2 2.9-5 6-5s5.5 1.8 6 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.5 14.6c2.4.1 4.1 1.6 4.5 4.4"/>',
     agenda: '<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     goals: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="0.8"/>',
     pomo: '<circle cx="12" cy="13" r="7.5"/><path d="M12 9.2V13l2.6 1.7M9.5 3h5"/>',
@@ -1045,12 +1077,12 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   }
 
   /* ---------- page ---------- */
-  var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['notes', 'Notes'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet };
-  var SHEETN = { add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget' };
+  var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
+  var SHEETS = { city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
-    var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'notes' ? 'Notes et listes' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
+    var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
     return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
       (tab !== 'profile' ? avatarHtml(false, true) : '') + '</header>';
   }
@@ -1067,7 +1099,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function viewAll() {
     if (cloudOn && !auth) return viewAuth() + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
-    var body = tab === 'today' ? viewToday() : tab === 'agenda' ? viewAgenda() : tab === 'notes' ? viewNotes() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
+    var body = tab === 'today' ? viewToday() : tab === 'agenda' ? viewAgenda() : tab === 'space' ? viewSpace() : tab === 'notes' ? viewNotes() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
     return header() + updBanner() + '<main class="pg">' + body + '</main>' + fabHtml() + navHtml() + sheetHtml() + recoverySheet() + toastHtml();
   }
   function render() {
@@ -1111,6 +1143,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
     if (cloudClick(a)) return;
+    if (v22Click(a, b)) return;
     if (v21Click(a, b)) return;
     if (v20Click(a, b)) return;
     if (v19Click(a, b)) return;
@@ -1127,7 +1160,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     if (a === 'tonetest') { unlockAudio(); playTone(true); return; }
     if (a === 'uisound') { S.settings.uiSound = S.settings.uiSound === false; save(); if (S.settings.uiSound) { unlockAudio(); uiSound('tick'); } render(); return; }
     if (a === 'vibrate') { S.settings.vibrate = !S.settings.vibrate; if (S.settings.vibrate) { try { navigator.vibrate && navigator.vibrate(60); } catch (er) {} } save(); render(); return; }
-    if (a === 'tab') { if (tab !== v) anim = 'fade'; tab = v; sheet = null; render(); window.scrollTo(0, 0); return; }
+    if (a === 'tab') { if (tab !== v) anim = 'fade'; tab = v; sheet = null; if (v === 'space' && auth && Date.now() - SP.at > 10000) spFetch(true); render(); window.scrollTo(0, 0); return; }
     if (a === 'view') { if (view !== v) anim = 'fade'; view = v; if (v === 'm') sel = cur; render(); return; }
     if (a === 'prev' || a === 'next') { anim = a === 'prev' ? 'right' : 'left'; move(a === 'prev' ? -1 : 1); render(); return; }
     if (a === 'gotoday') { cur = todayISO(); sel = cur; render(); return; }
@@ -1205,6 +1238,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       if (!fi.trim()) { notice = 'Écris ton prénom pour continuer.'; render(); return; }
       notice = ''; S.profile.first = fi.trim().slice(0, 40); S.profile.last = la.trim().slice(0, 40); S.profile.nick = ((document.getElementById('ob-nick') || {}).value || '').trim().slice(0, 30); save(); obStep = 1; render(); window.scrollTo(0, 0); return;
     }
+    if (v22Submit(f)) return;
     if (v21Submit(f)) return;
     if (v20Submit(f)) return;
     if (id === 'qform') { quickSubmit(); return; }
@@ -1262,7 +1296,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     }
   });
   var lastDay = todayISO();
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) { timerLoop(); updCheck(); wxLoad(); setTimeout(maybePlan, 300); } });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { timerLoop(); updCheck(); wxLoad(); setTimeout(maybePlan, 300); if (auth && cloudOn && SP.spaces.length) { rtSync(); if (Date.now() - SP.at > 20000) spFetch(true); } } });
 
   /* ---------- v15 : connexion obligatoire, pages légales, Premium, personnalisation ---------- */
   var CONTACT = 'manon.rt90@gmail.com', EDITOR = 'Terry Gentil Sauvet', LEGAL_DATE = '3 novembre 2026';
@@ -1301,7 +1335,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       '<p>Cette page explique quelles données Cadence utilise, pourquoi, et quels sont tes droits (Règlement général sur la protection des données, RGPD).</p>' +
       '<h3>Qui est responsable de tes données ?</h3><p>' + EDITOR + ', éditeur de Cadence. Contact : ' + mail + '.</p>' +
       '<h3>Quelles données ?</h3><ul><li>Ton adresse e-mail et ton mot de passe, pour ton compte. Le mot de passe n’est jamais visible : il est enregistré sous une forme protégée (hachée).</li>' +
-      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), réglages des minuteurs et préférences d’affichage.</li>' +
+      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), espaces communs (ce que toi et les membres y ajoutez, ainsi que vos prénoms, est visible par tous les membres de l’espace), réglages des minuteurs et préférences d’affichage.</li>' +
       '<li>Si tu actives les notifications : l’adresse technique d’abonnement de ton navigateur et la liste de tes prochains rappels, pour pouvoir t’envoyer les notifications.</li>' +
       '<li>Si tu partages une liste : son contenu, ton prénom et ce que tu y fais (ajout, coche) sont visibles par les personnes que tu as invitées.</li>' +
       '<li>La date à laquelle tu as accepté les conditions.</li></ul>' +
@@ -2684,6 +2718,289 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.text) + '" data-act="sltog" data-l="' + o.l.id + '" data-id="' + i.id + '">' + CHECK + '</button>' + (i.t ? '<span class="tm">' + esc(i.t) + '</span>' : '') + '<button class="txt" data-act="openslist" data-id="' + o.l.id + '"><span>' + esc(i.text) + '</span><small>' + meta.join(' · ') + '</small></button></div>';
     }).join('') + '</div></section>';
   }
+  /* ========== v22 : espaces communs (famille, couple…) ========== */
+  var SP = { spaces: [], items: {}, cur: '', view: 'shop', err: '', at: 0, code: {}, busy: false };
+  try { var spc = JSON.parse(localStorage.getItem('cadence.sp') || 'null'); if (spc && Array.isArray(spc.spaces)) { SP.spaces = spc.spaces; SP.items = spc.items || {}; SP.cur = spc.cur || ''; SP.view = spc.view || 'shop'; } } catch (e) {}
+  function spSave() { try { localStorage.setItem('cadence.sp', JSON.stringify({ spaces: SP.spaces, items: SP.items, cur: SP.cur, view: SP.view })); } catch (e) {} }
+  function spCur() { var s = SP.spaces.filter(function (z) { return z.id === SP.cur; })[0] || SP.spaces[0] || null; if (s) SP.cur = s.id; return s; }
+  function spMembers(s) { return (s && s.cadence_space_members) || []; }
+  function spName(s, uid) { var m = spMembers(s).filter(function (z) { return z.user_id === uid; })[0]; return uid && auth && uid === auth.uid ? 'Moi' : (m && m.name) || 'Membre'; }
+  function spInit(n) { n = String(n || '?').trim(); return (n.charAt(0) || '?').toUpperCase(); }
+  var AISLES = [
+    ['Fruits et légumes', '🥦', /pomme|poire|banane|orange|citron|fraise|raisin|kiwi|mangue|ananas|melon|past[eè]que|abricot|p[eê]che|cerise|tomate|salade|laitue|carotte|courgette|aubergine|poivron|oignon|ail|[eé]chalote|pomme de terre|patate|chou|brocoli|[eé]pinard|haricot vert|champignon|concombre|avocat|radis|poireau|persil|basilic|coriandre|menthe|gingembre|l[eé]gume|fruit/],
+    ['Boulangerie', '🥖', /pain|baguette|croissant|brioche|viennoiserie|pain de mie|biscotte|g[aâ]teau|tarte/],
+    ['Crèmerie et œufs', '🧀', /lait|yaourt|yogourt|fromage|beurre|cr[eè]me|[oœ]uf|emmental|mozzarella|comt[eé]|camembert|ch[eè]vre|skyr|petit suisse|compote/],
+    ['Viande et poisson', '🥩', /viande|poulet|dinde|b[oœ]uf|steak|hach[eé]|porc|jambon|lardon|saucisse|merguez|agneau|veau|poisson|saumon|thon|cabillaud|crevette|filet|escalope|c[oô]te/],
+    ['Épicerie', '🥫', /p[aâ]te|riz|semoule|farine|sucre|sel|poivre|huile|vinaigre|moutarde|ketchup|mayo|sauce|conserve|bo[iî]te|c[eé]r[eé]ale|muesli|caf[eé]|th[eé]|chocolat|confiture|miel|biscuit|g[aâ]teaux? sec|chips|ap[eé]ritif|lentille|pois chiche|haricot|soupe|bouillon|[eé]pice|levure|n[uo]tella|pur[eé]e|tortilla/],
+    ['Surgelés', '🧊', /surgel|glace|frite|pizza|nugget|congel/],
+    ['Boissons', '🥤', /eau|jus|soda|coca|bi[eè]re|vin|sirop|limonade|boisson|lait d'avoine|caf[eé] soluble|champagne/],
+    ['Hygiène et beauté', '🧴', /savon|gel douche|shampo|dentifrice|brosse [aà] dent|d[eé]odorant|rasoir|coton|papier toilette|pq|mouchoir|serviette hyg|tampon|cr[eè]me (main|visage)|maquillage|parfum/],
+    ['Entretien et maison', '🧽', /lessive|adoucissant|liquide vaisselle|vaisselle|[eé]ponge|javel|nettoyant|sac poubelle|poubelle|essuie|sopalin|aluminium|film|ampoule|pile/],
+    ['Bébé et animaux', '🍼', /couche|lingette|b[eé]b[eé]|croquette|p[aâ]t[eé]e|liti[eè]re|chat|chien/]
+  ];
+  function guessAisle(t) { var n = nrm(t); for (var i = 0; i < AISLES.length; i++) if (AISLES[i][2].test(n)) return AISLES[i][0]; return 'Autre'; }
+  function aisleEmo(a) { var x = AISLES.filter(function (z) { return z[0] === a; })[0]; return x ? x[1] : '🛒'; }
+  function spRemindAt(d, t) { if (!d) return null; return atOf(d, t || '09:00').toISOString(); }
+  function spFetch(quiet) {
+    if (!cloudOn || !auth) return Promise.resolve();
+    SP.at = Date.now();
+    return authed('GET', '/rest/v1/cadence_spaces?select=id,name,emoji,owner,cadence_space_members(user_id,name)&order=created_at.asc').then(function (r) {
+      SP.err = ''; SP.spaces = Array.isArray(r) ? r : [];
+      if (!SP.spaces.length) { SP.items = {}; spSave(); return; }
+      return authed('GET', '/rest/v1/cadence_space_items?space_id=in.(' + SP.spaces.map(function (s) { return s.id; }).join(',') + ')&select=*&order=created_at.asc').then(function (its) {
+        var by = {}; SP.spaces.forEach(function (s) { by[s.id] = []; }); (its || []).forEach(function (i) { if (by[i.space_id]) by[i.space_id].push(i); }); SP.items = by; spSave();
+      });
+    }).then(function () { spCur(); rtSync(); if (!quiet || tab === 'space') softRender(); }).catch(function (er) { if (slNotReady(er)) { SP.err = 'notready'; softRender(); } });
+  }
+  function spFail(er) { showToast(er && er.net ? 'Pas de connexion : réessaie quand internet revient.' : 'Erreur : ' + ((er && er.message) || '')); render(); }
+  function spItemsOf(kind) { var s = spCur(); return s ? (SP.items[s.id] || []).filter(function (i) { return i.kind === kind; }) : []; }
+  function spPost(row) {
+    var s = spCur(); if (!s) return;
+    row.space_id = s.id; row.created_name = myName();
+    var tmp = Object.assign({ id: 'tmp' + uid(), done: false, created_at: new Date().toISOString(), created_by: auth.uid }, row);
+    (SP.items[s.id] = SP.items[s.id] || []).push(tmp); uiSound('pop'); render();
+    return authed('POST', '/rest/v1/cadence_space_items', row, { Prefer: 'return=minimal' }).then(function () { return spFetch(true); }).catch(function (er) { SP.items[s.id] = (SP.items[s.id] || []).filter(function (z) { return z !== tmp; }); spFail(er); });
+  }
+  function spPatch(it, patch) {
+    Object.assign(it, patch); spSave(); render();
+    return authed('PATCH', '/rest/v1/cadence_space_items?id=eq.' + it.id, patch, { Prefer: 'return=minimal' }).then(function () { return spFetch(true); }).catch(spFail);
+  }
+  function spDel(it) {
+    var s = spCur(); if (!s) return;
+    SP.items[s.id] = (SP.items[s.id] || []).filter(function (z) { return z !== it; }); uiSound('del'); spSave(); render();
+    return authed('DELETE', '/rest/v1/cadence_space_items?id=eq.' + it.id).then(function () { return spFetch(true); }).catch(spFail);
+  }
+  function spFind(id) { var s = spCur(); return s ? (SP.items[s.id] || []).filter(function (z) { return z.id === id; })[0] : null; }
+  function nextRep(d, rep) { if (rep === 'd') return addDays(d, 1); if (rep === 'w') return addDays(d, 7); if (rep === 'm') { var x = parseISO(d), n = new Date(x.getFullYear(), x.getMonth() + 1, x.getDate()); return iso(n); } return ''; }
+
+  /* --- temps réel (Supabase Realtime) --- */
+  var rt = { ws: null, ref: 0, hb: null, key: '', retry: 0, t: null };
+  function rtSend(o) { try { if (rt.ws && rt.ws.readyState === 1) rt.ws.send(JSON.stringify(o)); } catch (e) {} }
+  function rtSync() {
+    var ids = SP.spaces.map(function (s) { return s.id; }).sort().join(',');
+    if (!cloudOn || !auth || !ids || !window.WebSocket) { rtClose(); return; }
+    if (rt.ws && rt.key === ids && rt.ws.readyState <= 1) return;
+    rtClose(); rt.key = ids;
+    token().then(function (tk) {
+      var ws = new WebSocket(CLOUD_URL.replace(/^http/, 'ws') + '/realtime/v1/websocket?apikey=' + encodeURIComponent(CLOUD_KEY) + '&vsn=1.0.0');
+      rt.ws = ws;
+      ws.onopen = function () {
+        rt.retry = 0;
+        rtSend({ topic: 'realtime:cadence-spaces', event: 'phx_join', ref: String(++rt.ref), join_ref: '1', payload: { config: { broadcast: { self: false }, presence: { key: '' }, postgres_changes: [{ event: '*', schema: 'public', table: 'cadence_space_items', filter: 'space_id=in.(' + ids + ')' }] }, access_token: tk } });
+        rt.hb = setInterval(function () { rtSend({ topic: 'phoenix', event: 'heartbeat', payload: {}, ref: String(++rt.ref) }); if (auth && auth.exp - Date.now() < 120000) token().then(function (t2) { rtSend({ topic: 'realtime:cadence-spaces', event: 'access_token', payload: { access_token: t2 }, ref: String(++rt.ref) }); }).catch(function () {}); }, 25000);
+      };
+      ws.onmessage = function (ev) {
+        var m = null; try { m = JSON.parse(ev.data); } catch (e) { return; }
+        if (m && m.event === 'postgres_changes') { clearTimeout(rt.t); rt.t = setTimeout(function () { spFetch(true); }, 250); }
+      };
+      ws.onclose = function () { clearInterval(rt.hb); if (rt.ws === ws) { rt.ws = null; if (auth && rt.retry < 6 && !document.hidden) { rt.retry++; setTimeout(rtSync, 2000 * rt.retry); } } };
+      ws.onerror = function () {};
+    }).catch(function () {});
+  }
+  function rtClose() { clearInterval(rt.hb); if (rt.ws) { var w = rt.ws; rt.ws = null; try { w.close(); } catch (e) {} } rt.key = ''; }
+  function rtLive() { return !!(rt.ws && rt.ws.readyState === 1); }
+
+  /* --- écran Ensemble --- */
+  var SPVIEWS = [['shop', 'Courses'], ['task', 'Tâches'], ['event', 'Agenda'], ['note', 'Notes']];
+  function spStartHtml() {
+    return '<section class="card sphero"><span class="spbig">🏠</span><h2>Un espace en commun</h2><p class="sub">Courses, tâches de la maison, agenda et notes partagés avec ta famille, ton couple ou tes colocs. Ce que l’un ajoute, l’autre le voit tout de suite.</p></section>' +
+      '<form id="spcreate" class="card" autocomplete="off"><h3>Créer un espace</h3><label class="f">Nom de l’espace<input type="text" id="sp-name" data-keep maxlength="40" placeholder="Ex. Famille, Maison, Nous deux…"></label>' +
+      '<div class="chips">' + ['🏠', '❤️', '👨‍👩‍👧', '🏡', '🧑‍🤝‍🧑', '⭐'].map(function (e) { return '<button type="button" class="chip emo" aria-pressed="' + ((SP.newEmo || '🏠') === e) + '" data-act="spemo" data-v="' + e + '">' + e + '</button>'; }).join('') + '</div>' +
+      '<button type="submit" class="btn primary big"' + (SP.busy ? ' disabled' : '') + '>Créer l’espace</button></form>' +
+      '<form id="spjoin" class="card" autocomplete="off"><h3>Rejoindre avec un code</h3><p class="sub">Quelqu’un t’a donné un code à 6 chiffres ? Tape-le ici.</p><input type="text" id="sp-code" class="codein" data-keep inputmode="numeric" maxlength="7" placeholder="000000" aria-label="Code à 6 chiffres"><button type="submit" class="btn big"' + (SP.busy ? ' disabled' : '') + '>Rejoindre</button></form>';
+  }
+  function viewSpace() {
+    if (!cloudOn || !auth) return '<p class="empty card">Connecte-toi pour partager un espace.</p>';
+    if (SP.err === 'notready') return '<p class="empty card">L’espace commun n’est pas encore activé sur le serveur.</p>';
+    var s = spCur();
+    if (!s) return spStartHtml();
+    var mem = spMembers(s), h = '';
+    h += '<div class="spchips">' + SP.spaces.map(function (z) { return '<button class="chip" aria-pressed="' + (z.id === s.id) + '" data-act="spsel" data-v="' + z.id + '">' + esc(z.emoji + ' ' + z.name) + '</button>'; }).join('') + '<button class="chip" data-act="spnew" aria-label="Créer ou rejoindre un autre espace">＋</button></div>';
+    h += '<section class="card sphead"><div class="sph1"><span class="spe">' + esc(s.emoji) + '</span><div><h2>' + esc(s.name) + '</h2><p class="sub">' + (rtLive() ? '<span class="live">● En direct</span> · ' : '') + plural(mem.length, 'membre', 'membres') + '</p></div><button class="icb" data-act="spset" aria-label="Réglages de l’espace">⋯</button></div>' +
+      '<div class="spmem">' + mem.map(function (m) { var me = auth && m.user_id === auth.uid; return '<span class="spm' + (me ? ' me' : '') + '"><i>' + esc(spInit(m.name)) + '</i>' + esc(me ? 'Moi' : m.name || 'Membre') + '</span>'; }).join('') + '<button class="btn sm primary" data-act="spinv">＋ Inviter</button></div></section>';
+    h += '<div class="seg" role="group" aria-label="Section">' + SPVIEWS.map(function (v) { var n = spItemsOf(v[0]).filter(function (i) { return !i.done; }).length; return '<button aria-pressed="' + (SP.view === v[0]) + '" data-act="spview" data-v="' + v[0] + '">' + v[1] + (n && v[0] !== 'note' ? ' <small>' + n + '</small>' : '') + '</button>'; }).join('') + '</div>';
+    h += SP.view === 'task' ? spTasks(s) : SP.view === 'event' ? spAgenda(s) : SP.view === 'note' ? spNotes(s) : spShop(s);
+    return h;
+  }
+  function spRow(i, s, opts) {
+    var meta = [];
+    if (opts && opts.date && i.d) meta.push('📅 ' + esc(cap1(relDay(i.d) || dayShort(i.d))) + (i.t ? ' ' + esc(i.t) : ''));
+    if (i.rep) meta.push('↻ ' + esc({ d: 'chaque jour', w: 'chaque semaine', m: 'chaque mois' }[i.rep]));
+    if (i.assignee) meta.push('👤 ' + esc(spName(s, i.assignee)));
+    if (i.done && i.done_by) meta.push('✓ ' + esc(i.done_by) + (i.done_at ? ' ' + esc(whenShort(i.done_at)) : ''));
+    else if (i.created_name && opts && opts.who) meta.push('par ' + esc(i.created_by === (auth && auth.uid) ? 'moi' : i.created_name));
+    return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.text) + '" data-act="sptog" data-id="' + i.id + '">' + CHECK + '</button>' +
+      '<button class="txt" data-act="spedit" data-id="' + i.id + '"><span>' + esc(i.text) + '</span>' + (meta.length ? '<small>' + meta.join(' · ') + '</small>' : '') + '</button></div>';
+  }
+  function spShop(s) {
+    var its = spItemsOf('shop'), todo = its.filter(function (i) { return !i.done; }), done = its.filter(function (i) { return i.done; });
+    var h = '<form class="add card spadd" data-kind="spshop" autocomplete="off"><input type="text" name="t" placeholder="Ajouter aux courses (ex. Lait, Pommes…)" maxlength="120" aria-label="Ajouter aux courses"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form>';
+    if (!its.length) return h + '<p class="empty card">La liste de courses est vide. Ce que tu ajoutes est rangé tout seul par rayon.</p>';
+    var order = AISLES.map(function (a) { return a[0]; }).concat(['Autre']), by = {};
+    todo.forEach(function (i) { var a = i.aisle || guessAisle(i.text); (by[a] = by[a] || []).push(i); });
+    order.forEach(function (a) { if (!by[a]) return; h += '<div class="aisle"><p class="ait">' + aisleEmo(a) + ' ' + esc(a) + '</p><div class="list">' + by[a].map(function (i) { return spRow(i, s, { who: true }); }).join('') + '</div></div>'; });
+    if (!todo.length) h += '<p class="okmsg card">🎉 Tout est dans le panier !</p>';
+    if (done.length) h += '<div class="aisle"><div class="sh"><p class="ait">🧺 Dans le panier (' + done.length + ')</p><button class="lnk" data-act="spclear">Retirer les achetés</button></div><div class="list">' + done.map(function (i) { return spRow(i, s); }).join('') + '</div></div>';
+    return h;
+  }
+  function memberOpts(s, cur0) { return '<option value="">Personne en particulier</option>' + spMembers(s).map(function (m) { return '<option value="' + m.user_id + '"' + (cur0 === m.user_id ? ' selected' : '') + '>' + esc(spName(s, m.user_id)) + '</option>'; }).join(''); }
+  function spTasks(s) {
+    var its = spItemsOf('task'), todo = its.filter(function (i) { return !i.done; }).sort(function (a, b) { return (a.d || '9999') + (a.t || '') < (b.d || '9999') + (b.t || '') ? -1 : 1; }), done = its.filter(function (i) { return i.done; }).sort(function (a, b) { return (b.done_at || '') < (a.done_at || '') ? -1 : 1; });
+    var h = '<form class="card spform" data-kind="sptask" id="sptaskf" autocomplete="off"><input type="text" id="spt-text" data-keep maxlength="200" placeholder="Nouvelle tâche (ex. Sortir les poubelles)" aria-label="Nouvelle tâche">' +
+      '<div class="cols3"><input type="date" id="spt-d" data-keep aria-label="Date (facultatif)"><input type="time" id="spt-t" data-keep aria-label="Heure (facultatif)"><select id="spt-rep" data-keep aria-label="Répétition"><option value="">Une fois</option><option value="d">Chaque jour</option><option value="w">Chaque semaine</option><option value="m">Chaque mois</option></select></div>' +
+      '<select id="spt-who" data-keep aria-label="Qui s’en occupe ?">' + memberOpts(s, '').replace('Personne en particulier', 'Qui s’en occupe ? (tout le monde)') + '</select><button type="submit" class="btn primary">Ajouter la tâche</button></form>';
+    var ws = weekStart(todayISO()), score = {};
+    its.forEach(function (i) { if (i.done && i.done_uid && i.done_at && iso(new Date(i.done_at)) >= ws) score[i.done_uid] = (score[i.done_uid] || 0) + 1; });
+    var ks = spMembers(s).map(function (m) { return m.user_id; }).sort(function (a, b) { return (score[b] || 0) - (score[a] || 0); });
+    if (Object.keys(score).length) h += '<section class="card score"><h3>🏆 Qui fait le plus cette semaine</h3>' + ks.map(function (u, n) { return '<div class="scr"><span>' + (n === 0 && score[u] ? '🥇' : n === 1 && score[u] ? '🥈' : '·') + ' ' + esc(spName(s, u)) + '</span><b>' + plural(score[u] || 0, 'tâche', 'tâches') + '</b></div>'; }).join('') + '</section>';
+    h += todo.length ? '<div class="list">' + todo.map(function (i) { return spRow(i, s, { date: true }); }).join('') + '</div>' : '<p class="empty card">Aucune tâche en cours. Ajoute les tâches de la maison et choisis qui s’en occupe.</p>';
+    if (done.length) h += '<div class="sh"><p class="ait">✅ Faites récemment</p></div><div class="list">' + done.slice(0, 10).map(function (i) { return spRow(i, s, { date: true }); }).join('') + '</div>';
+    return h;
+  }
+  function spAgenda(s) {
+    var t = todayISO(), all = (SP.items[s.id] || []).filter(function (i) { return (i.kind === 'event' || i.kind === 'task') && i.d && i.d >= t && !(i.kind === 'task' && i.done); }).sort(function (a, b) { return a.d + (a.t || '99') < b.d + (b.t || '99') ? -1 : 1; });
+    var h = '<form class="card spform" id="speventf" autocomplete="off"><input type="text" id="spe-text" data-keep maxlength="200" placeholder="Rendez-vous ou événement (ex. Dîner chez mamie)" aria-label="Nouvel événement"><div class="cols3"><input type="date" id="spe-d" data-keep value="' + t + '" aria-label="Date"><input type="time" id="spe-t" data-keep aria-label="Heure (facultatif)"><button type="submit" class="btn primary">Ajouter</button></div></form>';
+    if (!all.length) return h + '<p class="empty card">Rien de prévu. Les rendez-vous et les tâches datées de l’espace apparaissent ici, pour tout le monde.</p>';
+    var last = '';
+    h += '<div class="list">' + all.map(function (i) {
+      var hd = i.d !== last ? '<p class="mday">' + esc(cap1(relDay(i.d) || dayLong(i.d))) + '</p>' : ''; last = i.d;
+      return hd + (i.kind === 'task' ? spRow(i, s) : '<div class="row"><span class="tm">' + esc(i.t || '') + '</span><button class="txt" data-act="spedit" data-id="' + i.id + '"><span>📅 ' + esc(i.text) + '</span><small>par ' + esc(i.created_by === (auth && auth.uid) ? 'moi' : i.created_name || 'quelqu’un') + '</small></button></div>');
+    }).join('') + '</div>';
+    return h;
+  }
+  function spNotes(s) {
+    var ns = spItemsOf('note').slice().reverse();
+    var h = '<form id="spnotef" class="card ncomp" autocomplete="off"><label class="vh" for="spn-text">Nouvelle note partagée</label><textarea id="spn-text" data-keep maxlength="2000" rows="2" placeholder="Code du portail, numéro du plombier, idée de cadeau…"></textarea><div class="btns">' + micBtn('#spn-text') + '<button type="submit" class="btn primary sm">Partager</button></div></form>';
+    if (!ns.length) return h + '<p class="empty card">Aucune note partagée.</p>';
+    return h + '<div class="notes">' + ns.map(function (n) { return '<button class="nt" data-act="spedit" data-id="' + n.id + '"><span class="ntx">' + esc(n.text.length > 240 ? n.text.slice(0, 240) + '…' : n.text) + '</span><small>' + esc(n.created_by === (auth && auth.uid) ? 'Moi' : n.created_name || '') + ' · ' + esc(whenShort(n.created_at)) + '</small></button>'; }).join('') + '</div>';
+  }
+  /* --- fenêtres de l’espace --- */
+  function spItemSheet() {
+    var s = spCur(), i = spFind(sheet.id); if (!s || !i) { sheet = null; return ''; }
+    var h = '<h2>' + ({ shop: 'Article', task: 'Tâche commune', event: 'Rendez-vous', note: 'Note partagée' }[i.kind]) + '</h2><form id="spiform" autocomplete="off">';
+    h += i.kind === 'note' ? '<textarea id="spi-text" data-keep maxlength="2000" rows="6">' + esc(i.text) + '</textarea>' : '<label class="f">Texte<input type="text" id="spi-text" data-keep maxlength="200" value="' + esc(i.text) + '"></label>';
+    if (i.kind === 'shop') h += '<label class="f">Rayon<select id="spi-aisle" data-keep>' + AISLES.map(function (a) { return a[0]; }).concat(['Autre']).map(function (a) { return '<option' + ((i.aisle || guessAisle(i.text)) === a ? ' selected' : '') + '>' + esc(a) + '</option>'; }).join('') + '</select></label>';
+    if (i.kind === 'task' || i.kind === 'event') h += '<div class="cols"><label class="f">Date<input type="date" id="spi-d" data-keep value="' + (i.d || '') + '"></label><label class="f">Heure<input type="time" id="spi-t" data-keep value="' + esc(i.t || '') + '"></label></div>';
+    if (i.kind === 'task') h += '<div class="cols"><label class="f">Répétition<select id="spi-rep" data-keep>' + [['', 'Une fois'], ['d', 'Chaque jour'], ['w', 'Chaque semaine'], ['m', 'Chaque mois']].map(function (o) { return '<option value="' + o[0] + '"' + ((i.rep || '') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label><label class="f">Qui s’en occupe ?<select id="spi-who" data-keep>' + memberOpts(s, i.assignee || '') + '</select></label></div>';
+    if ((i.kind === 'task' || i.kind === 'event') && i.d) h += '<p class="hint">🔔 Un rappel est envoyé ' + (i.t ? 'à ' + esc(i.t) : 'à 9 h') + ' le jour même' + (i.kind === 'task' && i.assignee ? ' à la personne choisie' : ' à tout le monde') + ' (si les notifications sont activées).</p>';
+    h += '<p class="hint">Ajouté par ' + esc(i.created_by === (auth && auth.uid) ? 'moi' : i.created_name || 'quelqu’un') + (i.created_at ? ' ' + esc(whenShort(i.created_at)) : '') + '.</p>';
+    h += '<button type="submit" class="btn primary big">Enregistrer</button><div class="btns"><button type="button" class="btn danger" data-act="spdel" data-id="' + i.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div></form>';
+    return h;
+  }
+  function spInvSheet() {
+    var s = spCur(); if (!s) { sheet = null; return ''; }
+    var c = SP.code[s.id];
+    var h = '<h2>Inviter dans « ' + esc(s.name) + ' »</h2><p class="sub">Donne ce code à la personne. Dans son appli Cadence : onglet <b>Ensemble</b>, puis « Rejoindre avec un code ».</p>';
+    if (!c) { h += '<p class="sub" role="status">Création du code…</p>'; }
+    else {
+      var exp = new Date(c.exp), days = Math.max(1, Math.round((exp - Date.now()) / 864e5));
+      h += '<div class="bigcode" aria-label="Code ' + esc(c.code.split('').join(' ')) + '">' + esc(c.code.slice(0, 3) + ' ' + c.code.slice(3)) + '</div><p class="hint">Valable encore ' + plural(days, 'jour', 'jours') + '. Une fois entrée, la personne reste membre pour toujours (pas besoin de recommencer).</p>' +
+        '<button class="btn primary big" data-act="spshare">Envoyer le code</button><button class="btn" data-act="spnewcode">Générer un nouveau code</button>';
+    }
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  function spSetSheet() {
+    var s = spCur(); if (!s) { sheet = null; return ''; }
+    var mine = auth && s.owner === auth.uid, me = spMembers(s).filter(function (m) { return auth && m.user_id === auth.uid; })[0];
+    return '<h2>Réglages de l’espace</h2><form id="spsetf" autocomplete="off"><label class="f">Nom de l’espace<input type="text" id="sps-name" data-keep maxlength="40" value="' + esc(s.name) + '"></label><label class="f">Ton prénom dans cet espace<input type="text" id="sps-me" data-keep maxlength="40" value="' + esc((me && me.name) || myName()) + '"></label><button type="submit" class="btn primary big">Enregistrer</button></form>' +
+      '<button class="btn ' + (armKey === 'spq:' + s.id ? 'armed' : 'danger') + '" data-act="spquit">' + (armKey === 'spq:' + s.id ? 'Confirmer' : mine ? 'Supprimer l’espace pour tout le monde' : 'Quitter l’espace') + '</button><button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  function spNewSheet() { return '<h2>Un autre espace</h2>' + spStartHtml().replace('<section class="card sphero">', '<section class="card sphero" hidden>') + '<button class="btn ghost" data-act="sclose">Fermer</button>'; }
+  /* --- actions --- */
+  function spCode(s, fresh) {
+    return authed('POST', '/rest/v1/rpc/cadence_space_code', { p_space: s.id, p_new: !!fresh }).then(function (r) { SP.code[s.id] = r; if (sheet && sheet.k === 'spinv') render(); }).catch(spFail);
+  }
+  function v22Click(a, b) {
+    var id = b.dataset.id, v = b.dataset.v, s = spCur(), i;
+    if (a === 'spemo') { SP.newEmo = v; render(); return true; }
+    if (a === 'spsel') { SP.cur = v; spSave(); anim = 'fade'; render(); return true; }
+    if (a === 'spview') { SP.view = v; spSave(); anim = 'fade'; render(); return true; }
+    if (a === 'spnew') { sheet = { k: 'spnew' }; render(); return true; }
+    if (a === 'spinv') { if (!s) return true; sheet = { k: 'spinv' }; render(); spCode(s, false); return true; }
+    if (a === 'spnewcode') { if (s) spCode(s, true); return true; }
+    if (a === 'spshare') { var c = s && SP.code[s.id]; if (c) shareText('Rejoins mon espace « ' + s.name + ' » sur Cadence 🏠\n1. Ouvre https://cadence-agenda.github.io et connecte-toi\n2. Onglet « Ensemble », puis « Rejoindre avec un code »\n3. Tape le code : ' + c.code); return true; }
+    if (a === 'spset') { sheet = { k: 'spset' }; render(); return true; }
+    if (a === 'spedit') { sheet = { k: 'spitem', id: id }; render(); return true; }
+    if (a === 'sptog') {
+      i = spFind(id); if (!i) return true;
+      if (!i.done) {
+        if (i.kind === 'task' && i.rep && i.d) { var nd = nextRep(i.d, i.rep); spPost({ kind: 'task', text: i.text, d: nd, t: i.t || null, rep: i.rep, assignee: i.assignee || null, remind_at: spRemindAt(nd, i.t) }); }
+        confetti(false, b); uiSound('tick');
+        spPatch(i, { done: true, done_by: myName(), done_uid: auth.uid, done_at: new Date().toISOString() });
+      } else { uiSound('untick'); spPatch(i, { done: false, done_by: null, done_uid: null, done_at: null }); }
+      return true;
+    }
+    if (a === 'spdel') { i = spFind(id); if (i) { sheet = null; spDel(i); } return true; }
+    if (a === 'spclear') {
+      var arr = spItemsOf('shop').filter(function (z) { return z.done; }); if (!arr.length || !s) return true;
+      SP.items[s.id] = (SP.items[s.id] || []).filter(function (z) { return arr.indexOf(z) < 0; }); render();
+      authed('DELETE', '/rest/v1/cadence_space_items?id=in.(' + arr.map(function (z) { return z.id; }).join(',') + ')').then(function () { showToast('Achats retirés de la liste'); return spFetch(); }).catch(spFail);
+      return true;
+    }
+    if (a === 'spquit') {
+      if (!s || !arm('spq:' + s.id)) return true;
+      var req = s.owner === auth.uid ? authed('DELETE', '/rest/v1/cadence_spaces?id=eq.' + s.id) : authed('DELETE', '/rest/v1/cadence_space_members?space_id=eq.' + s.id + '&user_id=eq.' + auth.uid);
+      req.then(function () { SP.spaces = SP.spaces.filter(function (z) { return z.id !== s.id; }); delete SP.items[s.id]; SP.cur = ''; sheet = null; spSave(); showToast('Espace retiré'); rtSync(); render(); }).catch(spFail);
+      return true;
+    }
+    return false;
+  }
+  function v22Submit(f) {
+    var val = function (x) { return ((document.getElementById(x) || {}).value || '').trim(); };
+    if (f.id === 'spcreate') {
+      var nm = val('sp-name'); if (!nm) { showToast('Donne un nom à ton espace (ex. Famille).'); render(); focusAdd('#sp-name'); return true; }
+      SP.busy = true; render();
+      authed('POST', '/rest/v1/rpc/cadence_space_create', { p_name: nm, p_emoji: SP.newEmo || '🏠', p_member: myName() }).then(function (r) {
+        SP.busy = false; SP.cur = r.id; SP.view = 'shop'; sheet = null; var e = document.getElementById('sp-name'); if (e) e.value = '';
+        confetti(true); showToast('Espace « ' + r.name + ' » créé 🎉 Invite quelqu’un avec « ＋ Inviter ».');
+        return spFetch();
+      }).catch(function (er) { SP.busy = false; spFail(er); });
+      return true;
+    }
+    if (f.id === 'spjoin') {
+      var code = val('sp-code').replace(/\D/g, ''); if (code.length !== 6) { showToast('Le code fait 6 chiffres.'); render(); return true; }
+      SP.busy = true; render();
+      authed('POST', '/rest/v1/rpc/cadence_space_join', { p_code: code, p_member: myName() }).then(function (r) {
+        SP.busy = false; SP.cur = r.id; sheet = null; var e = document.getElementById('sp-code'); if (e) e.value = '';
+        confetti(true); showToast('Bienvenue dans « ' + r.name + ' » 🎉'); return spFetch();
+      }).catch(function (er) { SP.busy = false; showToast(/trop/i.test(er.message || '') ? 'Trop d’essais : réessaie dans une heure.' : /invalide/i.test(er.message || '') ? 'Code incorrect ou expiré. Demande un nouveau code.' : 'Erreur : ' + (er.message || '')); render(); });
+      return true;
+    }
+    if (f.dataset.kind === 'spshop') { var inp = f.querySelector('input[name="t"]'), tx = (inp.value || '').trim(); if (!tx) return true; inp.value = ''; spPost({ kind: 'shop', text: tx.slice(0, 120), aisle: guessAisle(tx) }); focusAdd('form[data-kind="spshop"] input[name="t"]'); return true; }
+    if (f.id === 'sptaskf') {
+      var tt = val('spt-text'); if (!tt) { focusAdd('#spt-text'); return true; }
+      var d = val('spt-d'), tm = val('spt-t'), rep = val('spt-rep'), who = val('spt-who');
+      d = /^\d{4}-\d\d-\d\d$/.test(d) ? d : (rep ? todayISO() : ''); tm = d && /^\d\d:\d\d$/.test(tm) ? tm : '';
+      ['spt-text', 'spt-d', 'spt-t'].forEach(function (x) { var e = document.getElementById(x); if (e) e.value = ''; });
+      spPost({ kind: 'task', text: tt.slice(0, 200), d: d || null, t: tm || null, rep: rep, assignee: who || null, remind_at: spRemindAt(d, tm) });
+      return true;
+    }
+    if (f.id === 'speventf') {
+      var et = val('spe-text'), ed = val('spe-d'), etm = val('spe-t');
+      if (!et || !/^\d{4}-\d\d-\d\d$/.test(ed)) { showToast('Écris le rendez-vous et choisis une date.'); render(); return true; }
+      etm = /^\d\d:\d\d$/.test(etm) ? etm : '';
+      ['spe-text', 'spe-t'].forEach(function (x) { var e = document.getElementById(x); if (e) e.value = ''; });
+      spPost({ kind: 'event', text: et.slice(0, 200), d: ed, t: etm || null, remind_at: spRemindAt(ed, etm) });
+      return true;
+    }
+    if (f.id === 'spnotef') { var nt = val('spn-text'); if (!nt) return true; document.getElementById('spn-text').value = ''; spPost({ kind: 'note', text: nt.slice(0, 2000) }); return true; }
+    if (f.id === 'spiform') {
+      var it = spFind(sheet.id); if (!it) { sheet = null; render(); return true; }
+      var p = { text: (val('spi-text') || it.text).slice(0, it.kind === 'note' ? 2000 : 200) };
+      if (it.kind === 'shop') p.aisle = val('spi-aisle') || it.aisle;
+      if (it.kind === 'task' || it.kind === 'event') { var dd = val('spi-d'), ttm = val('spi-t'); p.d = /^\d{4}-\d\d-\d\d$/.test(dd) ? dd : null; p.t = p.d && /^\d\d:\d\d$/.test(ttm) ? ttm : null; if (p.d !== it.d || p.t !== it.t) { p.remind_at = spRemindAt(p.d, p.t); p.reminded = false; } }
+      if (it.kind === 'task') { p.rep = val('spi-rep'); p.assignee = val('spi-who') || null; }
+      sheet = null; spPatch(it, p); return true;
+    }
+    if (f.id === 'spsetf') {
+      var s = spCur(); if (!s) return true;
+      var n2 = val('sps-name'), me2 = val('sps-me');
+      Promise.all([authed('POST', '/rest/v1/rpc/cadence_space_rename', { p_space: s.id, p_name: n2, p_emoji: s.emoji }), authed('POST', '/rest/v1/rpc/cadence_space_myname', { p_space: s.id, p_member: me2 || myName() })])
+        .then(function () { sheet = null; showToast('Réglages enregistrés'); return spFetch(); }).catch(spFail);
+      return true;
+    }
+    return false;
+  }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
@@ -2780,7 +3097,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     }).catch(function (er) { syncing = false; booting = false; if (auth) setSt('err', frErr(er)); else render(); });
   }
   var lastAfter = 0;
-  function afterSync() { if (Date.now() - lastAfter < 15000) return; lastAfter = Date.now(); setTimeout(function () { pushSync(false); slJoinPending(); if (Date.now() - SL.at > 60000) slFetch(true); maybePlan(); }, 50); }
+  function afterSync() { if (Date.now() - lastAfter < 15000) return; lastAfter = Date.now(); setTimeout(function () { pushSync(false); slJoinPending(); if (Date.now() - SL.at > 60000) slFetch(true); if (Date.now() - SP.at > 60000) spFetch(true); maybePlan(); }, 50); }
   function cloudPush() {
     if (!auth || !cloudOn || sync.conflict) return Promise.resolve();
     if (pushing) { again = true; return Promise.resolve(); }
@@ -2801,7 +3118,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function wipeLocal() {
     var th = S.settings.theme, sz = S.settings.size; S = fresh(); S.settings.theme = th; S.settings.size = sz;
     try { localStorage.removeItem(KEY); } catch (e) {}
-    SL.lists = []; SL.items = {}; lsSet('cadence.sl', null); lsSet('cadence.wx', null); wx = null; lsSet('cadence.push.h', null);
+    SL.lists = []; SL.items = {}; lsSet('cadence.sl', null); SP.spaces = []; SP.items = {}; SP.cur = ''; lsSet('cadence.sp', null); rtClose(); lsSet('cadence.wx', null); wx = null; lsSet('cadence.push.h', null);
     lsSet(CD, null); lsSet(CR, null); applyTheme(); tab = 'today'; view = 'd'; cur = todayISO(); sel = cur; sheet = null; obStep = 0;
   }
   function afterLogin(isNew) {
@@ -2970,7 +3287,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     try {
       var q = new URLSearchParams(location.search), jn = q.get('join'), tb = q.get('tab');
       if (jn && /^[0-9a-f-]{36}~[0-9a-f]{32}$/.test(jn)) localStorage.setItem('cadence.join', jn);
-      if (tb && ['today', 'agenda', 'notes', 'goals', 'pomo'].indexOf(tb) >= 0) tab = tb;
+      if (tb && ['today', 'agenda', 'space', 'notes', 'goals', 'pomo'].indexOf(tb) >= 0) tab = tb;
       if (q.get('add') === '1') setTimeout(function () { if (S.profile.done && !sheet) { sheet = { k: 'quick', err: '' }; render(); focusAdd('#q-text'); } }, 400);
       if (jn || tb || q.get('add')) history.replaceState(null, '', location.pathname);
     } catch (e) {}
@@ -2981,7 +3298,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   cloudBoot();
   wxLoad();
   setTimeout(function () { maybePlan(); }, 700);
-  setInterval(function () { wxLoad(); if (sheet && sheet.k === 'slist' && auth && !document.hidden && !editing()) slFetch(); }, 15000);
+  setInterval(function () { wxLoad(); if (sheet && sheet.k === 'slist' && auth && !document.hidden && !editing()) slFetch(); if (tab === 'space' && auth && !document.hidden && !editing() && !rtLive()) spFetch(true); }, 15000);
   setInterval(function () { timerLoop(); remCheck(); if (todayISO() !== lastDay) { var was = lastDay; lastDay = todayISO(); if (cur === was) cur = lastDay; if (!editing() && !sheet) render(); maybePlan(); pushSync(false); } }, 1000);
   
 })();
