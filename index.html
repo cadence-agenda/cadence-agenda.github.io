@@ -674,6 +674,14 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 .bigcode { font-family: var(--font-clock); font-size: 46px; font-weight: 500; letter-spacing: .12em; text-align: center; background: var(--accent-soft); color: var(--accent); border-radius: 18px; padding: 18px 0; }
 .card.spadd { display: flex; padding: 8px; }
 .seg button { white-space: nowrap; }
+
+/* ===== v23 : verrouillage ===== */
+.lockscr { display: grid; gap: 18px; padding-top: 40px; justify-items: center; text-align: center; min-height: 80vh; align-content: start; }
+.lockscr .brand { justify-content: center; }
+.lockscr form { width: 100%; text-align: left; }
+.lockscr .lead { color: var(--muted); font-size: 16.5px; }
+.lkic { font-size: 56px; line-height: 1; }
+.lockscr > .btn { width: 100%; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -682,7 +690,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 <script>
 (function () {
   'use strict';
-  var APP_VER = 22;
+  var APP_VER = 23;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1011,7 +1019,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       '<div class="cols"><label class="f">Prénom<input type="text" data-pf="first" value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label><label class="f">Nom<input type="text" data-pf="last" value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
       '<label class="f">Surnom (utilisé pour t’accueillir)<input type="text" data-pf="nick" value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Facultatif"></label>' +
       '<label class="f">Ta devise (affichée sur l’agenda)<input type="text" data-pf="motto" value="' + esc(p.motto || '') + '" maxlength="120" placeholder="Ex. Un pas après l’autre"></label></section>';
-    h += notifCard();
+    h += notifCard() + lockCard();
     h += '<section class="card"><h3>Apparence</h3><div class="f"><p class="sub">Thème de couleur</p>' + paletteCards() + '</div><div class="f"><p class="sub">Couleur d’accent</p>' + swatches() + '</div>' +
       '<div class="f"><p class="sub">Thème</p>' + segOpt('theme', st.theme, [['auto', 'Automatique'], ['light', 'Clair'], ['dark', 'Sombre']], 'Thème') + '</div>' +
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
@@ -1099,6 +1107,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function viewAll() {
     if (cloudOn && !auth) return viewAuth() + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
+    if (isLocked()) return lockView() + toastHtml();
     var body = tab === 'today' ? viewToday() : tab === 'agenda' ? viewAgenda() : tab === 'space' ? viewSpace() : tab === 'notes' ? viewNotes() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
     return header() + updBanner() + '<main class="pg">' + body + '</main>' + fabHtml() + navHtml() + sheetHtml() + recoverySheet() + toastHtml();
   }
@@ -1113,7 +1122,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     document.querySelectorAll('[data-keepc]').forEach(function (e) { if (e.id && keep['c#' + e.id] !== undefined) e.checked = keep['c#' + e.id]; });
     document.querySelectorAll('form.add input[name="t"]').forEach(function (e) { var k = (e.form.dataset.day || '') + '|' + (e.form.dataset.key || ''); if (keep[k]) e.value = keep[k]; });
     document.body.classList.toggle('noscroll', !!(sheet || recov));
-    document.body.classList.toggle('gate', !!(cloudOn && !auth));
+    document.body.classList.toggle('gate', !!(cloudOn && !auth) || isLocked());
     if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
     afterRender();
     timerLoop();
@@ -1143,6 +1152,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
     if (cloudClick(a)) return;
+    if (v23Click(a, b)) return;
     if (v22Click(a, b)) return;
     if (v21Click(a, b)) return;
     if (v20Click(a, b)) return;
@@ -1238,6 +1248,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       if (!fi.trim()) { notice = 'Écris ton prénom pour continuer.'; render(); return; }
       notice = ''; S.profile.first = fi.trim().slice(0, 40); S.profile.last = la.trim().slice(0, 40); S.profile.nick = ((document.getElementById('ob-nick') || {}).value || '').trim().slice(0, 30); save(); obStep = 1; render(); window.scrollTo(0, 0); return;
     }
+    if (v23Submit(f)) return;
     if (v22Submit(f)) return;
     if (v21Submit(f)) return;
     if (v20Submit(f)) return;
@@ -1336,6 +1347,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       '<h3>Qui est responsable de tes données ?</h3><p>' + EDITOR + ', éditeur de Cadence. Contact : ' + mail + '.</p>' +
       '<h3>Quelles données ?</h3><ul><li>Ton adresse e-mail et ton mot de passe, pour ton compte. Le mot de passe n’est jamais visible : il est enregistré sous une forme protégée (hachée).</li>' +
       '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), espaces communs (ce que toi et les membres y ajoutez, ainsi que vos prénoms, est visible par tous les membres de l’espace), réglages des minuteurs et préférences d’affichage.</li>' +
+      '<li>Si tu actives le verrouillage : ton code est enregistré uniquement sur ton téléphone, sous une forme protégée (hachée). Ton empreinte digitale ne quitte jamais ton téléphone : ni Cadence ni son éditeur n’y ont accès.</li>' +
       '<li>Si tu actives les notifications : l’adresse technique d’abonnement de ton navigateur et la liste de tes prochains rappels, pour pouvoir t’envoyer les notifications.</li>' +
       '<li>Si tu partages une liste : son contenu, ton prénom et ce que tu y fais (ajout, coche) sont visibles par les personnes que tu as invitées.</li>' +
       '<li>La date à laquelle tu as accepté les conditions.</li></ul>' +
@@ -1942,7 +1954,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   }
   function maybePlan() {
     var t = todayISO(), hr = new Date().getHours();
-    if (!S.profile.done || (cloudOn && !auth) || sheet || recov || tab !== 'today' || editing()) return;
+    if (isLocked() || !S.profile.done || (cloudOn && !auth) || sheet || recov || tab !== 'today' || editing()) return;
     if (S.settings.planSeen === t || S.settings.planDone === t || hr < 5 || hr >= 14) return;
     S.settings.planSeen = t; save(); sheet = { k: 'plan' }; render();
   }
@@ -3001,6 +3013,140 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     }
     return false;
   }
+  /* ========== v23 : verrouillage par empreinte digitale + code de secours ========== */
+  var LK = 'cadence.lock', LKF = 'cadence.lock.f';
+  function lockCfg() { try { var o = JSON.parse(localStorage.getItem(LK) || 'null'); return o && o.on && o.hash && o.salt ? o : null; } catch (e) { return null; } }
+  function lockSet(o) { try { if (o) localStorage.setItem(LK, JSON.stringify(o)); else { localStorage.removeItem(LK); localStorage.removeItem(LKF); } } catch (e) {} }
+  var locked = !!lockCfg(), lockHidAt = 0, lockMsg = '', lockBusy = false, bioAvail = null, lkSetup = { err: '', info: '' };
+  function lockOn() { return !!lockCfg() && (!cloudOn || !!auth) && S.profile.done; }
+  function isLocked() { return locked && lockOn(); }
+  try {
+    if (window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function (v) { bioAvail = !!v; if (tab === 'profile' || isLocked()) softRender(); }, function () { bioAvail = false; });
+    } else bioAvail = false;
+  } catch (e) { bioAvail = false; }
+  function rnd(n) { return crypto.getRandomValues(new Uint8Array(n)); }
+  function b64uE(buf) { var b = new Uint8Array(buf), s = ''; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function hashPin(salt, pin) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + ':' + pin)).then(function (h) { return b64uE(h); });
+  }
+  function lockFails() { try { return JSON.parse(localStorage.getItem(LKF) || '{"n":0,"until":0}'); } catch (e) { return { n: 0, until: 0 }; } }
+  function unlock() { locked = false; lockMsg = ''; lockBusy = false; try { localStorage.removeItem(LKF); } catch (e) {} uiSound('tick'); anim = 'fade'; render(); }
+  function lockView() {
+    var c = lockCfg() || {}, f = lockFails(), wait = Math.max(0, Math.ceil((f.until - Date.now()) / 1000));
+    var bio = c.cred && bioAvail !== false;
+    return '<div class="lockscr"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div><span class="lkic" aria-hidden="true">🔒</span><h1>Cadence est verrouillée</h1>' +
+      (callName() ? '<p class="lead">Bon retour, ' + esc(callName()) + ' !</p>' : '') +
+      (bio ? '<button class="btn primary big" data-act="lkbio"' + (lockBusy ? ' disabled' : '') + '>👆 Déverrouiller avec mon empreinte</button>' : '') +
+      '<form id="lockform" class="card" autocomplete="off"><label class="f" for="lk-code">' + (bio ? 'Ou avec ton code de secours' : 'Ton code') + '<input type="password" id="lk-code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" class="codein" placeholder="••••"' + (wait ? ' disabled' : '') + '></label>' +
+      (wait ? '<p class="err" role="alert">Trop d’essais. Réessaie dans ' + wait + ' s.</p>' : lockMsg ? '<p class="err" role="alert">' + esc(lockMsg) + '</p>' : '') +
+      '<button type="submit" class="btn big"' + (wait ? ' disabled' : '') + '>Déverrouiller</button></form>' +
+      (cloudOn && auth ? '<button class="btn ghost" data-act="lkforgot">' + (armKey === 'lkforgot' ? 'Confirmer : me déconnecter (mes données restent sauvegardées en ligne)' : 'Code oublié ?') + '</button>' : '') + '</div>';
+  }
+  function lockBio(auto) {
+    var c = lockCfg(); if (!c || !c.cred || lockBusy) return;
+    lockBusy = true; lockMsg = ''; if (!auto) render();
+    var idb; try { var s = c.cred.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; var r = atob(s); idb = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) idb[i] = r.charCodeAt(i); } catch (e) { lockBusy = false; return; }
+    navigator.credentials.get({ publicKey: { challenge: rnd(32), allowCredentials: [{ type: 'public-key', id: idb, transports: ['internal'] }], userVerification: 'required', timeout: 60000 } }).then(function (a) {
+      var ad = new Uint8Array(a.response.authenticatorData);
+      if (!(ad[32] & 0x04)) throw new Error('uv');
+      if (b64uE(a.rawId) !== c.cred) throw new Error('cred');
+      unlock();
+    }).catch(function (er) {
+      lockBusy = false;
+      if (!auto) lockMsg = er && er.name === 'NotAllowedError' ? 'Empreinte annulée ou non reconnue. Réessaie, ou utilise ton code.' : 'L’empreinte ne fonctionne pas ici : utilise ton code.';
+      if (isLocked()) render();
+    });
+  }
+  function lockTry(code) {
+    var c = lockCfg(); if (!c) { unlock(); return; }
+    var f = lockFails(); if (f.until > Date.now()) { render(); return; }
+    hashPin(c.salt, code).then(function (h) {
+      if (h === c.hash) { unlock(); return; }
+      f.n = (f.n || 0) + 1; if (f.n >= 5) f.until = Date.now() + 30000 * (f.n - 4);
+      try { localStorage.setItem(LKF, JSON.stringify(f)); } catch (e) {}
+      lockMsg = 'Code incorrect.'; try { if (navigator.vibrate) navigator.vibrate([60, 40, 60]); } catch (e) {}
+      render(); if (f.until > Date.now()) setTimeout(function () { if (isLocked()) render(); }, f.until - Date.now() + 200);
+      var el = document.getElementById('lk-code'); if (el && !el.disabled) el.focus();
+    });
+  }
+  function lockCard() {
+    var c = lockCfg(), h = '<section class="card"><h3>🔒 Verrouillage de l’appli</h3>';
+    if (!c) {
+      h += '<p class="sub">Protège Cadence : il faudra ton empreinte digitale (ou ton code) pour l’ouvrir sur ce téléphone.</p>' +
+        '<form id="lksetform" autocomplete="off" class="grid"><div class="cols"><label class="f">Code de secours (4 à 6 chiffres)<input type="password" id="lk-p1" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label><label class="f">Confirme le code<input type="password" id="lk-p2" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label></div>' +
+        (lkSetup.err ? '<p class="err" role="alert">' + esc(lkSetup.err) + '</p>' : '') + '<button type="submit" class="btn primary">Activer le verrouillage</button></form>';
+      return h + '</section>';
+    }
+    h += '<p class="okmsg">Activé sur ce téléphone.</p>';
+    if (c.cred) h += '<p class="sub">👆 Empreinte enregistrée.</p>';
+    else if (bioAvail) h += '<p class="sub">Ajoute ton empreinte pour ouvrir Cadence d’un simple toucher.</p><button class="btn primary" data-act="lkreg">👆 Ajouter mon empreinte</button>';
+    else if (bioAvail === false) h += '<p class="sub">Ce navigateur ne permet pas l’empreinte digitale ici : le code fonctionne quand même. Astuce : essaie depuis Chrome ou en installant Cadence sur l’écran d’accueil.</p>';
+    if (lkSetup.err) h += '<p class="err" role="alert">' + esc(lkSetup.err) + '</p>';
+    if (lkSetup.info) h += '<p class="okmsg" role="status">' + esc(lkSetup.info) + '</p>';
+    h += '<div class="f"><p class="sub">Verrouiller quand je quitte l’appli depuis</p>' + segOpt('lkdelay', c.delay || 0, [[0, 'Tout de suite'], [60, '1 min'], [300, '5 min'], [900, '15 min']], 'Délai de verrouillage') + '</div>';
+    h += '<div class="btns"><button class="btn sm" data-act="lknow">Verrouiller maintenant</button>' + (c.cred ? '<button class="btn sm ghost" data-act="lkunreg">Retirer l’empreinte</button>' : '') + '<button class="btn sm ' + (armKey === 'lkoff' ? 'armed' : 'ghost') + '" data-act="lkoff">' + (armKey === 'lkoff' ? 'Confirmer la désactivation' : 'Désactiver') + '</button></div>';
+    h += '<p class="hint">Le verrou protège l’ouverture de l’appli sur ce téléphone. Il ne remplace pas le verrouillage de ton téléphone lui-même.</p>';
+    return h + '</section>';
+  }
+  function lockRegister() {
+    var c = lockCfg(); if (!c) return;
+    lkSetup = { err: '', info: '' };
+    navigator.credentials.create({ publicKey: {
+      challenge: rnd(32), rp: { name: 'Cadence', id: location.hostname },
+      user: { id: rnd(16), name: (auth && auth.email) || 'cadence', displayName: callName() || 'Cadence' },
+      pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+      authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'discouraged', requireResidentKey: false },
+      timeout: 60000, attestation: 'none'
+    } }).then(function (cr) {
+      c.cred = b64uE(cr.rawId); lockSet(c); lkSetup.info = '👆 Empreinte ajoutée : elle sera demandée à l’ouverture.'; uiSound('tick'); render();
+    }).catch(function (er) {
+      lkSetup.err = er && er.name === 'NotAllowedError' ? 'Ajout annulé. Réessaie et pose ton doigt sur le capteur.' : er && er.name === 'InvalidStateError' ? 'Cette empreinte est déjà enregistrée.' : 'Impossible d’ajouter l’empreinte ici (' + ((er && er.name) || 'erreur') + ').';
+      render();
+    });
+  }
+  function v23Click(a, b) {
+    if (a === 'lkbio') { lockBio(false); return true; }
+    if (a === 'lkforgot') { if (!arm('lkforgot')) return true; locked = false; cloudLogout(); return true; }
+    if (a === 'lkreg') { lockRegister(); return true; }
+    if (a === 'lkunreg') { var c = lockCfg(); if (c) { delete c.cred; lockSet(c); lkSetup = { err: '', info: 'Empreinte retirée : le code sera demandé.' }; render(); } return true; }
+    if (a === 'lkdelay') { var c2 = lockCfg(); if (c2) { c2.delay = +b.dataset.v; lockSet(c2); render(); } return true; }
+    if (a === 'lknow') { locked = true; sheet = null; render(); setTimeout(function () { lockBio(true); }, 150); return true; }
+    if (a === 'lkoff') { if (!arm('lkoff')) return true; lockSet(null); locked = false; lkSetup = { err: '', info: '' }; showToast('Verrouillage désactivé'); render(); return true; }
+    return false;
+  }
+  function v23Submit(f) {
+    if (f.id === 'lockform') { var v = ((document.getElementById('lk-code') || {}).value || '').replace(/\D/g, ''); if (v.length < 4) { lockMsg = 'Tape ton code (4 à 6 chiffres).'; render(); return true; } lockTry(v); return true; }
+    if (f.id === 'lksetform') {
+      var p1 = ((document.getElementById('lk-p1') || {}).value || ''), p2 = ((document.getElementById('lk-p2') || {}).value || '');
+      if (!/^\d{4,6}$/.test(p1)) { lkSetup.err = 'Le code doit faire 4 à 6 chiffres.'; render(); return true; }
+      if (p1 !== p2) { lkSetup.err = 'Les deux codes ne sont pas identiques.'; render(); return true; }
+      if (/^(\d)\1+$/.test(p1) || '0123456789'.indexOf(p1) >= 0 || '9876543210'.indexOf(p1) >= 0) { lkSetup.err = 'Code trop facile à deviner (ex. 1234, 0000) : choisis-en un autre.'; render(); return true; }
+      var salt = b64uE(rnd(16));
+      hashPin(salt, p1).then(function (h) {
+        lockSet({ on: true, salt: salt, hash: h, len: p1.length, delay: 0 }); locked = false;
+        lkSetup = { err: '', info: bioAvail ? 'Verrouillage activé. Ajoute maintenant ton empreinte :' : 'Verrouillage activé : ton code sera demandé à l’ouverture.' };
+        showToast('🔒 Verrouillage activé'); render();
+      });
+      return true;
+    }
+    return false;
+  }
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'lk-code') { var c = lockCfg(), v = e.target.value.replace(/\D/g, ''); if (c && c.len && v.length === c.len) lockTry(v); }
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { lockHidAt = Date.now(); return; }
+    var c = lockCfg(); if (!c || !lockOn() || locked || Date.now() < lockPauseUntil) return;
+    if (lockHidAt && Date.now() - lockHidAt >= (c.delay || 0) * 1000) { locked = true; sheet = null; render(); setTimeout(function () { lockBio(true); }, 300); }
+  });
+  /* pas de verrouillage pendant le choix d’une photo, un partage ou un lien externe */
+  var lockPauseUntil = 0;
+  document.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest && e.target.closest('input[type="file"], label[for], a[target="_blank"], [data-act="spshare"], [data-act="slinvite"], [data-act="mshare"], [data-act="export"], [data-act="csv"], [data-act="lkreg"], [data-act="pushon"]');
+    if (t) lockPauseUntil = Date.now() + 120000;
+  }, true);
+  document.addEventListener('change', function (e) { if (e.target && e.target.type === 'file') lockPauseUntil = Date.now() + 3000; }, true);
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
@@ -3118,6 +3264,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function wipeLocal() {
     var th = S.settings.theme, sz = S.settings.size; S = fresh(); S.settings.theme = th; S.settings.size = sz;
     try { localStorage.removeItem(KEY); } catch (e) {}
+    lockSet(null); locked = false;
     SL.lists = []; SL.items = {}; lsSet('cadence.sl', null); SP.spaces = []; SP.items = {}; SP.cur = ''; lsSet('cadence.sp', null); rtClose(); lsSet('cadence.wx', null); wx = null; lsSet('cadence.push.h', null);
     lsSet(CD, null); lsSet(CR, null); applyTheme(); tab = 'today'; view = 'd'; cur = todayISO(); sel = cur; sheet = null; obStep = 0;
   }
@@ -3296,6 +3443,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   applyTheme();
   render();
   cloudBoot();
+  if (isLocked()) setTimeout(function () { lockBio(true); }, 400);
   wxLoad();
   setTimeout(function () { maybePlan(); }, 700);
   setInterval(function () { wxLoad(); if (sheet && sheet.k === 'slist' && auth && !document.hidden && !editing()) slFetch(); if (tab === 'space' && auth && !document.hidden && !editing() && !rtLive()) spFetch(true); }, 15000);
