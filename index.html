@@ -411,6 +411,179 @@ body.gate { padding-bottom: 40px; }
 .review { background: color-mix(in srgb, var(--acc-l) 8%, var(--surface)); }
 .review .btns { justify-content: flex-start; }
 @media (prefers-reduced-motion: no-preference) { .fab:active { transform: scale(.92); } .hab:active { transform: scale(.96); } .row:not(.swiping) { transition: transform .2s ease, background .2s ease, height .22s ease, opacity .22s ease, padding .22s ease; } }
+
+/* ===== v20 : une vie organisée ===== */
+/* thème Océan */
+:root[data-palette="ocean"] { --bg: #EEF5FA; --soft: #E2EDF5; --line: #D6E4EE; }
+@media (prefers-color-scheme: dark) { :root[data-palette="ocean"]:not([data-theme="light"]) { --bg: #08131D; --surface: #0F1E2B; --soft: #18293A; --line: #1F3447; } }
+:root[data-palette="ocean"][data-theme="dark"] { --bg: #08131D; --surface: #0F1E2B; --soft: #18293A; --line: #1F3447; }
+:root[data-palette="ocean"] .hero2 { background: linear-gradient(140deg, #0A5FA8 0%, #0E8FB5 55%, #17B3B0 100%); color: #fff; }
+:root[data-palette="ocean"] .hero2 .hb { color: #0A5FA8; }
+:root[data-palette="ocean"] .hero2.win { background: linear-gradient(140deg, #0C9A60 0%, #2BB3A0 100%); }
+.pals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pal { border: 2px solid var(--line); background: var(--surface); border-radius: 18px; padding: 10px; display: grid; gap: 8px; cursor: pointer; text-align: left; color: var(--ink); }
+.pal .pv { height: 56px; border-radius: 12px; display: block; }
+.pal-violet .pv { background: linear-gradient(140deg, #5B4BFF 0%, color-mix(in srgb, #5B4BFF 55%, #FF6B6B) 100%); }
+.pal-ocean .pv { background: linear-gradient(140deg, #0A5FA8 0%, #0E8FB5 55%, #17B3B0 100%); }
+.pal b { font-size: 15px; }
+.pal[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
+/* navigation à 5 onglets */
+.nav button span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-size: 11.5px; }
+.nav button[aria-current="page"]::before { width: 52px; }
+
+/* Aujourd’hui */
+.plancta { display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); background: linear-gradient(120deg, color-mix(in srgb, #FFC233 22%, var(--surface)), var(--surface)); border-color: color-mix(in srgb, #FFC233 45%, var(--line)); }
+.plancta .pe { font-size: 30px; }
+.plancta b { display: block; font-family: var(--font-display); font-size: 18px; }
+.plancta small { color: var(--muted); font-size: 13.5px; }
+.intent { display: flex; gap: 8px; align-items: center; border: 0; background: var(--accent-soft); color: var(--ink); border-radius: 14px; padding: 10px 14px; font-weight: 600; text-align: left; cursor: pointer; font-size: 15px; }
+.hero2 .nxt { grid-column: 1 / -1; background: rgba(255, 255, 255, .16); border-radius: 12px; padding: 8px 12px; font-size: 14.5px; font-weight: 600; opacity: 1; }
+.wx, .wxadd { display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); }
+.wxadd { color: var(--muted); font-size: 14.5px; }
+.wx .we { font-size: 34px; line-height: 1; }
+.wx b { display: block; font-size: 16.5px; }
+.wx small { color: var(--muted); font-size: 13.5px; }
+.wstrip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.wsd { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 8px 0 6px; display: grid; justify-items: center; gap: 2px; cursor: pointer; color: var(--ink); min-width: 0; }
+.wsd small { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+.wsd b { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
+.wsd .dots { display: flex; gap: 2px; height: 6px; }
+.wsd .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.wsd .dots i.d { background: var(--line); }
+.wsd .dots i.bdd { background: #F5A400; }
+.wsd.now { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.wsd.now small { color: var(--on-accent); opacity: .85; }
+.wsd.now .dots i { background: var(--on-accent); }
+.wsd.now .dots i.d { opacity: .5; }
+.wsd.all:not(.now) { border-color: var(--ok); }
+.cds { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.cdc { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; display: grid; gap: 1px; }
+.cdc .ce { font-size: 22px; }
+.cdc b { font-size: 14.5px; overflow-wrap: anywhere; }
+.cdc small { color: var(--accent); font-weight: 700; font-size: 12.5px; }
+.cdc.bd small { color: #B26B00; }
+.bdl { background: color-mix(in srgb, #F5A400 14%, var(--surface)); border-radius: 12px; padding: 8px 12px; font-size: 14.5px; font-weight: 600; }
+.load { font-size: 13.5px; color: var(--muted); }
+.load.heavy { color: var(--warn); font-weight: 600; }
+.news { background: color-mix(in srgb, var(--acc-l) 9%, var(--surface)); border-color: color-mix(in srgb, var(--acc-l) 30%, var(--line)); }
+.news ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14.5px; }
+.sh .lnk { font-size: 14px; text-decoration: none; }
+
+/* plan du matin */
+.sheet.tall { max-height: 96vh; }
+.dplan { display: grid; gap: 14px; }
+.dplan .date { color: var(--muted); font-size: 14px; }
+.pick { width: 100%; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ink); font: inherit; }
+.pick .pstar { font-size: 22px; color: var(--muted); width: 30px; text-align: center; flex: none; }
+.pick[aria-pressed="true"] { background: color-mix(in srgb, #F5A400 14%, var(--surface)); }
+.pick[aria-pressed="true"] .pstar { color: #F5A400; }
+.tl { display: grid; gap: 6px; border-left: 3px solid var(--accent-soft); padding-left: 12px; }
+.tli { display: flex; gap: 10px; font-size: 15px; }
+.tli b { color: var(--accent); font-variant-numeric: tabular-nums; min-width: 46px; }
+.tli.done span { text-decoration: line-through; color: var(--muted); }
+
+/* fenêtres diverses */
+.add2 { display: flex; gap: 8px; align-items: center; padding: 8px; border-top: 1px solid var(--line); }
+.list .add2:first-child { border-top: 0; }
+.add2 input[type="text"] { flex: 1; min-width: 0; border: 0; background: none; min-height: 42px; padding: 0 6px; }
+.add2 input[type="date"] { width: 150px; flex: none; min-height: 40px; padding: 0 8px; font-size: 14px; border-radius: 12px; background: var(--soft); border: 0; }
+.row .he { font-size: 20px; width: 30px; text-align: center; flex: none; }
+.row.pick, .row.sr, .row.prow { width: 100%; }
+.row.sr, .row.prow { border: 0; border-top: 1px solid var(--line); background: none; text-align: left; cursor: pointer; font: inherit; color: var(--ink); }
+.list > .row.sr:first-child, .list > .row.prow:first-child { border-top: 0; }
+.row.prow .txt { cursor: pointer; }
+.row.prow .bar { margin-top: 4px; }
+.more summary { cursor: pointer; font-weight: 600; color: var(--accent); font-size: 14.5px; padding: 6px 0; }
+.more[open] summary { margin-bottom: 10px; }
+.sph { width: 100%; max-height: 260px; object-fit: contain; border-radius: 14px; background: var(--soft); }
+.mic { width: 44px; height: 44px; border-radius: 12px; border: 0; background: var(--soft); font-size: 20px; cursor: pointer; flex: none; }
+.mic.on { background: var(--bad); animation: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--bad) 25%, transparent); }
+
+/* notes */
+.srch input { min-height: 50px; border-radius: 16px; }
+.ncomp { gap: 10px; }
+.ncomp textarea { min-height: 70px; }
+.ncomp .btns { justify-content: flex-end; }
+.notes { columns: 2 150px; column-gap: 10px; }
+.nt { break-inside: avoid; display: grid; gap: 6px; width: 100%; margin: 0 0 10px; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px; cursor: pointer; font: inherit; color: var(--ink); position: relative; }
+.nt .ntx { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; }
+.nt small { color: var(--muted); font-size: 12px; }
+.nt .npin { position: absolute; top: 6px; right: 8px; font-size: 13px; }
+.nc-y { background: #FFF4C2; border-color: #F2DF8C; } .nc-o { background: #FFE3CC; border-color: #F5C49B; } .nc-p { background: #FFDCE8; border-color: #F3B3C9; }
+.nc-g { background: #D9F5E4; border-color: #A9DFC0; } .nc-b { background: #DCEBFF; border-color: #AECBF2; } .nc-w { background: var(--surface); }
+.nt[class*="nc-"] .ntx, .nt[class*="nc-"] small { color: #1F2133; }
+.ncols { display: flex; gap: 10px; flex-wrap: wrap; }
+.ncb { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--line); cursor: pointer; padding: 0; }
+.ncb[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink); }
+.lcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.lcard { border: 1px solid var(--line); background: var(--surface); border-radius: 18px; padding: 14px; display: grid; gap: 2px; text-align: left; cursor: pointer; color: var(--ink); font: inherit; }
+.lcard .le { font-size: 26px; }
+.lcard b { font-size: 15.5px; overflow-wrap: anywhere; }
+.lcard small { color: var(--muted); font-size: 13px; }
+.lcard.sh2 { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.lhead { display: flex; align-items: center; gap: 10px; }
+.lhead .le { font-size: 30px; }
+.lhead .lname { font-family: var(--font-display); font-weight: 800; font-size: 22px; border: 0; background: none; padding: 0 2px; }
+.assign { padding: 6px 12px 12px 54px; display: grid; gap: 6px; border-top: 1px dashed var(--line); }
+
+/* objectifs */
+.gtxt { cursor: default; }
+.gopen { border: 0; background: none; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.row.done .gopen span { text-decoration: line-through; color: var(--muted); }
+.gprog { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.gprog .bar { flex: 1; }
+.gprog b { font-size: 13px; font-variant-numeric: tabular-nums; min-width: 44px; text-align: center; }
+.gpm { width: 30px; height: 30px; border-radius: 9px; border: 0; background: var(--soft); color: var(--ink); font-size: 17px; cursor: pointer; flex: none; }
+.dreams { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.dream { position: relative; aspect-ratio: 1; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--soft); padding: 0; cursor: pointer; display: grid; place-items: center; color: var(--muted); }
+.dream img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dream span { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; background: linear-gradient(transparent, rgba(0, 0, 0, .65)); color: #fff; font-weight: 700; font-size: 13.5px; text-align: left; }
+.add-d { align-content: center; justify-items: center; gap: 2px; border-style: dashed; }
+.add-d span { font-size: 28px; color: var(--accent); }
+.add-d small { font-size: 12.5px; }
+.dbig { width: 100%; max-height: 50vh; object-fit: contain; border-radius: 16px; }
+.chip.emo { font-size: 18px; padding: 0 10px; }
+.hdots i.off { background: transparent; border: 1px dashed var(--line); }
+.habrow .txt { cursor: pointer; }
+
+/* statistiques */
+.jk { font-size: 13.5px; }
+.bars.many { gap: 2px; }
+.bars.many .bcol i { border-radius: 4px 4px 2px 2px; }
+.bars.many .bcol small { font-size: 10px; }
+.pcats { display: grid; gap: 8px; margin-top: 10px; }
+.pcat { display: grid; grid-template-columns: minmax(0, 1.2fr) 1fr auto; gap: 8px; align-items: center; font-size: 13.5px; }
+.pcat span:first-child { display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hstats { display: grid; gap: 10px; }
+.hst { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.hst .he { font-size: 20px; text-align: center; }
+.hst b { font-size: 14px; }
+.hst .hdots { margin-top: 4px; }
+.hst .pc2 { color: var(--accent); font-size: 15px; }
+.recs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.recs div { background: var(--soft); border-radius: 14px; padding: 10px 12px; display: grid; gap: 1px; }
+.recs b { font-size: 15px; }
+.recs small { color: var(--muted); font-size: 12.5px; }
+.mrl { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14.5px; }
+
+/* Pomodoro */
+.pgoal .toms { display: flex; flex-wrap: wrap; gap: 4px; font-size: 22px; }
+.pgoal .toms i { font-style: normal; filter: grayscale(1); opacity: .35; }
+.pgoal .toms i.on { filter: none; opacity: 1; }
+.pgs { max-width: 260px; }
+.tdur { font-size: 13.5px; font-weight: 600; text-align: center; line-height: 1.2; display: block; }
+.tdur input { width: 64px; min-height: 34px; text-align: center; font: inherit; font-size: 16px; font-weight: 700; border-radius: 10px; border: 1px solid transparent; background: var(--surface); color: inherit; padding: 0 4px; }
+.tdur small { display: block; font-weight: 500; opacity: .75; font-size: 12px; }
+.tmr.run .tdur input, .tmr.brk .tdur input { background: rgba(255, 255, 255, .2); }
+input[type="number"] { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-height: 48px; padding: 0 14px; width: 100%; min-width: 0; }
+.tdur input[type="number"] { width: 64px; min-height: 34px; padding: 0 4px; }
+@media (prefers-reduced-motion: no-preference) { .wsd:active, .lcard:active, .nt:active, .dream:active { transform: scale(.97); } .mic.on { animation: micp 1.2s ease-in-out infinite; } @keyframes micp { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--bad) 15%, transparent); } } }
+@media (prefers-reduced-motion: no-preference) { .sheet, .scrim { animation: none; } .sheet.opening { animation: sheetUp .3s cubic-bezier(.2, .8, .2, 1); } .scrim.opening { animation: scrimIn .25s ease; } }
+.sheet form.add, .sheet .add { display: flex; }
+.sh h3 small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 13.5px; color: var(--muted); letter-spacing: 0; }
+.dream.add-d span { position: static; background: none; padding: 0; color: var(--accent); font-size: 30px; text-align: center; font-weight: 400; }
+.dream.add-d { display: grid; align-content: center; justify-items: center; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -419,7 +592,7 @@ body.gate { padding-bottom: 40px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 19;
+  var APP_VER = 20;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -447,6 +620,8 @@ body.gate { padding-bottom: 40px; }
   function dayShort(s) { var d = parseISO(s); return d.getDate() + ' ' + MOIS[d.getMonth()]; }
   function relDay(s) { var t = todayISO(); return s === t ? 'Aujourd’hui' : s === addDays(t, 1) ? 'Demain' : s === addDays(t, -1) ? 'Hier' : ''; }
   var ICON = {
+    today: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>',
+    notes: '<path d="M6 3.5h9l3.5 3.5V20a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/><path d="M14.5 3.5V7.5h4M8.5 11.5h7M8.5 15h7"/>',
     agenda: '<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     goals: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="0.8"/>',
     pomo: '<circle cx="12" cy="13" r="7.5"/><path d="M12 9.2V13l2.6 1.7M9.5 3h5"/>',
@@ -455,7 +630,7 @@ body.gate { padding-bottom: 40px; }
   };
   var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   function svg(n) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON[n] + '</svg>'; }
-  var ACCENTS = [['violet', '#5B4BFF', '#8F86FF', 'Violet'], ['bleu', '#1F6FEB', '#6AA6FF', 'Bleu'], ['cyan', '#0B7285', '#3BC9DB', 'Turquoise'], ['vert', '#0C8A57', '#3DD598', 'Vert'], ['olive', '#5C7A00', '#A9D13F', 'Olive'], ['orange', '#D9480F', '#FF9A5C', 'Orange'], ['rouge', '#C92A2A', '#FF8787', 'Rouge'], ['rose', '#C2255C', '#FF7AA8', 'Rose']];
+  var ACCENTS = [['violet', '#5B4BFF', '#8F86FF', 'Violet'], ['bleu', '#1F6FEB', '#6AA6FF', 'Bleu'], ['cyan', '#0B7285', '#3BC9DB', 'Turquoise'], ['vert', '#0C8A57', '#3DD598', 'Vert'], ['olive', '#5C7A00', '#A9D13F', 'Olive'], ['orange', '#D9480F', '#FF9A5C', 'Orange'], ['rouge', '#C92A2A', '#FF8787', 'Rouge'], ['rose', '#C2255C', '#FF7AA8', 'Rose'], ['ocean', '#0A6CB5', '#5CB8F0', 'Océan']];
 
   /* ---------- données ---------- */
   function defTimers() {
@@ -465,7 +640,7 @@ body.gate { padding-bottom: 40px; }
   }
   var CATCOL = ['#5B4BFF', '#1F6FEB', '#0B7285', '#0C8A57', '#5C7A00', '#D9480F', '#C92A2A', '#C2255C', '#6B7280'];
   function defCats() { return [['c1', 'Perso', '#1F6FEB'], ['c2', 'Travail', '#5B4BFF'], ['c3', 'Sport', '#0C8A57'], ['c4', 'Santé', '#C2255C'], ['c5', 'Courses', '#D9480F']].map(function (c) { return { id: c[0], name: c[1], color: c[2] }; }); }
-  function fresh() { return { app: 'agenda', v: 1, owner: '', profile: { first: '', last: '', nick: '', motto: '', photo: '', done: false, accent: 'violet', custom: '#5B4BFF' }, items: [], goals: [], badges: [], habits: [], cats: defCats(), timers: defTimers(), plog: {}, settings: { theme: 'auto', sound: true, vibrate: true, tone: 'cloche', size: 'n', weekStart: 1, defView: 'd', hideDone: false, premiumNotify: false } }; }
+  function fresh() { return { app: 'agenda', v: 1, owner: '', profile: { first: '', last: '', nick: '', motto: '', photo: '', done: false, accent: 'violet', custom: '#5B4BFF' }, items: [], goals: [], badges: [], habits: [], cats: defCats(), timers: defTimers(), plog: {}, pmin: {}, notes: [], lists: [], projects: [], dreams: [], bdays: [], countdowns: [], intent: {}, settings: { theme: 'auto', sound: true, vibrate: true, tone: 'cloche', size: 'n', weekStart: 1, defView: 'd', hideDone: false, premiumNotify: false, palette: 'violet', city: null, eveHour: '21:00', pomoGoal: 4 } }; }
   function ensure(o) {
     var f = fresh();
     o = (o && typeof o === 'object') ? o : {};
@@ -480,12 +655,25 @@ body.gate { padding-bottom: 40px; }
     o.timers = f.timers.map(function (d, i) { var t = tm.filter(function (x) { return x && x.id === d.id; })[0] || tm[i] || {}; return Object.assign(d, t, { id: d.id }); });
     o.timers.forEach(function (t) { t.work = Math.max(1, Math.min(180, +t.work || 25)); t.brk = Math.max(1, Math.min(60, +t.brk || 5)); if (['idle', 'work', 'brk'].indexOf(t.phase) < 0) t.phase = 'idle'; });
     o.plog = (o.plog && typeof o.plog === 'object') ? o.plog : {};
+    o.pmin = (o.pmin && typeof o.pmin === 'object') ? o.pmin : {};
+    ['notes', 'lists', 'projects', 'dreams', 'bdays', 'countdowns'].forEach(function (k) { o[k] = Array.isArray(o[k]) ? o[k].filter(function (z) { return z && z.id; }) : []; });
+    o.notes = o.notes.filter(function (n) { return typeof n.text === 'string'; }).map(function (n) { var now = new Date().toISOString(); return Object.assign({ color: '', pin: false, at: now, up: now }, n); });
+    o.lists.forEach(function (l) { l.name = String(l.name || 'Liste'); l.items = Array.isArray(l.items) ? l.items.filter(function (i) { return i && i.id && typeof i.t === 'string'; }) : []; });
+    o.projects.forEach(function (p) { p.name = String(p.name || 'Projet'); if (!/^#[0-9a-f]{6}$/i.test(p.color || '')) p.color = '#5B4BFF'; });
+    o.bdays = o.bdays.filter(function (b) { return b.name && /^\d\d-\d\d$/.test(b.md || ''); });
+    o.countdowns = o.countdowns.filter(function (c) { return c.name && /^\d{4}-\d\d-\d\d$/.test(c.date || ''); });
+    o.dreams = o.dreams.filter(function (d) { return typeof d.img === 'string' && d.img.indexOf('data:image/') === 0; });
+    o.intent = (o.intent && typeof o.intent === 'object') ? o.intent : {};
+    o.items.forEach(function (x) { if (!Array.isArray(x.subs)) x.subs = []; });
+    o.habits.forEach(function (h) { if (!Array.isArray(h.days)) h.days = []; if (!/^\d\d:\d\d$/.test(h.rem || '')) h.rem = ''; });
+    o.goals.forEach(function (g) { if (!Array.isArray(g.steps)) g.steps = []; g.target = Math.max(0, +g.target || 0); g.cur = Math.max(0, +g.cur || 0); });
     o.settings = Object.assign(f.settings, o.settings || {});
     return o;
   }
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY)); if (o && o.app === 'agenda') return ensure(o); } catch (e) {} return fresh(); }
   var S = load();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} cloudDirty(); }
+  var quotaWarned = false;
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { if (!quotaWarned) { quotaWarned = true; showToast('Mémoire de l’appareil pleine : retire quelques photos (tâches ou tableau de rêves).'); } } cloudDirty(); if (typeof pushSoon === 'function') pushSoon(); }
 
   function occurs(x, day) {
     if (!x.rep) return x.d === day;
@@ -496,7 +684,7 @@ body.gate { padding-bottom: 40px; }
     if (x.rep === 'm') return parseISO(day).getDate() === parseISO(x.d).getDate();
     return false;
   }
-  function occ(x, day) { return { src: x, id: x.id, d: day, text: x.text, time: x.time, cat: x.cat, rep: x.rep, rem: x.rem, prio: !!x.prio, focus: x.focus || 0, done: x.rep ? (x.doneOn || []).indexOf(day) >= 0 : !!x.done }; }
+  function occ(x, day) { return { src: x, id: x.id, d: day, text: x.text, time: x.time, cat: x.cat, rep: x.rep, rem: x.rem, prio: !!x.prio, focus: x.focus || 0, dur: x.dur || '', proj: x.proj || '', loc: x.loc || '', photo: !!x.photo, subs: x.subs || [], done: x.rep ? (x.doneOn || []).indexOf(day) >= 0 : !!x.done }; }
   function itemsOn(day) {
     return S.items.map(function (x, i) { return { x: x, i: i }; }).filter(function (o) { return occurs(o.x, day); }).sort(function (a, b) {
       var pa = a.x.prio ? 0 : 1, pb = b.x.prio ? 0 : 1; if (pa !== pb) return pa - pb;
@@ -521,7 +709,7 @@ body.gate { padding-bottom: 40px; }
   }
 
   /* ---------- état de l’interface ---------- */
-  var tab = 'agenda', view = (['d', 'w', 'm', 'y'].indexOf(S.settings.defView) >= 0 ? S.settings.defView : 'd'), cur = todayISO(), sel = todayISO(), toast = null, toastT = null, sheet = null, obStep = 0, armKey = '', armT = null, notice = '';
+  var tab = 'today', view = (['d', 'w', 'm', 'y'].indexOf(S.settings.defView) >= 0 ? S.settings.defView : 'd'), cur = todayISO(), sel = todayISO(), toast = null, toastT = null, sheet = null, obStep = 0, armKey = '', armT = null, notice = '';
   var audioCtx = null;
 
   function lumi(hex) { var n = parseInt(hex.slice(1), 16), f = function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(n >> 16 & 255) + 0.7152 * f(n >> 8 & 255) + 0.0722 * f(n & 255); }
@@ -532,7 +720,7 @@ body.gate { padding-bottom: 40px; }
     else { a = a || ACCENTS[0]; L = a[1]; D = a[2]; }
     try {
       if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t); else r.removeAttribute('data-theme');
-      r.setAttribute('data-size', S.settings.size || 'n');
+      r.setAttribute('data-size', S.settings.size || 'n'); r.setAttribute('data-palette', S.settings.palette === 'ocean' ? 'ocean' : 'violet');
       r.style.setProperty('--acc-l', L); r.style.setProperty('--acc-d', D); r.style.setProperty('--on-acc-l', on);
       var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', L);
     } catch (e) {}
@@ -548,7 +736,12 @@ body.gate { padding-bottom: 40px; }
     if (c) meta.push(esc(c.name));
     if (x.rep) meta.push('<span class="rp">↻ ' + esc(repShort(x)) + '</span>');
     if (x.focus) meta.push('<span class="rp">🍅 ' + dur2(x.focus) + '</span>');
-    if (x.rem !== '' && x.time) meta.push('<span class="rm">🔔 ' + esc(REML[x.rem] || '').toLowerCase() + '</span>');
+    if (x.dur) meta.push('<span class="rp">⏱ ' + dur2(+x.dur) + '</span>');
+    if (x.subs && x.subs.length) meta.push('<span class="rp">☑ ' + x.subs.filter(function (s) { return s.done; }).length + '/' + x.subs.length + '</span>');
+    var pj = x.proj ? projOf(x.proj) : null; if (pj) meta.push('<span class="rp">' + esc(pj.emoji || '📁') + ' ' + esc(pj.name) + '</span>');
+    if (x.loc) meta.push('<span class="rp">📍 ' + esc(x.loc.length > 28 ? x.loc.slice(0, 28) + '…' : x.loc) + '</span>');
+    if (x.photo) meta.push('<span class="rp">📎</span>');
+    if (x.rem !== '' && x.time) meta.push('<span class="rm">🔔 ' + esc(REML[x.rem] || '').toLowerCase() + (x.src && x.src.rem2 ? ' +1' : '') + '</span>');
     return '<div class="row' + (x.done ? ' done' : '') + (c ? ' hc' : '') + '" data-rid="' + x.id + '|' + x.d + '"' + (c ? ' style="--c:' + c.color + '"' : '') + '><button class="ck" aria-pressed="' + !!x.done + '" aria-label="' + (x.done ? 'Décocher' : 'Cocher') + ' : ' + esc(x.text) + '" data-act="itog" data-id="' + x.id + '" data-d="' + x.d + '">' + CHECK + '</button>' +
       (x.time ? '<span class="tm">' + esc(x.time) + '</span>' : '') +
       '<button class="txt" data-act="iedit" data-id="' + x.id + '" data-d="' + x.d + '"><span>' + (x.prio ? '<b class="star" aria-label="Priorité">★</b> ' : '') + esc(x.text) + '</span>' + (meta.length ? '<small>' + meta.join(', ') + '</small>' : '') + '</button></div>';
@@ -569,10 +762,7 @@ body.gate { padding-bottom: 40px; }
   function goalsBlock(per, d, withSub) {
     var key = pkey(per, d), gs = goalsOf(per, key), dn = gs.filter(function (g) { return g.done; }).length;
     var h = '<section class="blk gsec"><div class="sh"><h3>' + PER_T[per] + (withSub ? '<small>' + esc(perSub(per, d)) + '</small>' : '') + '</h3><span class="cnt">' + (gs.length ? dn + '/' + gs.length : '') + '</span></div><div class="list">';
-    h += gs.map(function (g) {
-      return '<div class="row' + (g.done ? ' done' : '') + '" data-rid="g|' + g.id + '"><button class="ck" aria-pressed="' + !!g.done + '" aria-label="' + (g.done ? 'Décocher' : 'Cocher') + ' : ' + esc(g.text) + '" data-act="gtog" data-id="' + g.id + '">' + CHECK + '</button>' +
-        '<div class="txt"><span>' + esc(g.text) + '</span></div><button class="x" aria-label="Supprimer : ' + esc(g.text) + '" data-act="gdel" data-id="' + g.id + '">×</button></div>';
-    }).join('');
+    h += gs.map(goalRow).join('');
     h += '<form class="add" data-per="' + per + '" data-key="' + key + '" data-kind="goal" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un objectif" aria-label="Nouvel objectif : ' + esc(PER_T[per].toLowerCase()) + '" maxlength="200"><button type="submit" class="addplus" aria-label="Ajouter l’objectif">+</button></form>';
     return h + '</div></section>';
   }
@@ -590,9 +780,8 @@ body.gate { padding-bottom: 40px; }
   }
   function viewDay() {
     var its = itemsOn(cur);
-    var h = (cur === todayISO() ? weekReview() + carryCard() + heroToday(its) : '') + habitsDay(cur) + goalsBlock('d', cur);
-    h += '<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">' + countLine(its) + '</span></div>' + dayList(cur, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous.' }) + '</section>';
-    if (cur === todayISO() && new Date().getHours() >= 18) h += eveningCard(its);
+    var h = goalsBlock('d', cur) + habitsDay(cur);
+    h += '<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(cur).map(function (b) { return '<p class="bdl">' + bdLabel(b, cur) + '</p>'; }).join('') + dayList(cur, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous.' }) + '</section>';
     return h;
   }
   function viewWeek() {
@@ -644,8 +833,8 @@ body.gate { padding-bottom: 40px; }
   /* ---------- Objectifs ---------- */
   function viewGoals() {
     var t = todayISO();
-    return '<p class="sub">Fixe-toi quelques objectifs pour chaque période et coche-les quand c’est fait. Pour préparer la semaine ou le mois suivant, passe par l’Agenda.</p>' +
-      goalsBlock('d', t, true) + goalsBlock('w', t, true) + goalsBlock('m', t, true) + goalsBlock('y', t, true) + habitsManage() + progressHtml();
+    return '<p class="sub">Fixe-toi quelques objectifs pour chaque période. Touche un objectif pour lui donner un nombre à atteindre ou des étapes.</p>' +
+      goalsBlock('d', t, true) + goalsBlock('w', t, true) + goalsBlock('m', t, true) + goalsBlock('y', t, true) + habitsManage() + dreamsHtml() + statsHtml();
   }
 
   /* ---------- Pomodoro ---------- */
@@ -661,15 +850,14 @@ body.gate { padding-bottom: 40px; }
     return '<section class="tmr' + cls + '" aria-label="Minuteur ' + esc(t.name) + '"><div class="th"><input type="text" data-tname="' + t.id + '" value="' + esc(t.name) + '" aria-label="Nom du minuteur" maxlength="40"><span class="ph">' + ph + '</span></div>' +
       '<div class="tring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" class="t0"/><circle cx="100" cy="100" r="90" class="t1" id="ring-' + t.id + '" stroke-dasharray="565.5" stroke-dashoffset="' + (565.5 * (1 - pct / 100)).toFixed(1) + '"/></svg><div class="clock" id="clk-' + t.id + '" role="timer">' + clockTxt(left) + '</div></div>' +
       '<div class="btns">' + main + (t.phase !== 'idle' ? '<button class="btn" data-act="tskip" data-id="' + t.id + '" aria-label="' + (t.phase === 'work' ? 'Passer à la pause' : 'Terminer la pause') + '">Passer</button><button class="btn" data-act="treset" data-id="' + t.id + '">Arrêter</button>' : '') + '</div>' +
-      '<div class="tset"><div class="stp"><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="-5" aria-label="Travail : moins 5 minutes">−</button><span>' + t.work + ' min<small>travail</small></span><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="5" aria-label="Travail : plus 5 minutes">+</button></div>' +
-      '<div class="stp"><button data-act="tset" data-id="' + t.id + '" data-f="brk" data-v="-1" aria-label="Pause : moins 1 minute">−</button><span>' + t.brk + ' min<small>pause</small></span><button data-act="tset" data-id="' + t.id + '" data-f="brk" data-v="1" aria-label="Pause : plus 1 minute">+</button></div></div>' +
+      '<div class="tset"><div class="stp"><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="-5" aria-label="Travail : moins 5 minutes">−</button><label class="tdur"><span class="vh">Minutes de travail</span><input type="number" inputmode="numeric" min="1" max="180" data-tdur="' + t.id + '|work" value="' + t.work + '"><small>min de travail</small></label><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="5" aria-label="Travail : plus 5 minutes">+</button></div>' +
+      '<div class="stp"><button data-act="tset" data-id="' + t.id + '" data-f="brk" data-v="-1" aria-label="Pause : moins 1 minute">−</button><label class="tdur"><span class="vh">Minutes de pause</span><input type="number" inputmode="numeric" min="1" max="60" data-tdur="' + t.id + '|brk" value="' + t.brk + '"><small>min de pause</small></label><button data-act="tset" data-id="' + t.id + '" data-f="brk" data-v="1" aria-label="Pause : plus 1 minute">+</button></div></div>' +
       (t.task ? '<p class="ontask">Sur : <b>' + esc(t.task.text) + '</b></p>' : '') +
       '<p class="tf">' + (n ? plural(n, 'session terminée', 'sessions terminées') + ' aujourd’hui' : 'Aucune session terminée aujourd’hui') + '</p></section>';
   }
   function viewPomo() {
     var perm = ('Notification' in window) ? Notification.permission : 'unsupported';
-    var h = '<p class="sub">Trois minuteurs indépendants. Travaille sans interruption, puis fais la pause. Tu peux les renommer et régler leurs durées.</p>';
-    if (perm === 'default') h += '<div class="note"><span>Être prévenu à la fin d’une session ?</span><button class="btn sm primary" data-act="notif">Activer</button></div>';
+    var h = pomoGoalCard() + '<p class="sub">Trois minuteurs indépendants. Travaille sans interruption, puis fais la pause. Touche une durée pour la changer librement.</p>';
     h += S.timers.map(timerCard).join('');
     h += '<p class="hint">Le minuteur continue si tu changes d’onglet. Pour être sûr d’entendre la sonnerie, laisse l’appli ouverte : un téléphone en veille peut la retarder.</p>';
     return h;
@@ -685,9 +873,10 @@ body.gate { padding-bottom: 40px; }
   }
   function dur2(m) { return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + p2(m % 60) : ''); }
   function logSession(t, endMs) {
-    if (t.task) { var tx = byId(t.task.id); if (tx) tx.focus = (tx.focus || 0) + t.work; }
-    var d = iso(new Date(endMs)); S.plog[d] = S.plog[d] || {}; S.plog[d][t.id] = (S.plog[d][t.id] || 0) + 1;
-    var keys = Object.keys(S.plog).sort(); while (keys.length > 60) delete S.plog[keys.shift()];
+    var tx = t.task ? byId(t.task.id) : null; if (tx) tx.focus = (tx.focus || 0) + t.work;
+    var d = iso(new Date(endMs)); S.pmin = S.pmin || {}; var pm = S.pmin[d] = S.pmin[d] || { m: 0, c: {} }; pm.m += t.work; var ck = (tx && tx.cat) || '_'; pm.c[ck] = (pm.c[ck] || 0) + t.work;
+    var pk = Object.keys(S.pmin).sort(); while (pk.length > 400) delete S.pmin[pk.shift()]; S.plog[d] = S.plog[d] || {}; S.plog[d][t.id] = (S.plog[d][t.id] || 0) + 1;
+    var keys = Object.keys(S.plog).sort(); while (keys.length > 400) delete S.plog[keys.shift()];
   }
   function advance(t) {
     var now = Date.now(), last = null;
@@ -728,12 +917,13 @@ body.gate { padding-bottom: 40px; }
       '<div class="cols"><label class="f">Prénom<input type="text" data-pf="first" value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label><label class="f">Nom<input type="text" data-pf="last" value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
       '<label class="f">Surnom (utilisé pour t’accueillir)<input type="text" data-pf="nick" value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Facultatif"></label>' +
       '<label class="f">Ta devise (affichée sur l’agenda)<input type="text" data-pf="motto" value="' + esc(p.motto || '') + '" maxlength="120" placeholder="Ex. Un pas après l’autre"></label></section>';
-    h += '<section class="card"><h3>Apparence</h3><div class="f"><p class="sub">Couleur</p>' + swatches() + '</div>' +
+    h += notifCard();
+    h += '<section class="card"><h3>Apparence</h3><div class="f"><p class="sub">Thème de couleur</p>' + paletteCards() + '</div><div class="f"><p class="sub">Couleur d’accent</p>' + swatches() + '</div>' +
       '<div class="f"><p class="sub">Thème</p>' + segOpt('theme', st.theme, [['auto', 'Automatique'], ['light', 'Clair'], ['dark', 'Sombre']], 'Thème') + '</div>' +
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
     h += '<section class="card"><h3>Agenda</h3><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'd', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
       '<div class="f"><p class="sub">La semaine commence le</p>' + segOpt('wstart', st.weekStart === 7 ? 7 : 1, [[1, 'Lundi'], [7, 'Dimanche']], 'Premier jour de la semaine') + '</div>' +
-      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '</section>';
+      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '<div class="f"><p class="sub">Météo</p><button class="btn sm" data-act="city">' + (st.city ? '🌤️ ' + esc(st.city.name) + ' (changer)' : 'Choisir ma ville') + '</button></div><div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">⏳ Comptes à rebours et 🎂 anniversaires</button></div></section>';
     h += '<section class="card"><h3>Pomodoro</h3>' + sw2('sound', st.sound, 'Son à la fin d’une session') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
       sw2('vibrate', st.vibrate, 'Vibration') + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
@@ -743,7 +933,7 @@ body.gate { padding-bottom: 40px; }
       '<form class="add" data-kind="cat" autocomplete="off"><input type="text" name="t" placeholder="Nouvelle catégorie" maxlength="30" aria-label="Nouvelle catégorie"><button type="submit" class="addplus" aria-label="Ajouter la catégorie">+</button></form></div></section>';
     h += accountCard();
     h += '<section class="card"><h3>Mes données</h3><p class="sub">Garde une copie de tes données dans un fichier, ou recharge une copie. Importer remplace tout ce qui est sur cet appareil.</p>' +
-      '<div class="btns"><button class="btn" data-act="export">Exporter</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
+      '<div class="btns"><button class="btn" data-act="export">Exporter (sauvegarde)</button><button class="btn" data-act="csv">Exporter mes tâches (tableur)</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
       '<button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
     h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
@@ -755,30 +945,17 @@ body.gate { padding-bottom: 40px; }
   }
 
   /* ---------- Accueil (après la création du compte) ---------- */
-  function viewWelcome() {
-    var p = S.profile, t = todayISO();
-    if (obStep === 0) {
-      return '<div class="ob"><div class="steps" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></div><h1>Bienvenue sur Cadence</h1><p class="lead">Ton compte est prêt. Présente-toi : tu pourras tout changer plus tard dans le Profil.</p>' +
-        '<form id="ob1" class="card" autocomplete="on">' + photoBlock() + '<div class="cols"><label class="f">Prénom<input type="text" id="ob-first" data-keep value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label>' +
-        '<label class="f">Nom<input type="text" id="ob-last" data-keep value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
-        '<label class="f">Surnom (facultatif)<input type="text" id="ob-nick" data-keep value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Comment veux-tu qu’on t’appelle ?"></label>' +
-        '<div class="f"><p class="sub">Ta couleur</p>' + swatches() + '</div>' + (notice ? '<p class="err" role="alert">' + esc(notice) + '</p>' : '') +
-        '<button type="submit" class="btn primary big">Continuer</button></form></div>';
-    }
-    return '<div class="ob"><div class="steps" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></div><h1>Tes objectifs, ' + esc(callName()) + '</h1><p class="lead">Qu’est-ce que tu veux accomplir ? Écris un objectif par ligne. Tu pourras tout modifier plus tard.</p>' +
-      '<form id="ob2" class="card" autocomplete="off"><label class="f">Cette semaine<textarea id="ob-w" data-keep placeholder="Ex. Aller 3 fois à la salle">' + '</textarea></label>' +
-      '<label class="f">Ce mois-ci (' + esc(MOIS[parseISO(t).getMonth()]) + ')<textarea id="ob-m" data-keep placeholder="Ex. Lire un livre"></textarea></label>' +
-      '<button type="submit" class="btn primary big">Commencer</button><button type="button" class="btn ghost" data-act="obskip">Passer cette étape</button></form></div>';
-  }
 
   /* ---------- feuilles ---------- */
   function sheetHtml() {
     if (!sheet) return '';
-    var h = '<button class="scrim" data-act="sclose" aria-label="Fermer"></button><section class="sheet' + (sheet.k === 'legal' ? ' legal' : '') + '" role="dialog" aria-label="' + (sheet.k === 'add' ? 'Ajouter une tâche' : sheet.k === 'legal' ? 'Informations' : 'Modifier la tâche') + '"><div class="grab"></div>';
+    var h = '<button class="scrim" data-act="sclose" aria-label="Fermer"></button><section class="sheet' + (sheet.k === 'legal' ? ' legal' : '') + (sheet.k === 'plan' ? ' tall' : '') + '" role="dialog" aria-label="' + (SHEETN[sheet.k] || 'Fenêtre') + '"><div class="grab"></div>';
     if (sheet.k === 'legal') {
       h += legalHtml(sheet.p) + '<button class="btn big" data-act="sclose">Fermer</button>';
     } else if (sheet.k === 'quick') {
       h += quickSheet();
+    } else if (SHEETS[sheet.k]) {
+      var inner = SHEETS[sheet.k](); if (!sheet) return ''; h += inner;
     } else if (sheet.k === 'add' || sheet.k === 'edit') {
       var isAdd = sheet.k === 'add', x = isAdd ? null : byId(sheet.id);
       if (!isAdd && !x) { sheet = null; return ''; }
@@ -790,9 +967,10 @@ body.gate { padding-bottom: 40px; }
         '<div class="f"><p class="sub">Catégorie</p><div class="chips cats">' + '<button type="button" class="chip" aria-pressed="' + (!sheet.cat) + '" data-act="scat" data-v="">Aucune</button>' +
         S.cats.map(function (c) { return '<button type="button" class="chip" aria-pressed="' + (sheet.cat === c.id) + '" data-act="scat" data-v="' + c.id + '"><i class="cd" style="background:' + c.color + '"></i>' + esc(c.name) + '</button>'; }).join('') + '</div></div>' +
         '<button type="button" class="chip prio" aria-pressed="' + !!sheet.prio + '" data-act="sprio">★ Priorité du jour</button>' +
+        '<div class="cols"><label class="f">Durée estimée<select id="s-dur" data-keep>' + DURS.map(function (k) { return '<option value="' + k + '"' + (k === String(x ? x.dur || '' : '') ? ' selected' : '') + '>' + (k ? dur2(+k) : 'Non précisée') + '</option>'; }).join('') + '</select></label></div>' +
         '<div class="cols"><label class="f">Répétition<select id="s-rep" data-keep>' + Object.keys(REPL).map(function (k) { return '<option value="' + k + '"' + (k === repV ? ' selected' : '') + '>' + REPL[k] + '</option>'; }).join('') + '</select></label>' +
         '<label class="f">Rappel<select id="s-rem" data-keep>' + ['', '0', '5', '10', '15', '30', '60', '1440'].map(function (k) { return '<option value="' + k + '"' + (k === remV ? ' selected' : '') + '>' + REML[k] + '</option>'; }).join('') + '</select></label></div>' +
-        (x && x.rep ? '<p class="hint">Les changements s’appliquent à toutes les répétitions.</p>' : '') +
+        (x && x.rep ? '<p class="hint">Les changements s’appliquent à toutes les répétitions.</p>' : '') + itemExtras(x, isAdd) +
         (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
         '<button type="submit" class="btn primary big">' + (isAdd ? 'Ajouter' : 'Enregistrer') + '</button>';
       if (!isAdd) h += '<button type="button" class="btn" data-act="postpone" data-id="' + x.id + '" data-d="' + (sheet.d || x.d) + '">→ Reporter à demain</button>';
@@ -805,11 +983,13 @@ body.gate { padding-bottom: 40px; }
   }
 
   /* ---------- page ---------- */
-  var TABS = [['agenda', 'Agenda'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro'], ['profile', 'Profil']];
+  var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['notes', 'Notes'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
+  var SHEETS = { city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet };
+  var SHEETN = { add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois' };
   function header() {
     var t = todayISO();
-    var title = tab === 'agenda' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
-    return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + '</p><h1>' + esc(title) + '</h1>' + (tab === 'agenda' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
+    var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'notes' ? 'Notes et listes' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
+    return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
       (tab !== 'profile' ? avatarHtml(false, true) : '') + '</header>';
   }
   function navHtml() {
@@ -825,7 +1005,7 @@ body.gate { padding-bottom: 40px; }
   function viewAll() {
     if (cloudOn && !auth) return viewAuth() + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
-    var body = tab === 'agenda' ? viewAgenda() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
+    var body = tab === 'today' ? viewToday() : tab === 'agenda' ? viewAgenda() : tab === 'notes' ? viewNotes() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
     return header() + updBanner() + '<main class="pg">' + body + '</main>' + fabHtml() + navHtml() + sheetHtml() + recoverySheet() + toastHtml();
   }
   function render() {
@@ -869,6 +1049,7 @@ body.gate { padding-bottom: 40px; }
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
     if (cloudClick(a)) return;
+    if (v20Click(a, b)) return;
     if (v19Click(a, b)) return;
     if (a === 'amode') { authMode = v; acct.err = ''; acct.info = ''; render(); return; }
     if (a === 'peek') { peek = !peek; render(); var pi = document.getElementById('a-pass'); if (pi) { try { pi.focus(); } catch (er) {} } return; }
@@ -947,16 +1128,9 @@ body.gate { padding-bottom: 40px; }
       return;
     }
     if (a === 'wipe') { if (!arm('wipe')) return; var keepP = S.profile, keepS = S.settings, keepO = S.owner, keepC = S.consent; S = fresh(); S.profile = keepP; S.settings = keepS; S.owner = keepO; S.consent = keepC; save(); showToast('Agenda et objectifs effacés'); render(); return; }
-    if (a === 'obskip') { finishOnboarding('', ''); return; }
     if (a === 'updnow') { updNow(); return; }
   });
 
-  function finishOnboarding(w, m) {
-    var t = todayISO();
-    String(w || '').split(/\n+/).forEach(function (l) { addGoal('w', pkey('w', t), l); });
-    String(m || '').split(/\n+/).forEach(function (l) { addGoal('m', pkey('m', t), l); });
-    S.profile.done = true; save(); tab = 'agenda'; view = 'd'; cur = t; render(); window.scrollTo(0, 0);
-  }
 
   document.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -968,19 +1142,21 @@ body.gate { padding-bottom: 40px; }
       if (!fi.trim()) { notice = 'Écris ton prénom pour continuer.'; render(); return; }
       notice = ''; S.profile.first = fi.trim().slice(0, 40); S.profile.last = la.trim().slice(0, 40); S.profile.nick = ((document.getElementById('ob-nick') || {}).value || '').trim().slice(0, 30); save(); obStep = 1; render(); window.scrollTo(0, 0); return;
     }
-    if (id === 'ob2') { finishOnboarding((document.getElementById('ob-w') || {}).value, (document.getElementById('ob-m') || {}).value); return; }
+    if (v20Submit(f)) return;
     if (id === 'qform') { quickSubmit(); return; }
     if (id === 'rvform') { reviewSubmit(); return; }
     if (id === 'sform') {
+      if (document.activeElement && document.activeElement.id === 's-sub') { addSub(); return; }
       var tx = (document.getElementById('s-text') || {}).value || '', dt = (document.getElementById('s-date') || {}).value || '', tm = (document.getElementById('s-time') || {}).value || '';
       if (!tx.trim()) { sheet.err = 'Écris la tâche.'; render(); return; }
       if (!/^\d{4}-\d\d-\d\d$/.test(dt)) { sheet.err = 'Choisis un jour.'; render(); return; }
       var rp = (document.getElementById('s-rep') || {}).value || '', rmv = (document.getElementById('s-rem') || {}).value || '';
       if (rmv !== '' && !/^\d\d:\d\d$/.test(tm)) { sheet.err = 'Choisis une heure pour recevoir le rappel.'; render(); return; }
-      if (rmv !== '') askNotif();
+      if (rmv !== '' && pushState() === 'off') askNotif();
       var x;
       if (sheet.k === 'add') { x = addItem(dt, tx, tm); showToast('Tâche ajoutée pour ' + (relDay(dt) ? relDay(dt).toLowerCase() : dayLong(dt))); }
       else { x = byId(sheet.id); if (x) { x.text = tx.trim().slice(0, 200); x.d = dt; x.time = /^\d\d:\d\d$/.test(tm) ? tm : ''; } }
+      if (x) { var gv = function (s) { return (document.getElementById(s) || {}).value || ''; }; x.dur = gv('s-dur'); x.proj = gv('s-proj'); x.loc = gv('s-loc').trim().slice(0, 160); x.rem2 = gv('s-rem2'); if (x.rem2 !== '' && !x.time) x.rem2 = ''; if (sheet.photo !== undefined) x.photo = sheet.photo; if (sheet.k === 'add' && sheet.subs) x.subs = sheet.subs; }
       if (x) { x.cat = sheet.cat || ''; x.prio = !!sheet.prio; x.rem = rmv; if (rp !== (x.rep || '')) { x.rep = rp; if (rp) { x.doneOn = x.done ? [x.d] : []; x.skip = []; delete x.done; } else { x.done = (x.doneOn || []).indexOf(x.d) >= 0; delete x.doneOn; delete x.skip; } } save(); }
       sheet = null; render(); return;
     }
@@ -997,6 +1173,7 @@ body.gate { padding-bottom: 40px; }
   document.addEventListener('input', function (e) {
     var el = e.target;
     if (el.dataset && el.dataset.pf) { S.profile[el.dataset.pf] = el.value.slice(0, el.maxLength > 0 ? el.maxLength : 40); save(); var av = document.querySelector('.avatar.big'); if (av && !S.profile.photo) av.textContent = initials(); return; }
+    if (v20Input(el)) return;
     if (el.id === 'q-text') { var qp = document.getElementById('q-prev'); if (qp) qp.innerHTML = nlPreview(parseNL(el.value, quickBase())); return; }
     if (el.dataset && el.dataset.catn) { var cn = catOf(el.dataset.catn); if (cn && el.value.trim()) { cn.name = el.value.trim().slice(0, 30); save(); } return; }
     if (el.dataset && el.dataset.tname) { var t = S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0]; if (t) { t.name = el.value.slice(0, 40) || t.name; save(); } return; }
@@ -1006,6 +1183,7 @@ body.gate { padding-bottom: 40px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v20Change(el)) return;
     if (el.id === 'photo') { readPhoto(el.files && el.files[0]); return; }
     if (el.id === 'cc') { S.profile.accent = 'custom'; S.profile.custom = el.value; applyTheme(); save(); render(); return; }
     if (el.id === 'imp') {
@@ -1020,7 +1198,7 @@ body.gate { padding-bottom: 40px; }
     }
   });
   var lastDay = todayISO();
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) { timerLoop(); updCheck(); } });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { timerLoop(); updCheck(); wxLoad(); setTimeout(maybePlan, 300); } });
 
   /* ---------- v15 : connexion obligatoire, pages légales, Premium, personnalisation ---------- */
   var CONTACT = 'manon.rt90@gmail.com', EDITOR = 'Terry Gentil Sauvet', LEGAL_DATE = '3 novembre 2026';
@@ -1059,13 +1237,17 @@ body.gate { padding-bottom: 40px; }
       '<p>Cette page explique quelles données Cadence utilise, pourquoi, et quels sont tes droits (Règlement général sur la protection des données, RGPD).</p>' +
       '<h3>Qui est responsable de tes données ?</h3><p>' + EDITOR + ', éditeur de Cadence. Contact : ' + mail + '.</p>' +
       '<h3>Quelles données ?</h3><ul><li>Ton adresse e-mail et ton mot de passe, pour ton compte. Le mot de passe n’est jamais visible : il est enregistré sous une forme protégée (hachée).</li>' +
-      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches, objectifs, réglages des minuteurs et préférences d’affichage.</li>' +
+      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, réglages des minuteurs et préférences d’affichage.</li>' +
+      '<li>Si tu actives les notifications : l’adresse technique d’abonnement de ton navigateur et la liste de tes prochains rappels, pour pouvoir t’envoyer les notifications.</li>' +
+      '<li>Si tu partages une liste : son contenu, ton prénom et ce que tu y fais (ajout, coche) sont visibles par les personnes que tu as invitées.</li>' +
       '<li>La date à laquelle tu as accepté les conditions.</li></ul>' +
       '<h3>Pourquoi ?</h3><p>Uniquement pour faire fonctionner l’application : créer ton compte, sauvegarder ton agenda et le synchroniser entre tes appareils. Base légale : l’exécution des conditions d’utilisation que tu as acceptées.</p>' +
       '<h3>Ce que Cadence ne fait pas</h3><p>Pas de publicité, pas de revente de données, pas de traceur publicitaire ni de mesure d’audience.</p>' +
       '<h3>Où sont stockées tes données ?</h3><ul><li>Sur ton appareil (stockage local du navigateur), pour que l’appli marche même sans connexion.</li>' +
       '<li>Chez Supabase Pte. Ltd., sur des serveurs situés en Europe, pour ton compte et ta sauvegarde en ligne. Chaque compte n’a accès qu’à ses propres données.</li>' +
-      '<li>L’application elle-même est hébergée par GitHub, Inc. (GitHub Pages). Les polices de caractères sont chargées depuis Google Fonts (Google), qui reçoit à cette occasion l’adresse IP de ton appareil.</li></ul>' +
+      '<li>L’application elle-même est hébergée par GitHub, Inc. (GitHub Pages). Les polices de caractères sont chargées depuis Google Fonts (Google), qui reçoit à cette occasion l’adresse IP de ton appareil.</li>' +
+      '<li>Météo : si tu choisis une ville, son nom puis ses coordonnées sont envoyés à Open-Meteo pour obtenir la météo. Aucune position GPS n’est utilisée.</li>' +
+      '<li>Notifications : elles passent par le service de notification de ton navigateur (par exemple Google pour Chrome et Brave sur Android), qui ne reçoit qu’un contenu chiffré.</li></ul>' +
       '<h3>Combien de temps ?</h3><p>Tant que ton compte existe. Quand tu supprimes ton compte, tes données en ligne sont effacées.</p>' +
       '<h3>Tes droits</h3><p>Tu peux accéder à tes données, les corriger, les exporter (Profil, Exporter), t’opposer à leur traitement ou les faire effacer (Profil, Supprimer mon compte). Pour toute demande : ' + mail + '. Tu peux aussi adresser une réclamation à la CNIL (cnil.fr).</p>' +
       '<p class="hint">Dernière mise à jour : ' + LEGAL_DATE + '.</p></div>';
@@ -1151,19 +1333,22 @@ body.gate { padding-bottom: 40px; }
     var now = Date.now(), t = todayISO(), changed = false, hit = null;
     [t, addDays(t, 1)].forEach(function (day) {
       itemsOn(day).forEach(function (x) {
-        if (x.rem === '' || !x.time || x.done) return;
+        if (!x.time || x.done) return;
+        [x.rem, x.src.rem2].forEach(function (rm) {
+        if (rm === '' || rm === undefined || rm === null) return;
         var p = x.time.split(':'), dd = parseISO(day); dd.setHours(+p[0], +p[1], 0, 0);
-        var at = dd.getTime() - (+x.rem) * 60000, key = x.id + '|' + day + '|' + x.rem + '|' + x.time;
+        var at = dd.getTime() - (+rm) * 60000, key = x.id + '|' + day + '|' + rm + '|' + x.time;
         if (now >= at && now - at < 10 * 60000 && !fired[key]) { fired[key] = now; changed = true; hit = x;
-          notify('Rappel : ' + x.text, (day === t ? 'Aujourd’hui' : 'Demain') + ' à ' + x.time, 'cadence-rem-' + x.id);
+          if (!pushOn()) notify('Rappel : ' + x.text, (day === t ? 'Aujourd’hui' : 'Demain') + ' à ' + x.time, 'cadence-rem-' + x.id);
         }
+        });
       });
     });
     if (changed) {
       Object.keys(fired).forEach(function (k) { if (now - fired[k] > 3 * 864e5) delete fired[k]; });
       try { localStorage.setItem(RK, JSON.stringify(fired)); } catch (e) {}
       try { if (S.settings.vibrate && navigator.vibrate) navigator.vibrate([150, 80, 150]); } catch (e) {}
-      playTone(false);
+      var tn0 = S.settings.tone; if (S.settings.remTone) S.settings.tone = S.settings.remTone; playTone(false); S.settings.tone = tn0;
       showToast('🔔 ' + hit.text + ' à ' + hit.time); if (!editing() && !sheet) render(); else { var te = document.getElementById('toast'); if (te) te.remove(); app.insertAdjacentHTML('beforeend', toastHtml()); }
     }
   }
@@ -1192,13 +1377,6 @@ body.gate { padding-bottom: 40px; }
     Object.keys(S.plog || {}).forEach(function (d) { var n = 0, o = S.plog[d]; Object.keys(o).forEach(function (k) { n += o[k]; }); if (n) set[d] = (set[d] || 0) + 0.0001; });
     return set;
   }
-  function streakInfo() {
-    var set = doneDays(), t = todayISO(), d = set[t] ? t : addDays(t, -1), n = 0;
-    while (set[d] && n < 3650) { n++; d = addDays(d, -1); }
-    var best = 0, run = 0, keys = Object.keys(set).sort(), prev = '';
-    keys.forEach(function (k) { run = (prev && addDays(prev, 1) === k) ? run + 1 : 1; prev = k; if (run > best) best = run; });
-    return { cur: n, best: Math.max(best, n), today: !!set[t] };
-  }
   function ringSvg(pct) {
     var r = 34, c = 2 * Math.PI * r, off = c * (1 - Math.max(0, Math.min(1, pct))); setTimeout(function () { lastPct = Math.max(0, Math.min(1, pct)); }, 0);
     return '<svg viewBox="0 0 80 80" class="ring" aria-hidden="true"><circle cx="40" cy="40" r="' + r + '" class="r0"/><circle cx="40" cy="40" r="' + r + '" class="r1" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - lastPct)).toFixed(1) + '" data-to="' + off.toFixed(1) + '"/></svg>';
@@ -1208,7 +1386,8 @@ body.gate { padding-bottom: 40px; }
     var title = !n ? 'Ta journée est libre' : d === n ? 'Tout est fait, bravo !' : (n - d) === 1 ? 'Plus qu’une tâche !' : 'Encore ' + (n - d) + ' tâches';
     var sub = !n ? 'Ajoute ce que tu veux accomplir aujourd’hui.' : d === n ? 'Profite de ta soirée, tu l’as mérité.' : d + ' faite' + (d > 1 ? 's' : '') + ' sur ' + n + '. Continue !';
     return '<section class="hero2' + (n && d === n ? ' win' : '') + '"><div class="rbox">' + ringSvg(pct) + '<b>' + (n ? Math.round(pct * 100) + '%' : '0') + '</b></div>' +
-      '<div class="hz"><h2>' + esc(title) + '</h2><p>' + esc(sub) + '</p><p class="strk">' + (st.cur ? '🔥 ' + plural(st.cur, 'jour', 'jours') + ' d’affilée' : '🔥 Coche une tâche pour lancer ta série') + '</p></div>' +
+      '<div class="hz"><h2>' + esc(title) + '</h2><p>' + esc(sub) + '</p><p class="strk">' + (st.cur ? '🔥 ' + plural(st.cur, 'jour', 'jours') + ' d’affilée' + (st.jokerUsed ? ' · 🛡️ joker utilisé' : '') : '🔥 Coche une tâche pour lancer ta série') + '</p></div>' +
+      (nextTimed(its) ? '<p class="nxt">⏰ ' + nextTimed(its).time + ' : ' + esc(nextTimed(its).text) + ' <b>(' + inMin(atOf(todayISO(), nextTimed(its).time) - Date.now()) + ')</b></p>' : '') +
       (nextTask(its) ? '<button class="btn hb" data-act="startfocus" data-id="' + nextTask(its).id + '" data-d="' + nextTask(its).d + '">▶ Commencer : ' + esc(nextTask(its).text) + '</button>' : '') +
       '<p class="quote">« ' + esc(quoteOfDay()) + ' »</p></section>';
   }
@@ -1249,22 +1428,6 @@ body.gate { padding-bottom: 40px; }
       var te = document.getElementById('toast'); if (te) te.remove(); app.insertAdjacentHTML('beforeend', toastHtml());
     }
   }
-  function progressHtml() {
-    var st = streakInfo(), T = totals(), set = doneDays(), a = weekStart(todayISO()), mx = 1, vals = [];
-    for (var i = 0; i < 7; i++) { var d = addDays(a, i), c = 0; S.items.forEach(function (x) { if (x.rep) { if ((x.doneOn || []).indexOf(d) >= 0) c++; } else if (x.done && x.doneAt === d) c++; }); vals.push([d, c]); if (c > mx) mx = c; }
-    var wk = 0; vals.forEach(function (v) { wk += v[1]; });
-    var ses = 0; for (var k = 0; k < 7; k++) { var o = (S.plog || {})[addDays(a, k)] || {}; Object.keys(o).forEach(function (z) { ses += o[z]; }); }
-    var e = earned();
-    var h = '<section class="blk prog2"><div class="sh"><h3>Mes progrès</h3></div><div class="tiles">' +
-      '<div class="tile"><b>🔥 ' + st.cur + '</b><span>jour' + (st.cur > 1 ? 's' : '') + ' d’affilée</span></div>' +
-      '<div class="tile"><b>' + wk + '</b><span>tâche' + (wk > 1 ? 's' : '') + ' cette semaine</span></div>' +
-      '<div class="tile"><b>' + ses + '</b><span>Pomodoro' + (ses > 1 ? 's' : '') + ' cette semaine</span></div></div>' +
-      '<div class="card"><p class="sub">Tâches faites par jour, cette semaine</p><div class="bars">' + vals.map(function (v) { return '<div class="bcol' + (v[0] === todayISO() ? ' now' : '') + '"><span class="bv">' + (v[1] || '') + '</span><i style="height:' + Math.max(4, Math.round(v[1] / mx * 100)) + '%"></i><small>' + JL[dow(v[0]) - 1] + '</small></div>'; }).join('') + '</div>' +
-      '<p class="hint">Record : ' + plural(st.best, 'jour', 'jours') + ' d’affilée. Au total : ' + plural(T.tasks, 'tâche faite', 'tâches faites') + ', ' + plural(T.goals, 'objectif atteint', 'objectifs atteints') + '.</p></div>' +
-      '<div class="sh"><h3>Badges</h3><span class="cnt">' + e.length + '/' + BADGES.length + '</span></div><div class="badges">' +
-      BADGES.map(function (b) { var on = e.indexOf(b[0]) >= 0; return '<div class="bdg' + (on ? ' on' : '') + '"><span class="be">' + b[1] + '</span><b>' + esc(b[2]) + '</b><small>' + esc(b[3]) + '</small></div>'; }).join('') + '</div></section>';
-    return h;
-  }
   /* --- célébration --- */
   function afterDone(day, btn) {
     var its = itemsOn(day), all = its.length && its.every(function (x) { return x.done; });
@@ -1295,7 +1458,10 @@ body.gate { padding-bottom: 40px; }
   /* ---------- v18 : animations, sons légers, Google Agenda ---------- */
   var anim = '', newRid = '', popRid = '', lastPct = 0;
   function calm() { try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  var lastSheetObj = null;
   function afterRender() {
+    if (sheet && sheet !== lastSheetObj && !calm()) { document.querySelectorAll('.sheet, .scrim').forEach(function (e) { e.classList.add('opening'); }); }
+    lastSheetObj = sheet;
     var pg = document.querySelector('.pg');
     if (pg && anim && !calm()) pg.classList.add(anim === 'left' ? 'in-left' : anim === 'right' ? 'in-right' : 'in-fade');
     anim = '';
@@ -1377,10 +1543,10 @@ body.gate { padding-bottom: 40px; }
     if (p.prio) bits.push('<span class="pc prio">★ Priorité</span>');
     return '<div class="nlp"><b>' + esc(p.text) + '</b><div class="chips">' + bits.join('') + '</div></div>';
   }
-  function quickBase() { return view === 'd' ? cur : view === 'm' ? sel : todayISO(); }
+  function quickBase() { return tab !== 'agenda' ? todayISO() : view === 'd' ? cur : view === 'm' ? sel : todayISO(); }
   function quickSheet() {
-    return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done"></label>' +
-      '<div id="q-prev">' + nlPreview(parseNL('', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
+    return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><span class="pw"><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done" value="' + esc(sheet.pre || '') + '">' + micBtn('#q-text') + '</span></label>' +
+      '<div id="q-prev">' + nlPreview(parseNL(sheet.pre || '', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
       '<button type="submit" class="btn primary big">Ajouter</button></form><p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement.</p>';
   }
   function quickSubmit() {
@@ -1388,18 +1554,19 @@ body.gate { padding-bottom: 40px; }
     if (!p.text) { sheet.err = 'Écris ce que tu dois faire.'; render(); return; }
     var x = addItem(p.d, p.text, p.time); if (!x) return;
     x.rep = p.rep; x.cat = p.cat; x.prio = p.prio; if (x.rep) { x.doneOn = []; x.skip = []; delete x.done; }
+    var fromN = sheet.fromNote; if (fromN) S.notes = S.notes.filter(function (z) { return z.id !== fromN; });
     save(); sheet = null;
-    showToast('Ajoutée : ' + p.text + ', ' + (relDay(p.d) ? relDay(p.d).toLowerCase() : dayLong(p.d)) + (p.time ? ' à ' + p.time : '') + (p.rep ? ' (' + REPL[p.rep].toLowerCase() + ')' : ''));
-    if (view === 'd' && p.d !== cur && !p.rep) { cur = p.d; anim = 'fade'; }
+    showToast((fromN ? 'Note transformée en tâche : ' : 'Ajoutée : ') + p.text + ', ' + (relDay(p.d) ? relDay(p.d).toLowerCase() : dayLong(p.d)) + (p.time ? ' à ' + p.time : '') + (p.rep ? ' (' + REPL[p.rep].toLowerCase() + ')' : ''));
+    if (tab === 'agenda' && view === 'd' && p.d !== cur && !p.rep) { cur = p.d; anim = 'fade'; }
     render();
   }
-  function fabHtml() { return tab === 'agenda' && !sheet ? '<button class="fab" data-act="quick" aria-label="Nouvelle tâche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>' : ''; }
+  function fabHtml() { return (tab === 'agenda' || tab === 'today') && !sheet ? '<button class="fab" data-act="quick" aria-label="Nouvelle tâche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>' : ''; }
   /* --- reporter --- */
   function postpone(x, day) {
     var to = addDays(day < todayISO() ? todayISO() : day, 1), undo;
     if (x.rep) {
       x.skip = x.skip || []; x.skip.push(day);
-      var c = { id: uid(), d: to, text: x.text, time: x.time, done: false, cat: x.cat || '', rep: '', rem: x.rem || '', prio: !!x.prio };
+      var c = { id: uid(), d: to, text: x.text, time: x.time, done: false, cat: x.cat || '', rep: '', rem: x.rem || '', rem2: x.rem2 || '', prio: !!x.prio, dur: x.dur || '', proj: x.proj || '', loc: x.loc || '', subs: [] };
       S.items.push(c);
       undo = function () { x.skip = x.skip.filter(function (z) { return z !== day; }); S.items = S.items.filter(function (z) { return z.id !== c.id; }); save(); };
     } else { var old = x.d; x.d = to; undo = function () { x.d = old; save(); }; }
@@ -1444,33 +1611,13 @@ body.gate { padding-bottom: 40px; }
     var x = byId(id); if (!x) return;
     var t = S.timers.filter(function (z) { return z.phase === 'idle'; })[0] || S.timers[0];
     unlockAudio(); t.task = { id: x.id, d: day, text: x.text }; t.phase = 'work'; t.paused = false; t.left = 0; t.end = Date.now() + t.work * 60000;
-    save(); tab = 'pomo'; anim = 'fade'; render(); window.scrollTo(0, 0);
+    save(); tab = 'pomo'; anim = 'fade'; sheet = null; render(); window.scrollTo(0, 0);
   }
   /* --- habitudes --- */
-  function habStreak(h) { var t = todayISO(), d = (h.log || {})[t] ? t : addDays(t, -1), n = 0; while ((h.log || {})[d] && n < 3650) { n++; d = addDays(d, -1); } return n; }
-  function habitsDay(day) {
-    var hs = S.habits || [];
-    if (!hs.length) return day === todayISO() ? '<section class="blk"><div class="sh"><h3>Habitudes</h3></div><button class="card habempty" data-act="tab" data-v="goals">🌱 Ajoute tes habitudes du quotidien (boire de l’eau, lire, sport…) et coche-les chaque jour.</button></section>' : '';
-    var dn = hs.filter(function (h) { return (h.log || {})[day]; }).length;
-    return '<section class="blk"><div class="sh"><h3>Habitudes</h3><span class="cnt">' + dn + '/' + hs.length + '</span></div><div class="habs">' + hs.map(function (h) {
-      var on = !!(h.log || {})[day], st = habStreak(h);
-      return '<button class="hab" aria-pressed="' + on + '" data-act="htog" data-id="' + h.id + '" data-d="' + day + '"><span class="he">' + esc(h.emoji || '✓') + '</span><span>' + esc(h.name) + '</span>' + (st ? '<small>🔥' + st + '</small>' : '') + '</button>';
-    }).join('') + '</div></section>';
-  }
   var HEMO = ['💧', '📖', '🏃', '🧘', '🥗', '😴', '💪', '✍️', '🚭', '🎸', '🧹', '🙏'];
   function guessEmoji(name) {
     var n = nrm(name);
     return /eau|boire|hydrat/.test(n) ? '💧' : /lire|lecture|livre/.test(n) ? '📖' : /cour|footing|run|marche|pas/.test(n) ? '🏃' : /medit|respir|yoga/.test(n) ? '🧘' : /sport|muscu|salle|pompe/.test(n) ? '💪' : /dorm|sommeil|coucher/.test(n) ? '😴' : /legume|fruit|mange|repas/.test(n) ? '🥗' : /ecri|journal/.test(n) ? '✍️' : /range|menage/.test(n) ? '🧹' : /musique|guitare|piano/.test(n) ? '🎸' : /fum|cigarette/.test(n) ? '🚭' : '✓';
-  }
-  function habitsManage() {
-    var hs = S.habits || [], t = todayISO();
-    var h = '<section class="blk"><div class="sh"><h3>Mes habitudes<small>Coche-les chaque jour dans l’Agenda</small></h3></div><div class="list">';
-    h += hs.map(function (x) {
-      var dots = ''; for (var i = 6; i >= 0; i--) { var d = addDays(t, -i); dots += '<i class="' + ((x.log || {})[d] ? 'on' : '') + '" title="' + esc(dayLong(d)) + '"></i>'; }
-      return '<div class="row habrow"><span class="he">' + esc(x.emoji || '✓') + '</span><div class="txt"><span>' + esc(x.name) + '</span><small>🔥 ' + plural(habStreak(x), 'jour', 'jours') + ' de suite</small></div><span class="hdots" aria-label="7 derniers jours">' + dots + '</span><button class="x' + (armKey === 'hab:' + x.id ? ' armed' : '') + '" data-act="hdel" data-id="' + x.id + '" aria-label="Supprimer l’habitude ' + esc(x.name) + '">' + (armKey === 'hab:' + x.id ? 'OK ?' : '×') + '</button></div>';
-    }).join('');
-    h += '<form class="add" data-kind="habit" autocomplete="off"><input type="text" name="t" placeholder="Nouvelle habitude (ex. Boire 1,5 L d’eau)" maxlength="40" aria-label="Nouvelle habitude"><button type="submit" class="addplus" aria-label="Ajouter l’habitude">+</button></form></div></section>';
-    return h;
   }
   /* --- bilan du dimanche --- */
   function weekReview() {
@@ -1506,6 +1653,874 @@ body.gate { padding-bottom: 40px; }
     return false;
   }
 
+  /* ========== v20 : Cadence, une vie organisée ========== */
+  var notesView = 'notes', statsRange = 7, srchQ = '';
+  function tzName() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Paris'; } catch (e) { return 'Europe/Paris'; } }
+  function atOf(day, hm) { var p = String(hm || '00:00').split(':'), d = parseISO(day); d.setHours(+p[0], +p[1], 0, 0); return d; }
+  function nowHM() { var d = new Date(); return p2(d.getHours()) + ':' + p2(d.getMinutes()); }
+  function inMin(ms) { var m = Math.round(ms / 60000); return m < 1 ? 'maintenant' : m < 60 ? 'dans ' + m + ' min' : 'dans ' + Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + p2(m % 60) : ''); }
+  function projOf(id) { return (S.projects || []).filter(function (p) { return p.id === id; })[0] || null; }
+  function noteById(id) { return (S.notes || []).filter(function (n) { return n.id === id; })[0]; }
+  function listById(id) { return (S.lists || []).filter(function (l) { return l.id === id; })[0]; }
+  function habById(id) { return (S.habits || []).filter(function (h) { return h.id === id; })[0]; }
+  function dreamById(id) { return (S.dreams || []).filter(function (d) { return d.id === id; })[0]; }
+  function doneOnDay(d) { var c = 0; S.items.forEach(function (x) { if (x.rep) { if ((x.doneOn || []).indexOf(d) >= 0) c++; } else if (x.done && x.doneAt === d) c++; }); return c; }
+  function plogDay(d) { var n = 0, o = (S.plog || {})[d] || {}; Object.keys(o).forEach(function (k) { n += o[k]; }); return n; }
+  function pminDay(d) { return ((S.pmin || {})[d] || {}).m || 0; }
+  function shrinkImg(file, max, q, cb) {
+    if (!file || !/^image\//.test(file.type || '')) { showToast('Choisis une image.'); render(); return; }
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+          c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          cb(c.toDataURL('image/jpeg', q));
+        } catch (e) { showToast('Impossible d’utiliser cette image.'); render(); }
+      };
+      img.onerror = function () { showToast('Impossible de lire cette image.'); render(); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  /* --- thèmes --- */
+  var PALETTES = [['violet', 'Violet', 'violet'], ['ocean', 'Océan', 'ocean']];
+  function setPalette(p) { S.settings.palette = p; S.profile.accent = p === 'ocean' ? 'ocean' : 'violet'; applyTheme(); }
+  function paletteCards() {
+    return '<div class="pals" role="group" aria-label="Thème de couleur">' + PALETTES.map(function (p) {
+      return '<button class="pal pal-' + p[0] + '" aria-pressed="' + ((S.settings.palette || 'violet') === p[0]) + '" data-act="palette" data-v="' + p[0] + '"><span class="pv"></span><b>' + p[1] + '</b></button>';
+    }).join('') + '</div>';
+  }
+
+  /* --- météo (Open-Meteo, sans clé) --- */
+  var WXC = { 0: ['☀️', 'Ensoleillé'], 1: ['🌤️', 'Plutôt dégagé'], 2: ['⛅', 'Quelques nuages'], 3: ['☁️', 'Couvert'], 45: ['🌫️', 'Brouillard'], 48: ['🌫️', 'Brouillard givrant'], 51: ['🌦️', 'Bruine légère'], 53: ['🌦️', 'Bruine'], 55: ['🌧️', 'Bruine forte'], 56: ['🌧️', 'Bruine verglaçante'], 57: ['🌧️', 'Bruine verglaçante'], 61: ['🌦️', 'Pluie faible'], 63: ['🌧️', 'Pluie'], 65: ['🌧️', 'Forte pluie'], 66: ['🌧️', 'Pluie verglaçante'], 67: ['🌧️', 'Pluie verglaçante'], 71: ['🌨️', 'Neige faible'], 73: ['🌨️', 'Neige'], 75: ['❄️', 'Forte neige'], 77: ['🌨️', 'Grésil'], 80: ['🌦️', 'Averses'], 81: ['🌧️', 'Averses'], 82: ['⛈️', 'Fortes averses'], 85: ['🌨️', 'Averses de neige'], 86: ['🌨️', 'Averses de neige'], 95: ['⛈️', 'Orage'], 96: ['⛈️', 'Orage et grêle'], 99: ['⛈️', 'Orage et grêle'] };
+  var wx = null, wxBusy = false;
+  try { wx = JSON.parse(localStorage.getItem('cadence.wx') || 'null'); } catch (e) { wx = null; }
+  function wxLoad(force) {
+    var c = S.settings.city; if (!c || wxBusy) return;
+    if (!force && wx && wx.lat === c.lat && wx.lon === c.lon && Date.now() - wx.at < 30 * 60000) return;
+    wxBusy = true;
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lon + '&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1')
+      .then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        wxBusy = false; if (!j || !j.current || !j.daily) return;
+        wx = { at: Date.now(), lat: c.lat, lon: c.lon, t: Math.round(j.current.temperature_2m), c: j.current.weather_code, max: Math.round(j.daily.temperature_2m_max[0]), min: Math.round(j.daily.temperature_2m_min[0]), rain: j.daily.precipitation_probability_max ? j.daily.precipitation_probability_max[0] : null };
+        try { localStorage.setItem('cadence.wx', JSON.stringify(wx)); } catch (e) {}
+        if (!editing() && (!sheet || sheet.k === 'plan')) render();
+      }).catch(function () { wxBusy = false; });
+  }
+  function wxText() {
+    var c = S.settings.city; if (!c || !wx || wx.lat !== c.lat || wx.lon !== c.lon) return '';
+    var w = WXC[wx.c] || ['🌡️', 'Météo'];
+    return { e: w[0], l: w[1], t: wx.t, min: wx.min, max: wx.max, rain: wx.rain, city: c.name };
+  }
+  function wxCard() {
+    var c = S.settings.city;
+    if (!c) return '<button class="card wxadd" data-act="city">🌤️ <span>Ajoute ta ville pour voir la météo du jour</span></button>';
+    var w = wxText();
+    if (!w) return '<button class="card wx" data-act="city"><span class="we">🌡️</span><div><b>' + esc(c.name) + '</b><small>Météo en cours de chargement…</small></div></button>';
+    return '<button class="card wx" data-act="city" aria-label="Météo à ' + esc(w.city) + ', modifier la ville"><span class="we">' + w.e + '</span><div><b>' + w.t + '° · ' + esc(w.l) + '</b><small>' + esc(w.city) + ' · min ' + w.min + '° / max ' + w.max + '°' + (w.rain !== null && w.rain !== undefined ? ' · pluie ' + w.rain + ' %' : '') + '</small></div></button>';
+  }
+  function citySheet() {
+    var s = sheet, c = S.settings.city;
+    var h = '<h2>Ma ville pour la météo</h2>' + (c ? '<p class="sub">Actuellement : <b>' + esc(c.name) + '</b></p>' : '') +
+      '<form id="cityform" autocomplete="off"><label class="f">Ville<input type="text" id="city-q" data-keep maxlength="60" placeholder="Ex. Nanterre"></label>' +
+      (s.err ? '<p class="err" role="alert">' + esc(s.err) + '</p>' : '') + '<button type="submit" class="btn primary big"' + (s.busy ? ' disabled' : '') + '>' + (s.busy ? 'Recherche…' : 'Chercher') + '</button></form>';
+    if (s.res && s.res.length) h += '<div class="list">' + s.res.map(function (r, i) { return '<button class="row pick" data-act="cityset" data-v="' + i + '"><span class="txt"><span>' + esc(r.name) + '</span><small>' + esc([r.admin1, r.country].filter(Boolean).join(', ')) + '</small></span></button>'; }).join('') + '</div>';
+    if (c) h += '<button class="btn ghost" data-act="citydel">Retirer la météo</button>';
+    return h + '<button class="btn" data-act="sclose">Fermer</button><p class="hint">Données météo : Open-Meteo.</p>';
+  }
+  function citySearch() {
+    var q = ((document.getElementById('city-q') || {}).value || '').trim();
+    if (q.length < 2) { sheet.err = 'Écris le nom de ta ville.'; render(); return; }
+    sheet.busy = true; sheet.err = ''; render();
+    fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=6&language=fr&format=json').then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!sheet || sheet.k !== 'city') return;
+      sheet.busy = false; sheet.res = (j && j.results) || [];
+      if (!sheet.res.length) sheet.err = 'Aucune ville trouvée. Vérifie l’orthographe.';
+      render();
+    }).catch(function () { if (sheet && sheet.k === 'city') { sheet.busy = false; sheet.err = 'Pas de connexion internet.'; render(); } });
+  }
+
+  /* --- dates : comptes à rebours et anniversaires --- */
+  function bdNext(b, from) { var y = +from.slice(0, 4), d = y + '-' + b.md; if (iso(parseISO(d)) !== d) d = y + '-02-28'; if (d < from) { d = (y + 1) + '-' + b.md; if (iso(parseISO(d)) !== d) d = (y + 1) + '-02-28'; } return d; }
+  function daysBetween(a, b) { return Math.round((parseISO(b) - parseISO(a)) / 864e5); }
+  function bdOn(day) { return (S.bdays || []).filter(function (b) { return bdNext(b, day) === day; }); }
+  function bdLabel(b, day) { return '🎂 Anniversaire de ' + esc(b.name) + (b.y ? ' (' + (+day.slice(0, 4) - b.y) + ' ans)' : ''); }
+  function datesStrip(t) {
+    var cds = (S.countdowns || []).filter(function (c) { return c.date >= t; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; }).slice(0, 4);
+    var bds = (S.bdays || []).map(function (b) { return { b: b, d: bdNext(b, t) }; }).filter(function (o) { return daysBetween(t, o.d) <= 7; }).sort(function (a, b) { return a.d < b.d ? -1 : 1; });
+    if (!cds.length && !bds.length) return '';
+    var h = '<section class="blk"><div class="sh"><h3>À venir</h3><button class="lnk" data-act="dates">Gérer</button></div><div class="cds">';
+    h += cds.map(function (c) { var n = daysBetween(t, c.date); return '<div class="cdc"><span class="ce">' + esc(c.emoji || '⏳') + '</span><b>' + esc(c.name) + '</b><small>' + (n === 0 ? 'C’est aujourd’hui !' : n === 1 ? 'Demain' : 'Dans ' + n + ' jours') + '</small></div>'; }).join('');
+    h += bds.map(function (o) { var n = daysBetween(t, o.d); return '<div class="cdc bd"><span class="ce">🎂</span><b>' + esc(o.b.name) + '</b><small>' + (n === 0 ? 'Anniversaire aujourd’hui' : n === 1 ? 'Anniversaire demain' : 'Anniversaire dans ' + n + ' jours') + (o.b.y ? ' · ' + (+o.d.slice(0, 4) - o.b.y) + ' ans' : '') + '</small></div>'; }).join('');
+    return h + '</div></section>';
+  }
+  function datesSheet() {
+    var t = todayISO();
+    var h = '<h2>Dates importantes</h2><h3>⏳ Comptes à rebours</h3><div class="list">' + (S.countdowns || []).slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; }).map(function (c) {
+      var n = daysBetween(t, c.date);
+      return '<div class="row"><span class="he">' + esc(c.emoji || '⏳') + '</span><div class="txt"><span>' + esc(c.name) + '</span><small>' + esc(cap1(dayLong(c.date))) + (n >= 0 ? ' · J-' + n : ' · passé') + '</small></div><button class="x" data-act="cddel" data-id="' + c.id + '" aria-label="Supprimer ' + esc(c.name) + '">×</button></div>';
+    }).join('') + '<form id="cdform" class="add2" autocomplete="off"><input type="text" id="cd-name" data-keep maxlength="40" placeholder="Ex. Vacances"><input type="date" id="cd-date" data-keep aria-label="Date"><button type="submit" class="addplus" aria-label="Ajouter le compte à rebours">+</button></form></div>';
+    h += '<h3>🎂 Anniversaires</h3><div class="list">' + (S.bdays || []).slice().sort(function (a, b) { return a.md < b.md ? -1 : 1; }).map(function (b) {
+      var p = b.md.split('-');
+      return '<div class="row"><span class="he">🎂</span><div class="txt"><span>' + esc(b.name) + '</span><small>' + (+p[1]) + ' ' + MOIS[+p[0] - 1] + (b.y ? ' ' + b.y : '') + '</small></div><button class="x" data-act="bddel" data-id="' + b.id + '" aria-label="Supprimer ' + esc(b.name) + '">×</button></div>';
+    }).join('') + '<form id="bdform" class="add2" autocomplete="off"><input type="text" id="bd-name" data-keep maxlength="40" placeholder="Prénom"><input type="date" id="bd-date" data-keep aria-label="Date de naissance"><button type="submit" class="addplus" aria-label="Ajouter l’anniversaire">+</button></form></div>' +
+      '<label class="chkline"><input type="checkbox" id="bd-noy" data-keepc> <span>Je ne connais pas l’année de naissance</span></label>' +
+      (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
+      '<p class="hint">Les anniversaires apparaissent dans ton agenda et, si les notifications sont activées, tu es prévenu le jour même à 9 h.</p><button class="btn big" data-act="sclose">Fermer</button>';
+    return h;
+  }
+  var CDEMO = [[/vacance|voyage|plage/, '🏖️'], [/anniv|fete|soiree/, '🎉'], [/examen|bac|partiel|concours/, '📚'], [/mariage/, '💍'], [/concert|festival/, '🎵'], [/match|course|marathon/, '🏅'], [/noel/, '🎄'], [/demenag/, '📦'], [/bebe|naissance/, '👶'], [/entretien|travail|job/, '💼']];
+  function cdEmoji(n) { n = nrm(n); for (var i = 0; i < CDEMO.length; i++) if (CDEMO[i][0].test(n)) return CDEMO[i][1]; return '⏳'; }
+
+  /* --- Aujourd’hui --- */
+  function nextTimed(its) {
+    var hm = nowHM();
+    return its.filter(function (x) { return !x.done && x.time && x.time >= hm; }).sort(function (a, b) { return a.time < b.time ? -1 : 1; })[0] || null;
+  }
+  function loadHtml(its) {
+    var m = 0, all = 0; its.forEach(function (x) { var dd = +(x.src.dur || 0); all += dd; if (!x.done) m += dd; });
+    if (!all) return '';
+    return '<p class="load' + (all > 480 ? ' heavy' : '') + '">⏱ ' + (m ? dur2(m) + ' de travail prévu' + (m !== all ? ' (' + dur2(all) + ' au total)' : '') : 'Tout le temps prévu est fait') + (all > 480 ? '. Journée très chargée : pense à reporter quelque chose.' : '.') + '</p>';
+  }
+  function weekStrip(t) {
+    var a = weekStart(t), h = '<section class="wstrip" aria-label="Ta semaine">';
+    for (var i = 0; i < 7; i++) {
+      var d = addDays(a, i), its = itemsOn(d), n = its.length, dn = its.filter(function (x) { return x.done; }).length, bd = bdOn(d).length;
+      h += '<button class="wsd' + (d === t ? ' now' : '') + (n && dn === n ? ' all' : '') + '" data-act="oday" data-v="' + d + '" aria-label="' + esc(dayLong(d)) + (n ? ', ' + plural(n, 'tâche', 'tâches') : '') + '"><small>' + JL[dow(d) - 1] + '</small><b>' + parseISO(d).getDate() + '</b><span class="dots">' +
+        its.slice(0, 3).map(function (x) { return '<i' + (x.done ? ' class="d"' : '') + '></i>'; }).join('') + (bd ? '<i class="bdd"></i>' : '') + '</span></button>';
+    }
+    return h + '</section>';
+  }
+  function intentLine(t) { var it = S.intent || {}; return it.d === t && it.text ? '<button class="intent" data-act="plan">🎯 <span>' + esc(it.text) + '</span></button>' : ''; }
+  function planCta(t) {
+    if (S.settings.planDone === t) return '';
+    var h = new Date().getHours(); if (h >= 18) return '';
+    return '<button class="card plancta" data-act="plan"><span class="pe">☀️</span><span><b>Planifier ma journée</b><small>Choisis tes 3 priorités et ton intention en 30 secondes</small></span></button>';
+  }
+  function newsCard() {
+    if (S.settings.news20 === '1') return '';
+    return '<section class="card news"><h3>✨ Nouveau dans Cadence</h3><ul><li>Un écran <b>Aujourd’hui</b> avec la météo, ta semaine et ton plan du matin</li><li>Notes rapides, listes partagées et projets</li><li>Notifications même appli fermée, avec « Fait » et « Dans 10 min »</li><li>Statistiques, thème Océan, objectifs chiffrés, tableau de rêves…</li></ul>' +
+      '<div class="btns">' + (pushOn() ? '' : '<button class="btn primary sm" data-act="pushon">Activer les notifications</button>') + '<button class="btn sm" data-act="newsok">J’ai compris</button></div></section>';
+  }
+  function viewToday() {
+    var t = todayISO(), its = itemsOn(t), h = '';
+    h += newsCard() + planCta(t) + intentLine(t) + heroToday(its) + wxCard() + weekStrip(t) + datesStrip(t) + monthReviewCard() + weekReview() + carryCard() + habitsDay(t);
+    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + bdLabel(b, t) + '</p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous ou avec le bouton +.' }) + '</section>';
+    h += goalsBlock('d', t);
+    if (new Date().getHours() >= 18) h += eveningCard(its);
+    return h;
+  }
+
+  /* --- plan du matin --- */
+  function planSheet() {
+    var t = todayISO(), its = itemsOn(t).filter(function (x) { return !x.done; }), od = overdue(), w = wxText();
+    if (!sheet.pick) { sheet.pick = its.filter(function (x) { return x.prio; }).slice(0, 3).map(function (x) { return x.id + '|' + x.d; }); }
+    var cand = its.map(function (x) { return { x: x, late: false }; }).concat(od.map(function (x) { return { x: occ(x, x.d), late: true }; }));
+    var h = '<div class="dplan"><p class="date">' + esc(cap1(dayLong(t))) + '</p><h2>' + (new Date().getHours() < 12 ? 'Bonjour' : 'Re-bonjour') + (callName() ? ' ' + esc(callName()) : '') + ' ☀️</h2>';
+    if (w) h += '<p class="sub">' + w.e + ' ' + w.t + '° · ' + esc(w.l) + ' à ' + esc(w.city) + ' (min ' + w.min + '°, max ' + w.max + '°)</p>';
+    h += '<label class="f">Mon intention du jour<input type="text" id="pl-int" data-keep maxlength="120" placeholder="Aujourd’hui, je veux…" value="' + esc((S.intent || {}).d === t ? S.intent.text : '') + '"></label>';
+    h += '<div class="f"><p class="sub">Choisis jusqu’à 3 priorités (' + sheet.pick.length + '/3)</p>';
+    if (cand.length) h += '<div class="list">' + cand.map(function (o) {
+      var k = o.x.id + '|' + o.x.d, on = sheet.pick.indexOf(k) >= 0;
+      return '<button class="row pick" data-act="plpick" data-v="' + k + '" aria-pressed="' + on + '"><span class="pstar">' + (on ? '★' : '☆') + '</span><span class="txt"><span>' + esc(o.x.text) + '</span><small>' + (o.late ? 'En retard (' + esc(dayShort(o.x.d)) + '), sera remise à aujourd’hui' : o.x.time ? 'À ' + o.x.time : 'Dans la journée') + '</small></span></button>';
+    }).join('') + '</div>';
+    else h += '<p class="empty card">Aucune tâche pour aujourd’hui. Ajoute-en une :</p>';
+    h += '<div class="list">' + addForm(t, true) + '</div></div>';
+    var timed = itemsOn(t).filter(function (x) { return x.time; });
+    if (timed.length) h += '<div class="f"><p class="sub">Ton agenda</p><div class="tl">' + timed.map(function (x) { return '<div class="tli' + (x.done ? ' done' : '') + '"><b>' + x.time + '</b><span>' + esc(x.text) + '</span></div>'; }).join('') + '</div></div>';
+    h += '<button class="btn primary big" data-act="plgo">C’est parti !</button><button class="btn ghost" data-act="sclose">Plus tard</button></div>';
+    return h;
+  }
+  function planGo() {
+    var t = todayISO(), txt = ((document.getElementById('pl-int') || {}).value || '').trim(), pick = (sheet && sheet.pick) || [];
+    S.intent = { d: t, text: txt.slice(0, 120) };
+    itemsOn(t).forEach(function (o) { if (!o.src.rep && !o.done) o.src.prio = pick.indexOf(o.id + '|' + o.d) >= 0; });
+    pick.forEach(function (k) { var p = k.split('|'), x = byId(p[0]); if (!x) return; if (!x.rep && x.d < t) x.d = t; x.prio = true; });
+    S.settings.planDone = t; S.settings.planSeen = t; save(); sheet = null; confetti(false); showToast(pick.length ? 'Belle journée ! Tes priorités sont en haut de la liste.' : 'Belle journée !'); tab = 'today'; render(); window.scrollTo(0, 0);
+  }
+  function maybePlan() {
+    var t = todayISO(), hr = new Date().getHours();
+    if (!S.profile.done || (cloudOn && !auth) || sheet || recov || tab !== 'today' || editing()) return;
+    if (S.settings.planSeen === t || S.settings.planDone === t || hr < 5 || hr >= 14) return;
+    S.settings.planSeen = t; save(); sheet = { k: 'plan' }; render();
+  }
+
+  /* --- guide de bienvenue --- */
+  var HTPL = [['💧', 'Boire 1,5 L d’eau'], ['📖', 'Lire 20 min'], ['🏃', 'Marcher 30 min'], ['🧘', 'Méditer 10 min'], ['💪', 'Faire du sport'], ['😴', 'Me coucher avant 23 h'], ['🥗', 'Manger des légumes'], ['✍️', 'Écrire mon journal'], ['📵', 'Pas d’écran au lit'], ['🧹', 'Ranger 10 min'], ['🙏', 'Noter 3 gratitudes'], ['🦷', 'Fil dentaire']];
+  var obHabs = [];
+  function obDots(n) { var h = '<div class="steps" aria-hidden="true">'; for (var i = 0; i < 4; i++) h += '<i' + (i <= n ? ' class="on"' : '') + '></i>'; return h + '</div>'; }
+  function viewWelcome() {
+    var p = S.profile;
+    if (obStep === 0) {
+      return '<div class="ob">' + obDots(0) + '<h1>Bienvenue sur Cadence</h1><p class="lead">Une vie organisée, en douceur. Présente-toi : tu pourras tout changer plus tard dans le Profil.</p>' +
+        '<form id="ob1" class="card" autocomplete="on">' + photoBlock() + '<div class="cols"><label class="f">Prénom<input type="text" id="ob-first" data-keep value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label>' +
+        '<label class="f">Nom<input type="text" id="ob-last" data-keep value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
+        '<label class="f">Surnom (facultatif)<input type="text" id="ob-nick" data-keep value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Comment veux-tu qu’on t’appelle ?"></label>' +
+        (notice ? '<p class="err" role="alert">' + esc(notice) + '</p>' : '') + '<button type="submit" class="btn primary big">Continuer</button></form></div>';
+    }
+    if (obStep === 1) {
+      return '<div class="ob">' + obDots(1) + '<h1>Ton thème, ' + esc(callName()) + '</h1><p class="lead">Choisis l’ambiance de Cadence.</p><div class="card">' + paletteCards() +
+        '<div class="f"><p class="sub">Clair ou sombre</p>' + segOpt('theme', S.settings.theme, [['auto', 'Automatique'], ['light', 'Clair'], ['dark', 'Sombre']], 'Thème') + '</div>' +
+        '<button class="btn primary big" data-act="obnext" data-v="2">Continuer</button></div></div>';
+    }
+    if (obStep === 2) {
+      return '<div class="ob">' + obDots(2) + '<h1>Tes 3 premières habitudes</h1><p class="lead">Les petites actions répétées changent tout. Choisis-en jusqu’à 3 (' + obHabs.length + '/3).</p><div class="card"><div class="chips">' +
+        HTPL.map(function (x, i) { return '<button class="chip" aria-pressed="' + (obHabs.indexOf(i) >= 0) + '" data-act="obhab" data-v="' + i + '">' + x[0] + ' ' + esc(x[1]) + '</button>'; }).join('') + '</div>' +
+        '<button class="btn primary big" data-act="obnext" data-v="3">' + (obHabs.length ? 'Continuer' : 'Passer') + '</button></div></div>';
+    }
+    var st = pushState();
+    return '<div class="ob">' + obDots(3) + '<h1>Ne rien oublier</h1><p class="lead">Active les notifications : Cadence te prévient à l’heure de tes tâches, même quand l’appli est fermée. Tu pourras cocher « Fait » ou « Dans 10 min » directement depuis la notification.</p><div class="card">' +
+      (st === 'on' ? '<p class="okmsg">✅ Notifications activées.</p>' : st === 'unsupported' ? '<p class="sub">Ton navigateur ne permet pas encore les notifications ici. Installe Cadence sur ton écran d’accueil (menu ⋮ puis « Ajouter à l’écran d’accueil »), puis active-les dans le Profil.</p>' : st === 'denied' ? '<p class="err">Les notifications sont bloquées pour Cadence. Tu pourras les autoriser dans les réglages de ton navigateur.</p>' : '<button class="btn primary big" data-act="pushon"' + (pushBusy ? ' disabled' : '') + '>' + (pushBusy ? 'Un instant…' : '🔔 Activer les notifications') + '</button>') +
+      (pushMsg ? '<p class="sub" role="status">' + esc(pushMsg) + '</p>' : '') +
+      '<button class="btn ' + (st === 'on' ? 'primary big' : 'ghost') + '" data-act="obdone">' + (st === 'on' ? 'Commencer' : 'Plus tard') + '</button></div></div>';
+  }
+  function finishOnboarding() {
+    var t = todayISO();
+    obHabs.forEach(function (i) { var x = HTPL[i]; if (x && !(S.habits || []).some(function (h) { return h.name === x[1]; })) S.habits.push({ id: uid(), name: x[1], emoji: x[0], log: {}, days: [], rem: '' }); });
+    obHabs = []; S.settings.news20 = '1'; S.settings.planSeen = t;
+    S.profile.done = true; save(); tab = 'today'; view = 'd'; cur = t; obStep = 0; render(); window.scrollTo(0, 0);
+    setTimeout(function () { slJoinPending(); pushSync(true); if (cloudOn && auth) slFetch(true); }, 50);
+  }
+  /* --- dictée vocale --- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null, recog = null, recogT = '';
+  function micBtn(target) { return SR ? '<button type="button" class="mic' + (recog && recogT === target ? ' on' : '') + '" data-act="mic" data-v="' + target + '" aria-label="' + (recog && recogT === target ? 'Arrêter la dictée' : 'Dicter') + '">🎤</button>' : ''; }
+  function micToggle(target) {
+    if (!SR) return;
+    if (recog) { try { recog.stop(); } catch (e) {} recog = null; recogT = ''; render(); return; }
+    try {
+      var r = new SR(); r.lang = 'fr-FR'; r.interimResults = false; r.continuous = false; r.maxAlternatives = 1;
+      r.onresult = function (ev) {
+        var txt = ''; for (var i = ev.resultIndex; i < ev.results.length; i++) if (ev.results[i].isFinal) txt += ev.results[i][0].transcript;
+        var el = document.querySelector(target); if (el && txt) { el.value = (el.value ? el.value.replace(/\s*$/, ' ') : '') + txt.trim(); el.dispatchEvent(new Event('input', { bubbles: true })); }
+      };
+      r.onerror = function (ev) { if (ev && ev.error === 'not-allowed') showToast('Micro refusé : autorise-le dans les réglages du navigateur.'); };
+      r.onend = function () { recog = null; recogT = ''; render(); };
+      recog = r; recogT = target; r.start(); render();
+    } catch (e) { recog = null; recogT = ''; showToast('La dictée n’est pas disponible ici. Utilise le micro de ton clavier.'); render(); }
+  }
+
+  /* --- Notes --- */
+  var NOTECOL = [['', 'Blanc'], ['y', 'Jaune'], ['o', 'Orange'], ['p', 'Rose'], ['g', 'Vert'], ['b', 'Bleu']];
+  function notesSorted() { return (S.notes || []).slice().sort(function (a, b) { if (!!a.pin !== !!b.pin) return a.pin ? -1 : 1; return (b.up || '') < (a.up || '') ? -1 : 1; }); }
+  function noteCard(n) {
+    return '<button class="nt' + (n.color ? ' nc-' + n.color : '') + '" data-act="nedit" data-id="' + n.id + '">' + (n.pin ? '<span class="npin" aria-label="Épinglée">📌</span>' : '') + '<span class="ntx">' + esc(n.text.length > 220 ? n.text.slice(0, 220) + '…' : n.text) + '</span><small>' + esc(relDay(n.up.slice(0, 10)) || dayShort(n.up.slice(0, 10))) + '</small></button>';
+  }
+  function notesPane() {
+    var ns = notesSorted();
+    var h = '<form id="nform" class="card ncomp" autocomplete="off"><label class="vh" for="n-text">Nouvelle note</label><textarea id="n-text" data-keep maxlength="2000" rows="2" placeholder="Note une idée, un numéro, un truc à ne pas oublier…"></textarea><div class="btns">' + micBtn('#n-text') + '<button type="submit" class="btn primary sm">Noter</button></div></form>';
+    if (!ns.length) h += '<p class="empty card">Ton vide-tête est vide. Note tout ce qui te passe par la tête, tu le rangeras plus tard (tâche, liste…).</p>';
+    else h += '<div class="notes">' + ns.map(noteCard).join('') + '</div>';
+    return h;
+  }
+  function noteSheet() {
+    var n = noteById(sheet.id); if (!n) { sheet = null; return ''; }
+    if (sheet.color === undefined) sheet.color = n.color || '';
+    if (sheet.pin === undefined) sheet.pin = !!n.pin;
+    return '<h2>Note</h2><form id="neform" autocomplete="off"><label class="vh" for="ne-text">Texte de la note</label><textarea id="ne-text" data-keep maxlength="2000" rows="6">' + esc(n.text) + '</textarea>' +
+      '<div class="btns">' + micBtn('#ne-text') + '</div><div class="f"><p class="sub">Couleur</p><div class="ncols" role="group" aria-label="Couleur">' + NOTECOL.map(function (c) { return '<button type="button" class="ncb nc-' + (c[0] || 'w') + '" aria-pressed="' + (sheet.color === c[0]) + '" aria-label="' + c[1] + '" data-act="ncol" data-v="' + c[0] + '"></button>'; }).join('') + '</div></div>' +
+      '<button type="button" class="chip" aria-pressed="' + !!sheet.pin + '" data-act="npin">📌 Épingler en haut</button>' +
+      '<button type="submit" class="btn primary big">Enregistrer</button><button type="button" class="btn" data-act="n2task" data-id="' + n.id + '">→ Transformer en tâche</button>' +
+      '<div class="btns"><button type="button" class="btn danger" data-act="ndel" data-id="' + n.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div></form>';
+  }
+  function addNote(text) {
+    text = String(text || '').trim(); if (!text) return null;
+    var now = new Date().toISOString(), n = { id: uid(), text: text.slice(0, 2000), color: '', pin: false, at: now, up: now };
+    S.notes.unshift(n); uiSound('pop'); save(); return n;
+  }
+
+  /* --- Recherche --- */
+  function searchHtml(q) {
+    q = nrm(q).trim(); if (q.length < 2) return '';
+    var res = [], has = function (s) { return nrm(s).indexOf(q) >= 0; };
+    (S.notes || []).forEach(function (n) { if (has(n.text)) res.push('<button class="row sr" data-act="nedit" data-id="' + n.id + '"><span class="he">🗒️</span><span class="txt"><span>' + esc(n.text.slice(0, 90)) + '</span><small>Note</small></span></button>'); });
+    S.items.forEach(function (x) { if (has(x.text) || has(x.loc || '') || (x.subs || []).some(function (s) { return has(s.t); })) res.push('<button class="row sr" data-act="iedit" data-id="' + x.id + '" data-d="' + x.d + '"><span class="he">' + (x.done ? '✅' : '📅') + '</span><span class="txt"><span>' + esc(x.text) + '</span><small>Tâche · ' + esc(x.rep ? repShort(x) : (relDay(x.d) || dayShort(x.d))) + (x.time ? ' à ' + x.time : '') + '</small></span></button>'); });
+    (S.lists || []).forEach(function (l) { if (has(l.name) || l.items.some(function (i) { return has(i.t); })) res.push('<button class="row sr" data-act="openlist" data-id="' + l.id + '"><span class="he">' + esc(l.emoji || '📝') + '</span><span class="txt"><span>' + esc(l.name) + '</span><small>Liste · ' + esc(l.items.filter(function (i) { return has(i.t); }).map(function (i) { return i.t; }).slice(0, 3).join(', ')) + '</small></span></button>'); });
+    (SL.lists || []).forEach(function (l) { var it = SL.items[l.id] || []; if (has(l.name) || it.some(function (i) { return has(i.text); })) res.push('<button class="row sr" data-act="openslist" data-id="' + l.id + '"><span class="he">👥</span><span class="txt"><span>' + esc(l.name) + '</span><small>Liste partagée</small></span></button>'); });
+    (S.goals || []).forEach(function (g) { if (has(g.text)) res.push('<button class="row sr" data-act="gedit" data-id="' + g.id + '"><span class="he">🎯</span><span class="txt"><span>' + esc(g.text) + '</span><small>Objectif</small></span></button>'); });
+    (S.projects || []).forEach(function (p) { if (has(p.name)) res.push('<button class="row sr" data-act="openproj" data-id="' + p.id + '"><span class="he">' + esc(p.emoji || '📁') + '</span><span class="txt"><span>' + esc(p.name) + '</span><small>Projet</small></span></button>'); });
+    if (!res.length) return '<p class="empty card">Aucun résultat pour « ' + esc(srchQ.trim()) + ' ».</p>';
+    return '<div class="list">' + res.slice(0, 30).join('') + '</div>' + (res.length > 30 ? '<p class="hint">' + (res.length - 30) + ' autres résultats : précise ta recherche.</p>' : '');
+  }
+
+  /* --- Listes perso --- */
+  var LEMO = [[/course|super|marche|achat/, '🛒'], [/valise|voyage|vacance/, '🧳'], [/film|serie/, '🎬'], [/livre|lecture/, '📚'], [/cadeau|noel/, '🎁'], [/recette|cuisine|repas/, '🍳'], [/travaux|bricol|maison/, '🔨'], [/sport/, '💪']];
+  function listEmoji(n) { n = nrm(n); for (var i = 0; i < LEMO.length; i++) if (LEMO[i][0].test(n)) return LEMO[i][1]; return '📝'; }
+  function listsPane() {
+    var h = '<form class="add card" data-kind="list" autocomplete="off"><input type="text" name="t" placeholder="Nouvelle liste (ex. Courses, Valise…)" maxlength="60" aria-label="Nouvelle liste"><button type="submit" class="addplus" aria-label="Créer la liste">+</button></form>';
+    var ls = S.lists || [];
+    if (ls.length) h += '<div class="lcards">' + ls.map(function (l) { var d = l.items.filter(function (i) { return i.done; }).length; return '<button class="lcard" data-act="openlist" data-id="' + l.id + '"><span class="le">' + esc(l.emoji || '📝') + '</span><b>' + esc(l.name) + '</b><small>' + (l.items.length ? d + '/' + l.items.length + ' cochés' : 'Vide') + '</small></button>'; }).join('') + '</div>';
+    h += '<div class="sh"><h3>👥 Listes partagées</h3>' + (auth ? '<button class="lnk" data-act="slrefresh">Actualiser</button>' : '') + '</div>';
+    if (!cloudOn || !auth) h += '<p class="sub">Connecte-toi pour partager des listes.</p>';
+    else if (SL.err === 'notready') h += '<p class="sub card">Le partage n’est pas encore activé sur le serveur de Cadence.</p>';
+    else if (!SL.lists.length) h += '<p class="sub card">Partage une liste (courses de la maison, préparatifs…) avec ta famille ou tes amis : ouvre une liste et appuie sur « Partager ». Chacun peut ajouter et cocher, et tu vois qui a fait quoi.</p>';
+    else h += '<div class="lcards">' + SL.lists.map(function (l) { var it = SL.items[l.id], mem = (l.cadence_list_members || []).length; return '<button class="lcard sh2" data-act="openslist" data-id="' + l.id + '"><span class="le">' + esc(l.emoji || '📝') + '</span><b>' + esc(l.name) + '</b><small>👥 ' + plural(mem, 'membre', 'membres') + (it ? ' · ' + it.filter(function (i) { return i.done; }).length + '/' + it.length : '') + '</small></button>'; }).join('') + '</div>';
+    if (SL.msg) h += '<p class="sub" role="status">' + esc(SL.msg) + '</p>';
+    return h;
+  }
+  function listSheet() {
+    var l = listById(sheet.id); if (!l) { sheet = null; return ''; }
+    var h = '<div class="lhead"><span class="le">' + esc(l.emoji || '📝') + '</span><input type="text" class="lname" data-lname="' + l.id + '" value="' + esc(l.name) + '" maxlength="60" aria-label="Nom de la liste"></div><div class="list">' +
+      l.items.map(function (i) { return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.t) + '" data-act="litog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.t) + '</span></div><button class="x" data-act="lidel" data-id="' + i.id + '" aria-label="Retirer ' + esc(i.t) + '">×</button></div>'; }).join('') +
+      '<form class="add" data-kind="litem" data-id="' + l.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un élément" maxlength="200" aria-label="Nouvel élément"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>';
+    var dn = l.items.filter(function (i) { return i.done; }).length;
+    h += '<div class="btns">' + (dn ? '<button class="btn sm" data-act="liclear" data-id="' + l.id + '">Retirer les cochés (' + dn + ')</button>' : '') + (cloudOn && auth ? '<button class="btn sm primary" data-act="lshare" data-id="' + l.id + '"' + (SL.busy ? ' disabled' : '') + '>👥 Partager cette liste</button>' : '') + '</div>';
+    h += '<div class="btns"><button class="btn ' + (armKey === 'ldel:' + l.id ? 'armed' : 'danger') + '" data-act="ldel" data-id="' + l.id + '">' + (armKey === 'ldel:' + l.id ? 'Confirmer la suppression' : 'Supprimer la liste') + '</button><button class="btn ghost" data-act="sclose">Fermer</button></div>';
+    return h;
+  }
+
+  /* --- Listes partagées (Supabase) --- */
+  var SL = { lists: [], items: {}, err: '', busy: false, msg: '', at: 0 };
+  try { var slc = JSON.parse(localStorage.getItem('cadence.sl') || 'null'); if (slc && Array.isArray(slc.lists)) { SL.lists = slc.lists; SL.items = slc.items || {}; } } catch (e) {}
+  function slSave() { try { localStorage.setItem('cadence.sl', JSON.stringify({ lists: SL.lists, items: SL.items })); } catch (e) {} }
+  function slNotReady(er) { return er && (er.status === 404 || /PGRST20[25]|does not exist|schema cache/i.test((er.message || '') + (er.code || ''))); }
+  function slFail(er) { if (slNotReady(er)) { SL.err = 'notready'; return; } showToast(er && er.net ? 'Pas de connexion : réessaie plus tard.' : 'Erreur de partage : ' + ((er && er.message) || '')); }
+  function myName() { return (callName() || (auth && auth.email ? auth.email.split('@')[0] : '') || 'Moi').slice(0, 40); }
+  function slFetch(quiet) {
+    if (!cloudOn || !auth) return Promise.resolve();
+    SL.at = Date.now();
+    return authed('GET', '/rest/v1/cadence_lists?select=id,name,emoji,owner,code,cadence_list_members(user_id,name)&order=created_at.asc').then(function (r) {
+      SL.err = ''; SL.lists = Array.isArray(r) ? r : [];
+      Object.keys(SL.items).forEach(function (k) { if (!SL.lists.some(function (l) { return l.id === k; })) delete SL.items[k]; });
+      return Promise.all(SL.lists.map(function (l) { return slItems(l.id, true); }));
+    }).then(function () { slSave(); if (!quiet || tab === 'notes') softRender(); }).catch(function (er) { if (slNotReady(er)) { SL.err = 'notready'; softRender(); } });
+  }
+  function slItems(id, noRender) {
+    return authed('GET', '/rest/v1/cadence_list_items?list_id=eq.' + id + '&select=*&order=created_at.asc').then(function (r) { SL.items[id] = Array.isArray(r) ? r : []; slSave(); if (!noRender) softRender(); });
+  }
+  function softRender() { if (!editing()) render(); else { var s = document.getElementById('srch'); if (s && document.activeElement === s) return; } }
+  function slList(id) { return SL.lists.filter(function (l) { return l.id === id; })[0]; }
+  function slMembers(l) { return (l && l.cadence_list_members) || []; }
+  function slSheet() {
+    var l = slList(sheet.id); if (!l) { sheet = null; return ''; }
+    var it = SL.items[l.id] || [], mem = slMembers(l), me = auth ? auth.uid : '';
+    var nameOf = function (u) { var m = mem.filter(function (z) { return z.user_id === u; })[0]; return m ? (u === me ? 'Moi' : m.name || 'Membre') : ''; };
+    var h = '<div class="lhead"><span class="le">' + esc(l.emoji || '📝') + '</span><h2>' + esc(l.name) + '</h2></div><p class="sub">👥 ' + mem.map(function (m) { return esc(m.user_id === me ? 'Moi' : m.name || 'Membre'); }).join(', ') + '</p><div class="list">' +
+      it.map(function (i) {
+        var meta = [];
+        if (i.assignee) meta.push('👤 pour ' + esc(nameOf(i.assignee) || 'quelqu’un'));
+        if (i.done && i.done_by) meta.push('✓ par ' + esc(i.done_by) + (i.done_at ? ' ' + esc(whenShort(i.done_at)) : ''));
+        else if (i.created_name) meta.push('ajouté par ' + esc(i.created_name));
+        var row = '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.text) + '" data-act="sltog" data-id="' + i.id + '">' + CHECK + '</button><button class="txt" data-act="slpick" data-id="' + i.id + '"><span>' + esc(i.text) + '</span>' + (meta.length ? '<small>' + meta.join(' · ') + '</small>' : '') + '</button><button class="x" data-act="sldel" data-id="' + i.id + '" aria-label="Retirer ' + esc(i.text) + '">×</button></div>';
+        if (sheet.pick === i.id) row += '<div class="assign"><p class="sub">Donner cette tâche à :</p><div class="chips"><button class="chip" aria-pressed="' + !i.assignee + '" data-act="slassign" data-id="' + i.id + '" data-v="">Personne</button>' + mem.map(function (m) { return '<button class="chip" aria-pressed="' + (i.assignee === m.user_id) + '" data-act="slassign" data-id="' + i.id + '" data-v="' + m.user_id + '">' + esc(m.user_id === me ? 'Moi' : m.name || 'Membre') + '</button>'; }).join('') + '</div></div>';
+        return row;
+      }).join('') +
+      '<form class="add" data-kind="slitem" data-id="' + l.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un élément" maxlength="200" aria-label="Nouvel élément"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>' +
+      '<p class="hint">Touche un élément pour le donner à quelqu’un. La liste se met à jour toute seule toutes les 15 secondes.</p>' +
+      '<button class="btn primary big" data-act="slinvite" data-id="' + l.id + '">Inviter quelqu’un</button>' +
+      '<div class="btns"><button class="btn sm" data-act="slreload" data-id="' + l.id + '">Actualiser</button><button class="btn sm ' + (armKey === 'slq:' + l.id ? 'armed' : 'danger') + '" data-act="slquit" data-id="' + l.id + '">' + (armKey === 'slq:' + l.id ? 'Confirmer' : l.owner === me ? 'Supprimer la liste pour tous' : 'Quitter la liste') + '</button><button class="btn ghost" data-act="sclose">Fermer</button></div>';
+    return h;
+  }
+  function whenShort(isoT) { try { var d = new Date(isoT), day = iso(d); return (day === todayISO() ? 'à ' : 'le ' + dayShort(day) + ' à ') + p2(d.getHours()) + ':' + p2(d.getMinutes()); } catch (e) { return ''; } }
+  function slInviteUrl(l) { return location.origin + location.pathname + '?join=' + l.id + '~' + l.code; }
+  function slInvite(l) {
+    var url = slInviteUrl(l), txt = 'Rejoins ma liste « ' + l.name + ' » sur Cadence : ' + url;
+    try { if (navigator.share) { navigator.share({ title: 'Cadence', text: 'Rejoins ma liste « ' + l.name + ' » sur Cadence', url: url }).catch(function () {}); return; } } catch (e) {}
+    try { navigator.clipboard.writeText(txt).then(function () { showToast('Lien d’invitation copié : colle-le dans un message.'); render(); }, function () { prompt('Copie ce lien :', url); }); } catch (e) { showToast(url); render(); }
+  }
+  function slShare(l) {
+    SL.busy = true; render();
+    authed('POST', '/rest/v1/rpc/cadence_list_create', { p_name: l.name, p_emoji: l.emoji || '📝', p_member: myName() }).then(function (row) {
+      var rows = l.items.map(function (i) { return { list_id: row.id, text: i.t, done: !!i.done, done_by: i.done ? myName() : null, done_at: i.done ? new Date().toISOString() : null, created_name: myName() }; });
+      return (rows.length ? authed('POST', '/rest/v1/cadence_list_items', rows, { Prefer: 'return=minimal' }) : Promise.resolve()).then(function () { return row; });
+    }).then(function (row) {
+      S.lists = S.lists.filter(function (z) { return z.id !== l.id; }); save();
+      SL.busy = false; return slFetch(true).then(function () { sheet = { k: 'slist', id: row.id }; render(); var nl = slList(row.id); if (nl) slInvite(nl); });
+    }).catch(function (er) { SL.busy = false; slFail(er); if (SL.err === 'notready') showToast('Le partage n’est pas encore activé sur le serveur.'); render(); });
+  }
+  function slJoinPending() {
+    var j = ''; try { j = localStorage.getItem('cadence.join') || ''; } catch (e) {}
+    if (!j || !cloudOn || !auth || !S.profile.done) return;
+    var p = j.split('~'); if (p.length !== 2) { try { localStorage.removeItem('cadence.join'); } catch (e) {} return; }
+    authed('POST', '/rest/v1/rpc/cadence_list_join', { p_id: p[0], p_code: p[1], p_member: myName() }).then(function (r) {
+      try { localStorage.removeItem('cadence.join'); } catch (e) {}
+      showToast('Tu as rejoint la liste « ' + ((r && r.name) || '') + ' » 🎉');
+      return slFetch(true).then(function () { tab = 'notes'; notesView = 'lists'; sheet = { k: 'slist', id: p[0] }; render(); });
+    }).catch(function (er) {
+      if (er && er.net) return;
+      try { localStorage.removeItem('cadence.join'); } catch (e) {}
+      showToast(/invalide/i.test(er.message || '') ? 'Ce lien d’invitation n’est plus valable.' : 'Impossible de rejoindre la liste : ' + (er.message || '')); render();
+    });
+  }
+  function slAct(a, b) {
+    var id = b.dataset.id, l, it;
+    if (a === 'openslist') { sheet = { k: 'slist', id: id }; render(); slFetch(); return true; }
+    if (a === 'slrefresh') { slFetch(); return true; }
+    if (a === 'slreload') { slFetch(); return true; }
+    if (a === 'slinvite') { l = slList(id); if (l) slInvite(l); return true; }
+    if (a === 'slpick') { sheet.pick = sheet.pick === id ? '' : id; render(); return true; }
+    if (a === 'sltog' || a === 'slassign' || a === 'sldel') {
+      var lid = sheet && sheet.id, arr = SL.items[lid] || []; it = arr.filter(function (z) { return z.id === id; })[0]; if (!it) return true;
+      var patch, req;
+      if (a === 'sltog') { patch = { done: !it.done, done_by: !it.done ? myName() : null, done_at: !it.done ? new Date().toISOString() : null }; Object.assign(it, patch); uiSound(it.done ? 'tick' : 'untick'); req = authed('PATCH', '/rest/v1/cadence_list_items?id=eq.' + id, patch, { Prefer: 'return=minimal' }); if (it.done) confetti(false, b); }
+      else if (a === 'slassign') { patch = { assignee: b.dataset.v || null }; Object.assign(it, patch); sheet.pick = ''; req = authed('PATCH', '/rest/v1/cadence_list_items?id=eq.' + id, patch, { Prefer: 'return=minimal' }); }
+      else { SL.items[lid] = arr.filter(function (z) { return z.id !== id; }); uiSound('del'); req = authed('DELETE', '/rest/v1/cadence_list_items?id=eq.' + id); }
+      slSave(); render(); req.then(function () { return slItems(lid); }).catch(function (er) { slFail(er); slItems(lid).catch(function () {}); render(); });
+      return true;
+    }
+    if (a === 'slquit') {
+      if (!arm('slq:' + id)) return true;
+      authed('POST', '/rest/v1/rpc/cadence_list_leave', { p_id: id }).then(function () { SL.lists = SL.lists.filter(function (z) { return z.id !== id; }); delete SL.items[id]; slSave(); sheet = null; showToast('Liste retirée'); render(); }).catch(function (er) { slFail(er); render(); });
+      return true;
+    }
+    return false;
+  }
+  function slAddItem(id, text) {
+    var arr = SL.items[id] = SL.items[id] || [], tmp = { id: 'tmp' + uid(), list_id: id, text: text, done: false, created_name: myName() };
+    arr.push(tmp); uiSound('pop'); render();
+    authed('POST', '/rest/v1/cadence_list_items', { list_id: id, text: text, created_name: myName() }, { Prefer: 'return=minimal' }).then(function () { return slItems(id); }).catch(function (er) { SL.items[id] = arr.filter(function (z) { return z !== tmp; }); slFail(er); render(); });
+  }
+
+  /* --- Projets --- */
+  function projStats(p) { var its = S.items.filter(function (x) { return x.proj === p.id && !x.rep; }); return { n: its.length, d: its.filter(function (x) { return x.done; }).length }; }
+  function projPane() {
+    var h = '<form class="add card" data-kind="proj" autocomplete="off"><input type="text" name="t" placeholder="Nouveau projet (ex. Déménagement)" maxlength="60" aria-label="Nouveau projet"><button type="submit" class="addplus" aria-label="Créer le projet">+</button></form>';
+    var ps = S.projects || [];
+    if (!ps.length) return h + '<p class="empty card">Un projet regroupe plusieurs tâches (un déménagement, un voyage, un dossier…) et montre ta progression.</p>';
+    return h + '<div class="list">' + ps.map(function (p) { var st = projStats(p), pc = st.n ? Math.round(st.d / st.n * 100) : 0; return '<button class="row prow" data-act="openproj" data-id="' + p.id + '" style="--c:' + p.color + '"><span class="he">' + esc(p.emoji || '📁') + '</span><span class="txt"><span>' + esc(p.name) + '</span><small>' + (st.n ? st.d + '/' + st.n + ' tâches · ' + pc + ' %' : 'Aucune tâche') + '</small><span class="bar"><i style="width:' + pc + '%;background:' + p.color + '"></i></span></span></button>'; }).join('') + '</div>';
+  }
+  function projSheet() {
+    var p = projOf(sheet.id); if (!p) { sheet = null; return ''; }
+    var its = S.items.filter(function (x) { return x.proj === p.id; }).sort(function (a, b) { return (a.done ? 1 : 0) - (b.done ? 1 : 0) || (a.d < b.d ? -1 : 1); });
+    var h = '<div class="lhead"><span class="le">' + esc(p.emoji || '📁') + '</span><input type="text" class="lname" data-pname="' + p.id + '" value="' + esc(p.name) + '" maxlength="60" aria-label="Nom du projet"></div><div class="list">' +
+      its.map(function (x) { var o = occ(x, x.rep ? todayISO() : x.d); return '<div class="row' + (o.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!o.done + '" aria-label="' + (o.done ? 'Décocher' : 'Cocher') + ' : ' + esc(x.text) + '" data-act="itog" data-id="' + x.id + '" data-d="' + o.d + '">' + CHECK + '</button><button class="txt" data-act="iedit" data-id="' + x.id + '" data-d="' + o.d + '"><span>' + esc(x.text) + '</span><small>' + esc(x.rep ? repShort(x) : cap1(relDay(x.d) || dayShort(x.d))) + (x.time ? ' à ' + x.time : '') + '</small></button></div>'; }).join('') +
+      '<form class="add" data-kind="ptask" data-id="' + p.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter une tâche au projet" maxlength="200" aria-label="Nouvelle tâche du projet"><input type="date" name="d" value="' + todayISO() + '" aria-label="Jour"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>' +
+      '<div class="f"><p class="sub">Couleur</p><div class="sw">' + CATCOL.map(function (c) { return '<button aria-pressed="' + (p.color === c) + '" aria-label="Couleur" data-act="pcol" data-id="' + p.id + '" data-v="' + c + '" style="background:' + c + '"></button>'; }).join('') + '</div></div>' +
+      '<div class="btns"><button class="btn ' + (armKey === 'pdel:' + p.id ? 'armed' : 'danger') + '" data-act="pdel" data-id="' + p.id + '">' + (armKey === 'pdel:' + p.id ? 'Confirmer (les tâches restent)' : 'Supprimer le projet') + '</button><button class="btn ghost" data-act="sclose">Fermer</button></div>';
+    return h;
+  }
+  function viewNotes() {
+    var h = '<div class="srch"><input type="search" id="srch" data-keep placeholder="🔍 Rechercher partout (tâches, notes, listes…)" aria-label="Rechercher" autocomplete="off" value="' + esc(srchQ) + '"></div><div id="srch-res">' + searchHtml(srchQ) + '</div>';
+    if (srchQ.trim().length >= 2) return h;
+    h += '<div class="seg" role="group" aria-label="Section">' + [['notes', 'Notes'], ['lists', 'Listes'], ['proj', 'Projets']].map(function (v) { return '<button aria-pressed="' + (notesView === v[0]) + '" data-act="nview" data-v="' + v[0] + '">' + v[1] + '</button>'; }).join('') + '</div>';
+    return h + (notesView === 'lists' ? listsPane() : notesView === 'proj' ? projPane() : notesPane());
+  }
+  /* --- objectifs : chiffrés et étapes --- */
+  function goalRow(g) {
+    var sub = '';
+    if (g.target) { var pc = Math.min(100, Math.round((g.cur || 0) / g.target * 100)); sub = '<span class="gprog"><button class="gpm" data-act="gdec" data-id="' + g.id + '" aria-label="Moins 1">−</button><span class="bar"><i style="width:' + pc + '%"></i></span><b>' + (g.cur || 0) + '/' + g.target + '</b><button class="gpm" data-act="ginc" data-id="' + g.id + '" aria-label="Plus 1">+</button></span>'; }
+    else if (g.steps && g.steps.length) { var sd = g.steps.filter(function (s) { return s.done; }).length; sub = '<small>' + sd + '/' + g.steps.length + ' étapes</small>'; }
+    return '<div class="row' + (g.done ? ' done' : '') + '" data-rid="g|' + g.id + '"><button class="ck" aria-pressed="' + !!g.done + '" aria-label="' + (g.done ? 'Décocher' : 'Cocher') + ' : ' + esc(g.text) + '" data-act="gtog" data-id="' + g.id + '">' + CHECK + '</button>' +
+      '<div class="txt gtxt"><button class="gopen" data-act="gedit" data-id="' + g.id + '"><span>' + esc(g.text) + '</span></button>' + sub + '</div><button class="x" aria-label="Supprimer : ' + esc(g.text) + '" data-act="gdel" data-id="' + g.id + '">×</button></div>';
+  }
+  function goalSheet() {
+    var g = goalById(sheet.id); if (!g) { sheet = null; return ''; }
+    var h = '<h2>Objectif</h2><form id="gform" autocomplete="off"><label class="f">Objectif<input type="text" id="g-text" data-keep maxlength="200" value="' + esc(g.text) + '"></label>' +
+      '<div class="cols"><label class="f">Nombre à atteindre (facultatif)<input type="number" id="g-target" data-keep inputmode="numeric" min="0" max="100000" value="' + (g.target || '') + '" placeholder="Ex. 12"></label><label class="f">Déjà fait<input type="number" id="g-cur" data-keep inputmode="numeric" min="0" max="100000" value="' + (g.cur || 0) + '"></label></div>' +
+      '<p class="hint">Exemple : « Lire 12 livres » : mets 12, puis appuie sur + à chaque livre terminé.</p>' +
+      '<div class="f"><p class="sub">Étapes</p><div class="list">' + (g.steps || []).map(function (s) { return '<div class="row' + (s.done ? ' done' : '') + '"><button type="button" class="ck" aria-pressed="' + !!s.done + '" aria-label="' + (s.done ? 'Décocher' : 'Cocher') + ' : ' + esc(s.t) + '" data-act="gstep" data-id="' + s.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(s.t) + '</span></div><button type="button" class="x" data-act="gstepdel" data-id="' + s.id + '" aria-label="Retirer l’étape ' + esc(s.t) + '">×</button></div>'; }).join('') +
+      '<div class="add"><input type="text" id="g-step" data-keep maxlength="120" placeholder="Ajouter une étape" aria-label="Nouvelle étape"><button type="button" class="addplus" data-act="gstepadd" aria-label="Ajouter l’étape">+</button></div></div></div>' +
+      '<button type="submit" class="btn primary big">Enregistrer</button><div class="btns"><button type="button" class="btn danger" data-act="gdel" data-id="' + g.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Fermer</button></div></form>';
+    return h;
+  }
+  function goalReached(g, btn) { if (!g.done) { g.done = true; g.doneAt = todayISO(); confetti(true); showToast('🎯 Objectif atteint : ' + g.text); badgeCheck(); } }
+
+  /* --- tableau de rêves --- */
+  function dreamsHtml() {
+    var ds = S.dreams || [];
+    return '<section class="blk"><div class="sh"><h3>Mon tableau de rêves<small>Les images de ce que tu veux vivre</small></h3></div><div class="dreams">' +
+      ds.map(function (d) { return '<button class="dream" data-act="dedit" data-id="' + d.id + '"><img src="' + esc(d.img) + '" alt="' + esc(d.text || 'Rêve') + '">' + (d.text ? '<span>' + esc(d.text) + '</span>' : '') + '</button>'; }).join('') +
+      (ds.length < 12 ? '<label class="dream add-d" for="dream-file"><span>＋</span><small>Ajouter une image</small><input type="file" id="dream-file" accept="image/*" hidden></label>' : '') + '</div></section>';
+  }
+  function dreamSheet() {
+    var d = dreamById(sheet.id); if (!d) { sheet = null; return ''; }
+    return '<img class="dbig" src="' + esc(d.img) + '" alt=""><form id="dform" autocomplete="off"><label class="f">Légende<input type="text" id="d-text" data-keep maxlength="80" value="' + esc(d.text || '') + '" placeholder="Ex. Voyager au Japon"></label><button type="submit" class="btn primary big">Enregistrer</button>' +
+      '<div class="btns"><button type="button" class="btn danger" data-act="ddel" data-id="' + d.id + '">Retirer l’image</button><button type="button" class="btn ghost" data-act="sclose">Fermer</button></div></form>';
+  }
+
+  /* --- habitudes : jours, rappel, modèles --- */
+  function habOn(h, day) { return !h.days || !h.days.length || h.days.indexOf(dow(day)) >= 0; }
+  function habStreak(h) {
+    var t = todayISO(), d = t, n = 0, i = 0, log = h.log || {};
+    if (habOn(h, t) && !log[t]) d = addDays(t, -1);
+    while (i++ < 3650) { if (!habOn(h, d)) { d = addDays(d, -1); continue; } if (log[d]) { n++; d = addDays(d, -1); } else break; }
+    return n;
+  }
+  function habDaysLabel(h) { if (!h.days || !h.days.length || h.days.length === 7) return 'Tous les jours'; if (h.days.length === 5 && [1, 2, 3, 4, 5].every(function (k) { return h.days.indexOf(k) >= 0; })) return 'En semaine'; return h.days.slice().sort().map(function (k) { return JC[k - 1]; }).join(' '); }
+  function habitsDay(day) {
+    var all = S.habits || [], hs = all.filter(function (h) { return habOn(h, day); });
+    if (!all.length) return day === todayISO() ? '<section class="blk"><div class="sh"><h3>Habitudes</h3></div><button class="card habempty" data-act="tab" data-v="goals">🌱 Ajoute tes habitudes du quotidien (boire de l’eau, lire, sport…) et coche-les chaque jour.</button></section>' : '';
+    if (!hs.length) return '';
+    var dn = hs.filter(function (h) { return (h.log || {})[day]; }).length;
+    return '<section class="blk"><div class="sh"><h3>Habitudes</h3><span class="cnt">' + dn + '/' + hs.length + '</span></div><div class="habs">' + hs.map(function (h) {
+      var on = !!(h.log || {})[day], st = habStreak(h);
+      return '<button class="hab" aria-pressed="' + on + '" data-act="htog" data-id="' + h.id + '" data-d="' + day + '"><span class="he">' + esc(h.emoji || '✓') + '</span><span>' + esc(h.name) + '</span>' + (st ? '<small>🔥' + st + '</small>' : '') + '</button>';
+    }).join('') + '</div></section>';
+  }
+  function habitsManage() {
+    var hs = S.habits || [], t = todayISO();
+    var h = '<section class="blk"><div class="sh"><h3>Mes habitudes<small>Touche une habitude pour choisir ses jours et son rappel</small></h3></div><div class="list">';
+    h += hs.map(function (x) {
+      var dots = ''; for (var i = 6; i >= 0; i--) { var d = addDays(t, -i); dots += '<i class="' + ((x.log || {})[d] ? 'on' : habOn(x, d) ? '' : 'off') + '" title="' + esc(dayLong(d)) + '"></i>'; }
+      return '<div class="row habrow"><span class="he">' + esc(x.emoji || '✓') + '</span><button class="txt" data-act="hedit" data-id="' + x.id + '"><span>' + esc(x.name) + '</span><small>🔥 ' + plural(habStreak(x), 'jour', 'jours') + ' · ' + esc(habDaysLabel(x)) + (x.rem ? ' · 🔔 ' + x.rem : '') + '</small></button><span class="hdots" aria-label="7 derniers jours">' + dots + '</span></div>';
+    }).join('');
+    h += '<form class="add" data-kind="habit" autocomplete="off"><input type="text" name="t" placeholder="Nouvelle habitude (ex. Boire 1,5 L d’eau)" maxlength="40" aria-label="Nouvelle habitude"><button type="submit" class="addplus" aria-label="Ajouter l’habitude">+</button></form></div>';
+    var ideas = HTPL.filter(function (x) { return !hs.some(function (z) { return z.name === x[1]; }); });
+    if (ideas.length) h += '<div class="f"><p class="sub">Idées en un appui</p><div class="chips">' + ideas.slice(0, 8).map(function (x) { return '<button class="chip" data-act="htpl" data-v="' + HTPL.indexOf(x) + '">＋ ' + x[0] + ' ' + esc(x[1]) + '</button>'; }).join('') + '</div></div>';
+    return h + '</section>';
+  }
+  function habitSheet() {
+    var x = habById(sheet.id); if (!x) { sheet = null; return ''; }
+    if (!sheet.days) sheet.days = (x.days || []).slice();
+    if (sheet.emoji === undefined) sheet.emoji = x.emoji || '✓';
+    return '<h2>Habitude</h2><form id="hform" autocomplete="off"><label class="f">Nom<input type="text" id="h-name" data-keep maxlength="40" value="' + esc(x.name) + '"></label>' +
+      '<div class="f"><p class="sub">Emoji</p><div class="chips">' + HEMO.concat(['📵', '🦷', '🌱', '💊', '🚶']).map(function (e) { return '<button type="button" class="chip emo" aria-pressed="' + (sheet.emoji === e) + '" data-act="hemo" data-v="' + e + '">' + e + '</button>'; }).join('') + '</div></div>' +
+      '<div class="f"><p class="sub">Quels jours ? (aucun choisi = tous les jours)</p><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(function (k) { return '<button type="button" class="chip" aria-pressed="' + (sheet.days.indexOf(k) >= 0) + '" data-act="hday" data-v="' + k + '">' + JC[k - 1] + '</button>'; }).join('') + '</div></div>' +
+      '<label class="f">Rappel (facultatif)<input type="time" id="h-rem" data-keep value="' + esc(x.rem || '') + '"></label><p class="hint">Le rappel arrive seulement les jours choisis, si l’habitude n’est pas encore cochée.</p>' +
+      '<button type="submit" class="btn primary big">Enregistrer</button><div class="btns"><button type="button" class="btn ' + (armKey === 'hab:' + x.id ? 'armed' : 'danger') + '" data-act="hdel" data-id="' + x.id + '">' + (armKey === 'hab:' + x.id ? 'Confirmer la suppression' : 'Supprimer') + '</button><button type="button" class="btn ghost" data-act="sclose">Fermer</button></div></form>';
+  }
+
+  /* --- série avec joker (1 jour manqué par semaine pardonné) --- */
+  function streakInfo() {
+    var set = doneDays(), t = todayISO(), d = set[t] ? t : addDays(t, -1), n = 0, used = {}, i = 0, jk = [];
+    while (i++ < 3650) {
+      if (set[d]) { n++; d = addDays(d, -1); continue; }
+      var wk = weekStart(d), prev = addDays(d, -1);
+      if (n > 0 && !used[wk] && set[prev]) { used[wk] = 1; jk.push(d); d = prev; continue; }
+      break;
+    }
+    var best = 0, run = 0, keys = Object.keys(set).sort(), pv = '';
+    keys.forEach(function (k) { run = (pv && addDays(pv, 1) === k) ? run + 1 : 1; pv = k; if (run > best) best = run; });
+    var thisWk = weekStart(t);
+    return { cur: n, best: Math.max(best, n), today: !!set[t], jokerUsed: !!used[thisWk] || jk.some(function (x) { return weekStart(x) === thisWk; }), jokers: jk };
+  }
+
+  /* --- statistiques --- */
+  function barsHtml(vals, fmt, now) {
+    var mx = 1; vals.forEach(function (v) { if (v[1] > mx) mx = v[1]; });
+    var many = vals.length > 7;
+    return '<div class="bars' + (many ? ' many' : '') + '" style="grid-template-columns:repeat(' + vals.length + ',1fr)">' + vals.map(function (v) {
+      return '<div class="bcol' + (v[0] === now ? ' now' : '') + '"><span class="bv">' + (v[1] && !many ? fmt(v[1]) : '') + '</span><i style="height:' + Math.max(4, Math.round(v[1] / mx * 100)) + '%" title="' + esc(dayShort(v[0]) + ' : ' + fmt(v[1])) + '"></i><small>' + (many ? (parseISO(v[0]).getDate() % 5 === 0 ? parseISO(v[0]).getDate() : '') : JL[dow(v[0]) - 1]) + '</small></div>';
+    }).join('') + '</div>';
+  }
+  function statsHtml() {
+    var t = todayISO(), st = streakInfo(), T = totals(), e = earned(), n = statsRange, a = addDays(t, -(n - 1));
+    var tv = [], pv = [], wkT = 0, wkM = 0;
+    for (var i = 0; i < n; i++) { var d = addDays(a, i); tv.push([d, doneOnDay(d)]); pv.push([d, pminDay(d)]); }
+    var ws = weekStart(t); for (var k = 0; k < 7; k++) { wkT += doneOnDay(addDays(ws, k)); wkM += pminDay(addDays(ws, k)); }
+    var h = '<section class="blk prog2"><div class="sh"><h3>Mes statistiques</h3></div><div class="tiles">' +
+      '<div class="tile"><b>🔥 ' + st.cur + '</b><span>jour' + (st.cur > 1 ? 's' : '') + ' d’affilée</span></div>' +
+      '<div class="tile"><b>' + wkT + '</b><span>tâche' + (wkT > 1 ? 's' : '') + ' cette semaine</span></div>' +
+      '<div class="tile"><b>' + (wkM >= 60 ? Math.floor(wkM / 60) + ' h' + (wkM % 60 ? p2(wkM % 60) : '') : wkM + ' min') + '</b><span>de concentration cette semaine</span></div></div>' +
+      '<p class="hint jk">🛡️ ' + (st.jokerUsed ? 'Joker utilisé cette semaine : ta série a été protégée.' : 'Joker disponible : si tu manques un jour cette semaine, ta série est protégée.') + '</p>' +
+      segOpt('srange', n, [[7, '7 jours'], [30, '30 jours']], 'Période') +
+      '<div class="card"><p class="sub">Tâches faites par jour</p>' + barsHtml(tv, function (v) { return v; }, t) + '</div>' +
+      '<div class="card"><p class="sub">Temps de concentration (Pomodoro)</p>' + barsHtml(pv, function (v) { return v >= 60 ? Math.floor(v / 60) + 'h' + (v % 60 ? p2(v % 60) : '') : v + "'"; }, t) + pomoCats(a, n) + '</div>';
+    var hs = S.habits || [];
+    if (hs.length) h += '<div class="card"><p class="sub">Habitudes sur 30 jours</p><div class="hstats">' + hs.map(function (x) {
+      var sch = 0, ok = 0, dots = ''; for (var j = 29; j >= 0; j--) { var dd = addDays(t, -j); if (habOn(x, dd)) { sch++; if ((x.log || {})[dd]) ok++; } if (j < 14) dots += '<i class="' + ((x.log || {})[dd] ? 'on' : habOn(x, dd) ? '' : 'off') + '"></i>'; }
+      var pc = sch ? Math.round(ok / sch * 100) : 0;
+      return '<div class="hst"><span class="he">' + esc(x.emoji || '✓') + '</span><div><b>' + esc(x.name) + '</b><span class="hdots">' + dots + '</span></div><b class="pc2">' + pc + ' %</b></div>';
+    }).join('') + '</div></div>';
+    var rec = records();
+    h += '<div class="card"><p class="sub">Records</p><div class="recs">' +
+      '<div><b>🔥 ' + plural(st.best, 'jour', 'jours') + '</b><small>meilleure série</small></div>' +
+      '<div><b>🏆 ' + (rec.bestN ? plural(rec.bestN, 'tâche', 'tâches') : '–') + '</b><small>' + (rec.bestN ? 'meilleure journée (' + esc(dayShort(rec.bestD)) + ')' : 'meilleure journée') + '</small></div>' +
+      '<div><b>📅 ' + (rec.wd ? cap1(JOURS[rec.wd - 1]) : '–') + '</b><small>ton jour le plus productif</small></div>' +
+      '<div><b>⏱ ' + dur2(rec.mins) + '</b><small>de concentration au total</small></div>' +
+      '<div><b>✅ ' + T.tasks + '</b><small>' + (T.tasks > 1 ? 'tâches faites' : 'tâche faite') + ' au total</small></div>' +
+      '<div><b>🎯 ' + T.goals + '</b><small>' + (T.goals > 1 ? 'objectifs atteints' : 'objectif atteint') + '</small></div></div></div>';
+    h += '<button class="btn" data-act="month">📊 Bilan ' + esc(deM(parseISO(addMonths(t, -1)).getMonth())) + '</button>';
+    h += '<div class="sh"><h3>Badges</h3><span class="cnt">' + e.length + '/' + BADGES.length + '</span></div><div class="badges">' +
+      BADGES.map(function (b) { var on = e.indexOf(b[0]) >= 0; return '<div class="bdg' + (on ? ' on' : '') + '"><span class="be">' + b[1] + '</span><b>' + esc(b[2]) + '</b><small>' + esc(b[3]) + '</small></div>'; }).join('') + '</div></section>';
+    return h;
+  }
+  function pomoCats(a, n) {
+    var by = {}, tot = 0;
+    for (var i = 0; i < n; i++) { var o = ((S.pmin || {})[addDays(a, i)] || {}).c || {}; Object.keys(o).forEach(function (k) { by[k] = (by[k] || 0) + o[k]; tot += o[k]; }); }
+    var ks = Object.keys(by).sort(function (x, y) { return by[y] - by[x]; });
+    if (!tot) return '<p class="hint">Lance un Pomodoro avec « Commencer » sur une tâche pour voir ton temps par catégorie.</p>';
+    return '<div class="pcats">' + ks.map(function (k) { var c = catOf(k); return '<div class="pcat"><span><i class="cd" style="background:' + (c ? c.color : '#9DA2BD') + '"></i>' + esc(c ? c.name : 'Sans catégorie') + '</span><span class="bar"><i style="width:' + Math.round(by[k] / tot * 100) + '%;background:' + (c ? c.color : '#9DA2BD') + '"></i></span><b>' + dur2(by[k]) + '</b></div>'; }).join('') + '</div>';
+  }
+  function records() {
+    var cnt = {}, wdS = [0, 0, 0, 0, 0, 0, 0, 0], wdN = [0, 0, 0, 0, 0, 0, 0, 0];
+    S.items.forEach(function (x) { if (x.rep) (x.doneOn || []).forEach(function (d) { cnt[d] = (cnt[d] || 0) + 1; }); else if (x.done && x.doneAt) cnt[x.doneAt] = (cnt[x.doneAt] || 0) + 1; });
+    var bestD = '', bestN = 0; Object.keys(cnt).forEach(function (d) { if (cnt[d] > bestN) { bestN = cnt[d]; bestD = d; } wdS[dow(d)] += cnt[d]; wdN[dow(d)]++; });
+    var wd = 0, wv = 0; for (var k = 1; k <= 7; k++) if (wdS[k] > wv) { wv = wdS[k]; wd = k; }
+    var mins = 0; Object.keys(S.pmin || {}).forEach(function (d) { mins += S.pmin[d].m || 0; });
+    return { bestD: bestD, bestN: bestN, wd: wd, mins: mins };
+  }
+
+  /* --- bilan du mois --- */
+  function deM(i) { var m = MOIS[i]; return (/^[aeiou]/.test(m) ? 'd’' : 'de ') + m; }
+  function monthStats(key) {
+    var d = key + '-01', tasks = 0, mins = 0, best = 0, bestD = '', cats = {};
+    while (d.slice(0, 7) === key) { var c = doneOnDay(d); tasks += c; if (c > best) { best = c; bestD = d; } mins += pminDay(d); d = addDays(d, 1); }
+    S.items.forEach(function (x) { var n = x.rep ? (x.doneOn || []).filter(function (z) { return z.slice(0, 7) === key; }).length : (x.done && (x.doneAt || '').slice(0, 7) === key ? 1 : 0); if (n && x.cat) cats[x.cat] = (cats[x.cat] || 0) + n; });
+    var top = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; })[0], tc = top ? catOf(top) : null;
+    var gs = goalsOf('m', key), gd = gs.filter(function (g) { return g.done; }).length;
+    var hs = S.habits || [], sch = 0, ok = 0; d = key + '-01';
+    while (d.slice(0, 7) === key && d <= todayISO()) { hs.forEach(function (h) { if (habOn(h, d)) { sch++; if ((h.log || {})[d]) ok++; } }); d = addDays(d, 1); }
+    return { tasks: tasks, mins: mins, best: best, bestD: bestD, top: tc ? tc.name : '', gs: gs.length, gd: gd, hab: sch ? Math.round(ok / sch * 100) : null };
+  }
+  function monthBody(key) {
+    var m = monthStats(key);
+    return '<div class="tiles"><div class="tile"><b>' + m.tasks + '</b><span>tâches faites</span></div><div class="tile"><b>' + (m.mins >= 60 ? Math.floor(m.mins / 60) + ' h' : m.mins + ' min') + '</b><span>de concentration</span></div><div class="tile"><b>' + (m.gs ? m.gd + '/' + m.gs : '–') + '</b><span>objectifs du mois</span></div></div>' +
+      '<ul class="mrl">' + (m.best ? '<li>🏆 Meilleure journée : ' + esc(dayShort(m.bestD)) + ' (' + plural(m.best, 'tâche', 'tâches') + ')</li>' : '') + (m.top ? '<li>🏷️ Catégorie la plus active : ' + esc(m.top) + '</li>' : '') + (m.hab !== null ? '<li>🌱 Habitudes tenues à ' + m.hab + ' %</li>' : '') + '</ul>' +
+      '<p class="sub">' + (m.tasks ? 'Bravo pour ce mois ' + deM(+key.slice(5) - 1) + ' ! Continue sur cette lancée.' : 'Un nouveau mois commence : c’est le bon moment pour repartir.') + '</p>';
+  }
+  function monthShareText(key) { var m = monthStats(key); return 'Mon mois ' + deM(+key.slice(5) - 1) + ' sur Cadence : ' + plural(m.tasks, 'tâche faite', 'tâches faites') + ', ' + dur2(m.mins) + ' de concentration' + (m.gs ? ', ' + m.gd + '/' + m.gs + ' objectifs atteints' : '') + ' 💪 https://cadence-agenda.github.io'; }
+  function monthReviewCard() {
+    var t = todayISO(), key = addMonths(t, -1).slice(0, 7);
+    if (+t.slice(8) > 5 || S.settings.mrSeen === key) return '';
+    return '<section class="card review"><h3>📊 Ton bilan ' + esc(deM(+key.slice(5) - 1)) + '</h3>' + monthBody(key) + '<div class="btns"><button class="btn primary sm" data-act="mshare" data-v="' + key + '">Partager</button><button class="btn sm ghost" data-act="mrok" data-v="' + key + '">OK</button></div></section>';
+  }
+  function monthSheet() { var key = sheet.v || addMonths(todayISO(), -1).slice(0, 7); return '<h2>Bilan ' + esc(deM(+key.slice(5) - 1)) + ' ' + key.slice(0, 4) + '</h2>' + monthBody(key) + '<button class="btn primary big" data-act="mshare" data-v="' + key + '">Partager</button><button class="btn" data-act="sclose">Fermer</button>'; }
+  function shareText(txt) {
+    try { if (navigator.share) { navigator.share({ text: txt }).catch(function () {}); return; } } catch (e) {}
+    try { navigator.clipboard.writeText(txt).then(function () { showToast('Texte copié : colle-le où tu veux.'); render(); }); } catch (e) {}
+  }
+
+  /* --- Pomodoro : objectif du jour --- */
+  function pomoGoalCard() {
+    var g = S.settings.pomoGoal || 4, n = plogDay(todayISO()), ic = '';
+    for (var i = 0; i < Math.max(g, n); i++) ic += '<i class="' + (i < n ? 'on' : '') + '">🍅</i>';
+    return '<section class="card pgoal"><div class="sh"><h3>Objectif du jour</h3><span class="cnt">' + n + '/' + g + '</span></div><div class="toms" aria-label="' + n + ' sessions sur ' + g + '">' + ic + '</div>' +
+      '<div class="stp pgs"><button data-act="pgoal" data-v="-1" aria-label="Objectif moins 1">−</button><span>' + plural(g, 'session', 'sessions') + '<small>par jour</small></span><button data-act="pgoal" data-v="1" aria-label="Objectif plus 1">+</button></div>' +
+      (n >= g ? '<p class="okmsg">🎉 Objectif atteint, bravo !</p>' : '') + '</section>';
+  }
+  /* --- notifications même appli fermée (Web Push) --- */
+  var VAPID_PUB = 'BOYfEVL5xzEK5RUeZ-RsJPMDUyhz2sgedmQsUpS5yiH37Pgq_ffYyZuSu-4UUR3VNfECUOnqBJ5i4b3sDkh505Q';
+  var pushBusy = false, pushMsg = '', pushTm = 0, pushSrv = '';
+  function pushSupported() { try { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && /^https?:/.test(location.protocol); } catch (e) { return false; } }
+  function pushOn() { try { return localStorage.getItem('cadence.push') === '1' && 'Notification' in window && Notification.permission === 'granted'; } catch (e) { return false; } }
+  function pushState() { if (!pushSupported()) return 'unsupported'; if (Notification.permission === 'denied') return 'denied'; return pushOn() ? 'on' : 'off'; }
+  function u8(b64) { var s = b64.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; var r = atob(s), o = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) o[i] = r.charCodeAt(i); return o; }
+  function pushEnable() {
+    if (!pushSupported()) { pushMsg = 'Ton navigateur ne permet pas les notifications ici. Installe Cadence sur l’écran d’accueil, puis réessaie.'; render(); return; }
+    if (cloudOn && !auth) return;
+    pushBusy = true; pushMsg = ''; render();
+    Notification.requestPermission().then(function (p) {
+      if (p !== 'granted') throw new Error(p === 'denied' ? 'denied' : 'dismissed');
+      return navigator.serviceWorker.ready;
+    }).then(function (reg) {
+      return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(VAPID_PUB) }); });
+    }).then(function (sub) {
+      var j = sub.toJSON();
+      return authed('POST', '/rest/v1/rpc/cadence_push_sub', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth }).then(function () { try { localStorage.setItem('cadence.push', '1'); localStorage.setItem('cadence.push.ep', j.endpoint); localStorage.removeItem('cadence.push.h'); } catch (e) {} });
+    }).then(function () {
+      pushBusy = false; pushSrv = ''; pushMsg = ''; showToast('🔔 Notifications activées'); render(); pushSync(true);
+    }).catch(function (er) {
+      pushBusy = false;
+      var m = String((er && er.message) || '');
+      if (m === 'denied') pushMsg = 'Notifications refusées. Pour les autoriser : réglages du navigateur, Paramètres des sites, Notifications.';
+      else if (m === 'dismissed') pushMsg = 'Tu n’as pas encore autorisé les notifications.';
+      else if (slNotReady(er)) { pushSrv = 'notready'; pushMsg = 'Le serveur de notifications de Cadence n’est pas encore activé.'; }
+      else if (er && er.net) pushMsg = 'Pas de connexion internet.';
+      else pushMsg = 'Impossible d’activer les notifications : ' + m;
+      render();
+    });
+  }
+  function pushDisable(quiet) {
+    var ep = ''; try { ep = localStorage.getItem('cadence.push.ep') || ''; localStorage.removeItem('cadence.push'); localStorage.removeItem('cadence.push.h'); } catch (e) {}
+    var p = Promise.resolve();
+    if (ep && auth) p = authed('POST', '/rest/v1/rpc/cadence_push_unsub', { p_endpoint: ep }).catch(function () {});
+    try { if (navigator.serviceWorker) navigator.serviceWorker.ready.then(function (r) { return r.pushManager.getSubscription(); }).then(function (s) { if (s) s.unsubscribe(); }).catch(function () {}); } catch (e) {}
+    if (!quiet) { showToast('Notifications désactivées'); render(); }
+    return p;
+  }
+  var MOTIV = ['Tu gères !', 'Un pas de plus vers une vie organisée.', 'Allez, c’est le moment.', 'Petit effort, grande fierté.', 'Coche-la et savoure.', 'Tu vas assurer.'];
+  function pushRows() {
+    var t = todayISO(), now = Date.now(), rows = [], st = streakInfo(), tz = tzName(), s = S.settings;
+    var motiv = function (i) { return st.cur >= 2 ? '🔥 Série de ' + st.cur + ' jours, continue !' : MOTIV[i % MOTIV.length]; };
+    for (var k = 0; k < 8; k++) {
+      var day = addDays(t, k), its = itemsOn(day);
+      if (s.nTask !== false) its.forEach(function (x, i) {
+        if (x.done || !x.time) return;
+        [x.rem, x.src.rem2].forEach(function (r) {
+          if (r === '' || r === undefined || r === null) return;
+          var at = atOf(day, x.time).getTime() - (+r) * 60000; if (at <= now) return;
+          var c = catOf(x.cat), bits = [(day === t ? 'Aujourd’hui' : day === addDays(t, 1) ? 'Demain' : cap1(dayLong(day))) + ' à ' + x.time];
+          if (c) bits.push(c.name); if (x.src.dur) bits.push('⏱ ' + dur2(+x.src.dur)); if (x.src.loc) bits.push('📍 ' + x.src.loc);
+          rows.push({ at: new Date(at).toISOString(), p: { title: (x.prio ? '⭐ ' : '🔔 ') + x.text, body: bits.join(' · ') + '\n' + motiv(i), tag: 'it-' + x.id + '-' + day + '-' + r, url: './?tab=today', actions: true }, ref: { k: 'item', id: x.id, d: day, tz: tz } });
+        });
+      });
+      if (s.nHab !== false) (S.habits || []).forEach(function (h) {
+        if (!h.rem || !habOn(h, day) || (h.log || {})[day]) return;
+        var at = atOf(day, h.rem).getTime(); if (at <= now) return;
+        var hs = habStreak(h);
+        rows.push({ at: new Date(at).toISOString(), p: { title: (h.emoji || '🌱') + ' ' + h.name, body: 'C’est l’heure de ton habitude.' + (hs ? '\n🔥 ' + hs + ' jour' + (hs > 1 ? 's' : '') + ' de suite : ne casse pas la série !' : ''), tag: 'hab-' + h.id + '-' + day, url: './?tab=today', actions: true }, ref: { k: 'hab', id: h.id, d: day, tz: tz } });
+      });
+      if (s.nEve !== false) {
+        var left = its.filter(function (x) { return !x.done; });
+        var at2 = atOf(day, s.eveHour || '21:00').getTime();
+        if (left.length && at2 > now) rows.push({ at: new Date(at2).toISOString(), p: { title: '🌙 ' + plural(left.length, 'tâche pas encore faite', 'tâches pas encore faites'), body: left.slice(0, 3).map(function (x) { return x.text; }).join(', ') + (left.length > 3 ? '…' : '') + '\nCoche-les ou reporte-les à demain.', tag: 'eve-' + day, url: './?tab=today' }, ref: { k: 'eve', d: day } });
+      }
+      if (s.nBday !== false) bdOn(day).forEach(function (b) {
+        var at3 = atOf(day, '09:00').getTime(); if (at3 <= now) return;
+        rows.push({ at: new Date(at3).toISOString(), p: { title: '🎂 Anniversaire de ' + b.name, body: (b.y ? b.name + ' fête ses ' + (+day.slice(0, 4) - b.y) + ' ans aujourd’hui. ' : 'C’est aujourd’hui ! ') + 'Pense à lui souhaiter.', tag: 'bd-' + b.id + '-' + day, url: './?tab=today' }, ref: { k: 'bd', d: day } });
+      });
+    }
+    rows.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
+    return rows.slice(0, 250);
+  }
+  function hashStr(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); }
+  function pushSync(force) {
+    if (!pushOn() || !cloudOn || !auth || !S.profile.done) return;
+    var rows = pushRows(), hh = hashStr(JSON.stringify(rows)) + '|' + todayISO(), old = '';
+    try { old = localStorage.getItem('cadence.push.h') || ''; } catch (e) {}
+    if (!force && hh === old) return;
+    authed('POST', '/rest/v1/rpc/cadence_push_set', { p_rows: rows }).then(function () { pushSrv = ''; try { localStorage.setItem('cadence.push.h', hh); } catch (e) {} }).catch(function (er) { if (slNotReady(er)) pushSrv = 'notready'; });
+  }
+  function pushSoon() { clearTimeout(pushTm); pushTm = setTimeout(function () { pushSync(false); }, 4000); }
+  function pushTest() {
+    authed('POST', '/rest/v1/rpc/cadence_push_test', { p_payload: { title: '🔔 Cadence', body: 'Les notifications fonctionnent ✅\nTu seras prévenu à l’heure de tes tâches.', tag: 'test', url: './?tab=today' } })
+      .then(function () { showToast('Notification test envoyée : elle arrive dans la minute.'); render(); })
+      .catch(function (er) { showToast(slNotReady(er) ? 'Le serveur de notifications n’est pas encore activé.' : 'Envoi impossible : ' + (er.message || '')); render(); });
+  }
+  function notifCard() {
+    var st = pushState(), s = S.settings, h = '<section class="card"><h3>🔔 Notifications</h3>';
+    if (st === 'unsupported') h += '<p class="sub">Les notifications ne sont pas disponibles ici. Sur Android, installe Cadence sur l’écran d’accueil (menu ⋮ du navigateur, puis « Ajouter à l’écran d’accueil » ou « Installer l’application »), ouvre-la depuis l’icône, puis reviens ici.</p>';
+    else if (st === 'denied') h += '<p class="err">Les notifications sont bloquées pour Cadence. Autorise-les dans les réglages du navigateur (Paramètres des sites, Notifications), puis reviens ici.</p>';
+    else if (st === 'on') h += '<p class="okmsg">Activées sur cet appareil, même quand l’appli est fermée.</p>' + (pushSrv === 'notready' ? '<p class="err">Le serveur de notifications n’est pas encore activé : elles arriveront dès qu’il le sera.</p>' : '');
+    else h += '<p class="sub">Reçois tes rappels même quand Cadence est fermée, avec les boutons « ✅ Fait » et « ⏰ Dans 10 min ».</p>';
+    if (st === 'off') h += '<button class="btn primary" data-act="pushon"' + (pushBusy ? ' disabled' : '') + '>' + (pushBusy ? 'Un instant…' : 'Activer les notifications') + '</button>';
+    if (pushMsg) h += '<p class="sub" role="status">' + esc(pushMsg) + '</p>';
+    h += sw2('ntask', s.nTask !== false, 'Rappels des tâches') + sw2('nhab', s.nHab !== false, 'Rappels des habitudes') + sw2('neve', s.nEve !== false, 'Tâches oubliées, le soir');
+    if (s.nEve !== false) h += '<label class="f">Heure du rappel du soir<select id="eve-h">' + ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30'].map(function (x) { return '<option' + ((s.eveHour || '21:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
+    h += sw2('nbday', s.nBday !== false, 'Anniversaires (le jour même à 9 h)');
+    h += '<div class="f"><p class="sub">Son des rappels quand l’appli est ouverte</p>' + segOpt('remtone', s.remTone || s.tone || 'cloche', TONES, 'Son des rappels') + '</div>';
+    h += '<p class="hint">Appli fermée, c’est le son de notification de ton téléphone qui est utilisé (réglable dans les paramètres Android de l’appli).</p>';
+    if (st === 'on') h += '<div class="btns"><button class="btn sm" data-act="pushtest">Envoyer une notification test</button><button class="btn sm ghost" data-act="pushoff">Désactiver</button></div>';
+    return h + '</section>';
+  }
+
+  /* --- export tableur --- */
+  function exportCsv() {
+    var q = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var lines = [['Date', 'Heure', 'Tâche', 'Catégorie', 'Projet', 'Faite', 'Répétition', 'Durée (min)', 'Lieu', 'Priorité'].join(';')];
+    S.items.slice().sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : (a.time || '') < (b.time || '') ? -1 : 1; }).forEach(function (x) {
+      var c = catOf(x.cat), p = projOf(x.proj);
+      lines.push([x.d, x.time || '', x.text, c ? c.name : '', p ? p.name : '', x.rep ? (x.doneOn || []).length + ' fois' : (x.done ? 'oui' : 'non'), x.rep ? REPL[x.rep] : '', x.dur || '', x.loc || '', x.prio ? 'oui' : ''].map(q).join(';'));
+    });
+    try { var bl = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }), ln = document.createElement('a'); ln.href = URL.createObjectURL(bl); ln.download = 'cadence-taches-' + todayISO() + '.csv'; document.body.appendChild(ln); ln.click(); setTimeout(function () { URL.revokeObjectURL(ln.href); ln.remove(); }, 1500); } catch (e) {}
+  }
+
+  /* --- fiche tâche : options --- */
+  var DURS = ['', '5', '10', '15', '20', '30', '45', '60', '90', '120', '180', '240'];
+  function itemExtras(x, isAdd) {
+    var pv = sheet.proj !== undefined ? sheet.proj : (x ? x.proj || '' : ''), loc = x ? x.loc || '' : '', ph = sheet.photo !== undefined ? sheet.photo : (x ? x.photo || '' : '');
+    var subs = isAdd ? (sheet.subs || []) : (x.subs || []);
+    var h = '<div class="f"><p class="sub">Sous-tâches' + (subs.length ? ' (' + subs.filter(function (s) { return s.done; }).length + '/' + subs.length + ')' : '') + '</p><div class="list">' + subs.map(function (s, i) {
+      return '<div class="row' + (s.done ? ' done' : '') + '"><button type="button" class="ck" aria-pressed="' + !!s.done + '" aria-label="' + (s.done ? 'Décocher' : 'Cocher') + ' : ' + esc(s.t) + '" data-act="ssub" data-v="' + i + '">' + CHECK + '</button><div class="txt"><span>' + esc(s.t) + '</span></div><button type="button" class="x" data-act="ssubdel" data-v="' + i + '" aria-label="Retirer ' + esc(s.t) + '">×</button></div>';
+    }).join('') + '<div class="add"><input type="text" id="s-sub" data-keep maxlength="120" placeholder="Ajouter une sous-tâche" aria-label="Nouvelle sous-tâche"><button type="button" class="addplus" data-act="ssubadd" aria-label="Ajouter la sous-tâche">+</button></div></div></div>';
+    var more = sheet.more || !!(pv || loc || ph || (x && x.rem2));
+    h += '<details class="more"' + (more ? ' open' : '') + '><summary>Plus d’options : projet, lieu, photo, 2ᵉ rappel</summary><div class="grid">';
+    h += '<label class="f">Projet<select id="s-proj" data-keep><option value="">Aucun</option>' + (S.projects || []).map(function (p) { return '<option value="' + p.id + '"' + (pv === p.id ? ' selected' : '') + '>' + esc((p.emoji || '📁') + ' ' + p.name) + '</option>'; }).join('') + '</select></label>';
+    h += '<label class="f">Deuxième rappel<select id="s-rem2" data-keep>' + ['', '0', '5', '10', '15', '30', '60', '1440'].map(function (k) { return '<option value="' + k + '"' + (k === (x ? String(x.rem2 || '') : '') ? ' selected' : '') + '>' + REML[k] + '</option>'; }).join('') + '</select></label>';
+    h += '<label class="f">Lieu ou adresse<input type="text" id="s-loc" data-keep maxlength="160" value="' + esc(loc) + '" placeholder="Ex. 12 rue de la Paix, Paris"></label>';
+    if (loc) h += '<a class="btn sm" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(loc) + '" target="_blank" rel="noopener">🗺️ Ouvrir l’itinéraire</a>';
+    h += '<div class="f"><p class="sub">Photo ou document</p>' + (ph ? '<img class="sph" src="' + esc(ph) + '" alt="Photo jointe"><div class="btns"><label class="btn sm" for="s-photo">Changer<input type="file" id="s-photo" accept="image/*" hidden></label><button type="button" class="btn sm ghost" data-act="sphotodel">Retirer</button></div>' : '<label class="btn sm" for="s-photo">📎 Joindre une photo<input type="file" id="s-photo" accept="image/*" hidden></label>') + '</div>';
+    return h + '</div></details>';
+  }
+
+  /* --- actions v20 --- */
+  function v20Click(a, b) {
+    var id = b.dataset.id, v = b.dataset.v, x, g, n, l, h, p;
+    if (slAct(a, b)) return true;
+    if (a === 'oday') { tab = 'agenda'; view = 'd'; cur = v; anim = 'fade'; sheet = null; render(); window.scrollTo(0, 0); return true; }
+    if (a === 'palette') { setPalette(v); save(); render(); return true; }
+    if (a === 'city') { sheet = { k: 'city', res: [], err: '' }; render(); focusAdd('#city-q'); return true; }
+    if (a === 'cityset') { var r = sheet && sheet.res && sheet.res[+v]; if (r) { S.settings.city = { name: r.name, lat: Math.round(r.latitude * 1000) / 1000, lon: Math.round(r.longitude * 1000) / 1000 }; save(); sheet = null; wx = null; wxLoad(true); showToast('Météo : ' + r.name); render(); } return true; }
+    if (a === 'citydel') { S.settings.city = null; save(); sheet = null; render(); return true; }
+    if (a === 'dates') { sheet = { k: 'dates', err: '' }; render(); return true; }
+    if (a === 'cddel') { S.countdowns = S.countdowns.filter(function (z) { return z.id !== id; }); save(); render(); return true; }
+    if (a === 'bddel') { S.bdays = S.bdays.filter(function (z) { return z.id !== id; }); save(); render(); return true; }
+    if (a === 'plan') { sheet = { k: 'plan' }; render(); return true; }
+    if (a === 'plpick') { if (!sheet) return true; var ix = sheet.pick.indexOf(v); if (ix >= 0) sheet.pick.splice(ix, 1); else if (sheet.pick.length < 3) sheet.pick.push(v); else showToast('3 priorités maximum : retire-en une d’abord.'); render(); return true; }
+    if (a === 'plgo') { planGo(); return true; }
+    if (a === 'newsok') { S.settings.news20 = '1'; save(); render(); return true; }
+    if (a === 'obnext') { obStep = +v; render(); window.scrollTo(0, 0); return true; }
+    if (a === 'obhab') { var hi = obHabs.indexOf(+v); if (hi >= 0) obHabs.splice(hi, 1); else if (obHabs.length < 3) obHabs.push(+v); render(); return true; }
+    if (a === 'obdone') { finishOnboarding(); return true; }
+    if (a === 'pushon') { pushEnable(); return true; }
+    if (a === 'pushoff') { pushDisable(); return true; }
+    if (a === 'pushtest') { pushTest(); return true; }
+    if (a === 'ntask' || a === 'nhab' || a === 'neve' || a === 'nbday') { var key = { ntask: 'nTask', nhab: 'nHab', neve: 'nEve', nbday: 'nBday' }[a]; S.settings[key] = S.settings[key] === false; save(); render(); return true; }
+    if (a === 'remtone') { S.settings.remTone = v; save(); unlockAudio(); var old = S.settings.tone; S.settings.tone = v; playTone(true); S.settings.tone = old; render(); return true; }
+    if (a === 'mic') { micToggle(v); return true; }
+    if (a === 'nview') { notesView = v; anim = 'fade'; render(); return true; }
+    if (a === 'nedit') { sheet = { k: 'note', id: id }; render(); return true; }
+    if (a === 'ncol') { if (sheet) { sheet.color = v; render(); } return true; }
+    if (a === 'npin') { if (sheet) { sheet.pin = !sheet.pin; render(); } return true; }
+    if (a === 'ndel') { n = noteById(id); if (!n) return true; var ni = S.notes.indexOf(n); S.notes.splice(ni, 1); save(); sheet = null; uiSound('del'); showToast('Note supprimée', function () { S.notes.splice(Math.min(ni, S.notes.length), 0, n); save(); }); render(); return true; }
+    if (a === 'n2task') { n = noteById(id); if (!n) return true; sheet = { k: 'quick', err: '', pre: n.text.replace(/\s+/g, ' ').slice(0, 200), fromNote: n.id }; render(); focusAdd('#q-text'); var qt = document.getElementById('q-text'); if (qt) { var qp = document.getElementById('q-prev'); if (qp) qp.innerHTML = nlPreview(parseNL(qt.value, quickBase())); } return true; }
+    if (a === 'openlist') { sheet = { k: 'list', id: id }; render(); return true; }
+    if (a === 'litog' || a === 'lidel') { l = listById(sheet && sheet.id); if (!l) return true; var it = l.items.filter(function (z) { return z.id === id; })[0]; if (!it) return true; if (a === 'litog') { it.done = !it.done; uiSound(it.done ? 'tick' : 'untick'); } else { l.items = l.items.filter(function (z) { return z !== it; }); uiSound('del'); } save(); render(); return true; }
+    if (a === 'liclear') { l = listById(id); if (l) { var kept = l.items.slice(); l.items = l.items.filter(function (z) { return !z.done; }); save(); showToast('Éléments cochés retirés', function () { l.items = kept; save(); }); render(); } return true; }
+    if (a === 'ldel') { if (!arm('ldel:' + id)) return true; l = listById(id); S.lists = S.lists.filter(function (z) { return z.id !== id; }); save(); sheet = null; showToast('Liste supprimée', function () { if (l) { S.lists.push(l); save(); } }); render(); return true; }
+    if (a === 'lshare') { l = listById(id); if (l) slShare(l); return true; }
+    if (a === 'openproj') { sheet = { k: 'proj', id: id }; render(); return true; }
+    if (a === 'pcol') { p = projOf(id); if (p) { p.color = v; save(); render(); } return true; }
+    if (a === 'pdel') { if (!arm('pdel:' + id)) return true; S.projects = S.projects.filter(function (z) { return z.id !== id; }); S.items.forEach(function (z) { if (z.proj === id) z.proj = ''; }); save(); sheet = null; render(); return true; }
+    if (a === 'gedit') { sheet = { k: 'goal', id: id }; render(); return true; }
+    if (a === 'ginc' || a === 'gdec') { g = goalById(id); if (!g || !g.target) return true; g.cur = Math.max(0, (g.cur || 0) + (a === 'ginc' ? 1 : -1)); popRid = 'g|' + g.id; if (g.cur >= g.target) goalReached(g, b); else if (a === 'gdec' && g.done) g.done = false; uiSound(a === 'ginc' ? 'tick' : 'untick'); save(); render(); return true; }
+    if (a === 'gstep' || a === 'gstepdel') { g = goalById(sheet && sheet.id); if (!g) return true; var sp = (g.steps || []).filter(function (z) { return z.id === id; })[0]; if (!sp) return true; if (a === 'gstep') { sp.done = !sp.done; uiSound(sp.done ? 'tick' : 'untick'); if (g.steps.every(function (z) { return z.done; })) goalReached(g); } else g.steps = g.steps.filter(function (z) { return z !== sp; }); save(); render(); return true; }
+    if (a === 'gstepadd') { g = goalById(sheet && sheet.id); var gi2 = document.getElementById('g-step'); if (!g || !gi2 || !gi2.value.trim()) return true; g.steps = g.steps || []; g.steps.push({ id: uid(), t: gi2.value.trim().slice(0, 120), done: false }); gi2.value = ''; save(); render(); focusAdd('#g-step'); return true; }
+    if (a === 'dedit') { sheet = { k: 'dream', id: id }; render(); return true; }
+    if (a === 'ddel') { S.dreams = S.dreams.filter(function (z) { return z.id !== id; }); save(); sheet = null; render(); return true; }
+    if (a === 'hedit') { sheet = { k: 'habit', id: id }; render(); return true; }
+    if (a === 'hemo') { if (sheet) { sheet.emoji = v; render(); } return true; }
+    if (a === 'hday') { if (sheet && sheet.days) { var dk = sheet.days.indexOf(+v); if (dk >= 0) sheet.days.splice(dk, 1); else sheet.days.push(+v); render(); } return true; }
+    if (a === 'htpl') { var tp = HTPL[+v]; if (tp) { S.habits.push({ id: uid(), name: tp[1], emoji: tp[0], log: {}, days: [], rem: '' }); uiSound('pop'); save(); render(); } return true; }
+    if (a === 'srange') { statsRange = +v; render(); return true; }
+    if (a === 'month') { sheet = { k: 'month', v: addMonths(todayISO(), -1).slice(0, 7) }; render(); return true; }
+    if (a === 'mshare') { shareText(monthShareText(v)); return true; }
+    if (a === 'mrok') { S.settings.mrSeen = v; save(); render(); return true; }
+    if (a === 'pgoal') { S.settings.pomoGoal = Math.max(1, Math.min(16, (S.settings.pomoGoal || 4) + (+v))); save(); render(); return true; }
+    if (a === 'ssub' || a === 'ssubdel') { var arr = sheet.k === 'add' ? (sheet.subs = sheet.subs || []) : ((x = byId(sheet.id)) ? (x.subs = x.subs || []) : null); if (!arr) return true; var si = +v; if (!arr[si]) return true; if (a === 'ssub') { arr[si].done = !arr[si].done; uiSound(arr[si].done ? 'tick' : 'untick'); } else arr.splice(si, 1); if (sheet.k !== 'add') save(); render(); return true; }
+    if (a === 'ssubadd') { addSub(); return true; }
+    if (a === 'sphotodel') { sheet.photo = ''; render(); return true; }
+    if (a === 'csv') { exportCsv(); return true; }
+    return false;
+  }
+  function addSub() {
+    var el = document.getElementById('s-sub'); if (!el || !el.value.trim() || !sheet) return;
+    var arr = sheet.k === 'add' ? (sheet.subs = sheet.subs || []) : (byId(sheet.id) ? (byId(sheet.id).subs = byId(sheet.id).subs || []) : null); if (!arr) return;
+    arr.push({ id: uid(), t: el.value.trim().slice(0, 120), done: false }); el.value = ''; if (sheet.k !== 'add') save(); render(); focusAdd('#s-sub');
+  }
+  function v20Submit(f) {
+    var id = f.id, val = function (s) { return ((document.getElementById(s) || {}).value || ''); };
+    if (id === 'cityform') { citySearch(); return true; }
+    if (id === 'cdform') { var cn = val('cd-name').trim(), cdd = val('cd-date'); if (!cn || !/^\d{4}-\d\d-\d\d$/.test(cdd)) { sheet.err = 'Écris un nom et choisis une date.'; render(); return true; } S.countdowns.push({ id: uid(), name: cn.slice(0, 40), date: cdd, emoji: cdEmoji(cn) }); sheet.err = ''; save(); document.getElementById('cd-name').value = ''; document.getElementById('cd-date').value = ''; render(); return true; }
+    if (id === 'bdform') { var bn = val('bd-name').trim(), bdd = val('bd-date'), noy = (document.getElementById('bd-noy') || {}).checked; if (!bn || !/^\d{4}-\d\d-\d\d$/.test(bdd)) { sheet.err = 'Écris un prénom et choisis la date.'; render(); return true; } S.bdays.push({ id: uid(), name: bn.slice(0, 40), md: bdd.slice(5), y: noy ? 0 : +bdd.slice(0, 4) }); sheet.err = ''; save(); document.getElementById('bd-name').value = ''; document.getElementById('bd-date').value = ''; render(); return true; }
+    if (id === 'nform') { var nt = val('n-text'); if (!nt.trim()) { focusAdd('#n-text'); return true; } addNote(nt); document.getElementById('n-text').value = ''; render(); return true; }
+    if (id === 'neform') { var n = noteById(sheet.id); if (n) { var tx = val('ne-text').trim(); if (!tx) { showToast('La note est vide : supprime-la si tu n’en veux plus.'); render(); return true; } n.text = tx.slice(0, 2000); n.color = sheet.color || ''; n.pin = !!sheet.pin; n.up = new Date().toISOString(); save(); } sheet = null; render(); return true; }
+    if (id === 'gform') { var g = goalById(sheet.id); if (g) { var gt = val('g-text').trim(); if (gt) g.text = gt.slice(0, 200); var tg = Math.max(0, Math.min(100000, parseInt(val('g-target'), 10) || 0)), cu = Math.max(0, Math.min(100000, parseInt(val('g-cur'), 10) || 0)); g.target = tg || 0; g.cur = tg ? cu : 0; if (tg && cu >= tg) goalReached(g); save(); } sheet = null; render(); return true; }
+    if (id === 'dform') { var d = dreamById(sheet.id); if (d) { d.text = val('d-text').trim().slice(0, 80); save(); } sheet = null; render(); return true; }
+    if (id === 'hform') { var h = habById(sheet.id); if (h) { var hn = val('h-name').trim(); if (hn) h.name = hn.slice(0, 40); h.emoji = sheet.emoji || h.emoji; h.days = sheet.days.length === 7 ? [] : sheet.days.slice().sort(); h.rem = /^\d\d:\d\d$/.test(val('h-rem')) ? val('h-rem') : ''; if (h.rem && pushState() === 'off') askNotif(); save(); } sheet = null; render(); return true; }
+    if (f.classList.contains('add')) {
+      var inp = f.querySelector('input[name="t"]'), v = inp ? inp.value.trim() : '', k = f.dataset.kind;
+      if (['list', 'litem', 'slitem', 'proj', 'ptask'].indexOf(k) < 0) return false;
+      if (!v) { if (inp) inp.focus(); return true; }
+      if (k === 'list') { var nl = { id: uid(), name: v.slice(0, 60), emoji: listEmoji(v), items: [] }; S.lists.push(nl); inp.value = ''; save(); sheet = { k: 'list', id: nl.id }; render(); focusAdd('form.add[data-kind="litem"] input[name="t"]'); return true; }
+      if (k === 'litem') { var l = listById(f.dataset.id); if (l) { l.items.push({ id: uid(), t: v.slice(0, 200), done: false }); uiSound('pop'); save(); } inp.value = ''; render(); focusAdd('form.add[data-kind="litem"] input[name="t"]'); return true; }
+      if (k === 'slitem') { inp.value = ''; slAddItem(f.dataset.id, v.slice(0, 200)); focusAdd('form.add[data-kind="slitem"] input[name="t"]'); return true; }
+      if (k === 'proj') { var used = (S.projects || []).map(function (p) { return p.color; }), col = CATCOL.filter(function (c) { return used.indexOf(c) < 0; })[0] || CATCOL[S.projects.length % CATCOL.length]; S.projects.push({ id: uid(), name: v.slice(0, 60), emoji: listEmoji(v) === '📝' ? '📁' : listEmoji(v), color: col }); inp.value = ''; uiSound('pop'); save(); render(); return true; }
+      if (k === 'ptask') { var dd = (f.querySelector('input[name="d"]') || {}).value || todayISO(); var xx = addItem(/^\d{4}-\d\d-\d\d$/.test(dd) ? dd : todayISO(), v, ''); if (xx) { xx.proj = f.dataset.id; save(); } inp.value = ''; render(); focusAdd('form.add[data-kind="ptask"] input[name="t"]'); return true; }
+    }
+    return false;
+  }
+  function v20Change(el) {
+    if (el.id === 'dream-file') { shrinkImg(el.files && el.files[0], 640, 0.68, function (url) { var d = { id: uid(), img: url, text: '' }; S.dreams.push(d); save(); sheet = { k: 'dream', id: d.id }; render(); focusAdd('#d-text'); }); return true; }
+    if (el.id === 's-photo') { shrinkImg(el.files && el.files[0], 900, 0.62, function (url) { if (sheet) { sheet.photo = url; sheet.more = true; render(); } }); return true; }
+    if (el.id === 'eve-h') { S.settings.eveHour = el.value; save(); return true; }
+    if (el.dataset && el.dataset.lname) { var l = listById(el.dataset.lname); if (l && el.value.trim()) { l.name = el.value.trim().slice(0, 60); save(); } else if (l) el.value = l.name; return true; }
+    if (el.dataset && el.dataset.pname) { var p = projOf(el.dataset.pname); if (p && el.value.trim()) { p.name = el.value.trim().slice(0, 60); save(); } else if (p) el.value = p.name; return true; }
+    if (el.dataset && el.dataset.tdur) { var pr = el.dataset.tdur.split('|'), t = S.timers.filter(function (z) { return z.id === pr[0]; })[0]; if (t) { var nv = parseInt(el.value, 10); if (nv > 0) t[pr[1]] = Math.max(1, Math.min(pr[1] === 'work' ? 180 : 60, nv)); save(); render(); } return true; }
+    return false;
+  }
+  function v20Input(el) {
+    if (el.id === 'srch') {
+      var was = srchQ.trim().length >= 2; srchQ = el.value; var now = srchQ.trim().length >= 2;
+      if (was !== now) { render(); var s = document.getElementById('srch'); if (s) { s.focus(); try { s.setSelectionRange(s.value.length, s.value.length); } catch (e) {} } return true; }
+      var r = document.getElementById('srch-res'); if (r) r.innerHTML = searchHtml(srchQ); return true;
+    }
+    return false;
+  }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
@@ -1594,13 +2609,15 @@ body.gate { padding-bottom: 40px; }
       var L = lsGet(CR) || '', dirty = lsGet(CD) === '1';
       var pr = preferRemote, pl = preferLocal; preferRemote = false; preferLocal = false;
       if (pl && row) { syncing = false; booting = false; return cloudPush(); }
-      if (!row || !validData(row.data)) { syncing = false; booting = false; return cloudPush(); }
-      if (L && row.updated_at === L) { syncing = false; booting = false; if (dirty) return cloudPush(); setSt('ok'); return; }
+      if (!row || !validData(row.data)) { syncing = false; booting = false; afterSync(); return cloudPush(); }
+      if (L && row.updated_at === L) { syncing = false; booting = false; afterSync(); if (dirty) return cloudPush(); setSt('ok'); return; }
       var isFresh = !S.profile.done && !S.items.length && !S.goals.length;
-      if (isFresh || pr || (L && !dirty)) { applyRemote(row); syncing = false; booting = false; setSt('ok'); if (!editing()) render(); return; }
+      if (isFresh || pr || (L && !dirty)) { applyRemote(row); syncing = false; booting = false; setSt('ok'); if (!editing()) render(); afterSync(); return; }
       syncing = false; booting = false; sync.conflict = row; setSt('conflict');
     }).catch(function (er) { syncing = false; booting = false; if (auth) setSt('err', frErr(er)); else render(); });
   }
+  var lastAfter = 0;
+  function afterSync() { if (Date.now() - lastAfter < 15000) return; lastAfter = Date.now(); setTimeout(function () { pushSync(false); slJoinPending(); if (Date.now() - SL.at > 60000) slFetch(true); maybePlan(); }, 50); }
   function cloudPush() {
     if (!auth || !cloudOn || sync.conflict) return Promise.resolve();
     if (pushing) { again = true; return Promise.resolve(); }
@@ -1621,7 +2638,8 @@ body.gate { padding-bottom: 40px; }
   function wipeLocal() {
     var th = S.settings.theme, sz = S.settings.size; S = fresh(); S.settings.theme = th; S.settings.size = sz;
     try { localStorage.removeItem(KEY); } catch (e) {}
-    lsSet(CD, null); lsSet(CR, null); applyTheme(); tab = 'agenda'; view = 'd'; cur = todayISO(); sel = cur; sheet = null; obStep = 0;
+    SL.lists = []; SL.items = {}; lsSet('cadence.sl', null); lsSet('cadence.wx', null); wx = null; lsSet('cadence.push.h', null);
+    lsSet(CD, null); lsSet(CR, null); applyTheme(); tab = 'today'; view = 'd'; cur = todayISO(); sel = cur; sheet = null; obStep = 0;
   }
   function afterLogin(isNew) {
     var uid = auth.uid;
@@ -1645,13 +2663,13 @@ body.gate { padding-bottom: 40px; }
   function cloudLogout() {
     acct.busy = true; render();
     var p = (lsGet(CD) === '1' && !sync.conflict) ? cloudPush() : Promise.resolve();
-    p.catch(function () {}).then(function () { return authed('POST', '/auth/v1/logout').catch(function () {}); }).then(function () {
+    p.catch(function () {}).then(function () { return pushDisable(true); }).then(function () { return authed('POST', '/auth/v1/logout').catch(function () {}); }).then(function () {
       wipeLocal(); cloudSignOutLocal('Tu es déconnecté. Ton agenda est sauvegardé dans ton compte.');
     });
   }
   function cloudDelete() {
     acct.busy = true; acct.err = ''; render();
-    authed('POST', '/rest/v1/rpc/delete_my_account', {}).then(function () {
+    pushDisable(true).then(function () { return authed('POST', '/rest/v1/rpc/delete_my_account', {}); }).then(function () {
       wipeLocal(); cloudSignOutLocal('Ton compte et toutes tes données ont été supprimés.'); authMode = 'up'; render();
     }).catch(function (er) {
       acct.busy = false;
@@ -1785,10 +2803,23 @@ body.gate { padding-bottom: 40px; }
     navigator.serviceWorker.ready.then(function (r) { swReg = r; }).catch(function () {});
   } } catch (e) {}
 
+  (function () {
+    try {
+      var q = new URLSearchParams(location.search), jn = q.get('join'), tb = q.get('tab');
+      if (jn && /^[0-9a-f-]{36}~[0-9a-f]{32}$/.test(jn)) localStorage.setItem('cadence.join', jn);
+      if (tb && ['today', 'agenda', 'notes', 'goals', 'pomo'].indexOf(tb) >= 0) tab = tb;
+      if (q.get('add') === '1') setTimeout(function () { if (S.profile.done && !sheet) { sheet = { k: 'quick', err: '' }; render(); focusAdd('#q-text'); } }, 400);
+      if (jn || tb || q.get('add')) history.replaceState(null, '', location.pathname);
+    } catch (e) {}
+    try { if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', function (ev) { if (ev.data && ev.data.cadence === 'sync' && auth && cloudOn) { lastPull = 0; cloudSync(); } }); } catch (e) {}
+  })();
   applyTheme();
   render();
   cloudBoot();
-  setInterval(function () { timerLoop(); remCheck(); if (todayISO() !== lastDay) { var was = lastDay; lastDay = todayISO(); if (cur === was) cur = lastDay; if (!editing() && !sheet) render(); } }, 1000);
+  wxLoad();
+  setTimeout(function () { maybePlan(); }, 700);
+  setInterval(function () { wxLoad(); if (sheet && sheet.k === 'slist' && auth && !document.hidden && !editing()) slFetch(); }, 15000);
+  setInterval(function () { timerLoop(); remCheck(); if (todayISO() !== lastDay) { var was = lastDay; lastDay = todayISO(); if (cur === was) cur = lastDay; if (!editing() && !sheet) render(); maybePlan(); pushSync(false); } }, 1000);
   
 })();
 </script>

@@ -45,6 +45,28 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Aujourd’hui",
+      "short_name": "Aujourd’hui",
+      "url": "./?tab=today",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "short_name": "Notes",
+      "url": "./?tab=notes",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
