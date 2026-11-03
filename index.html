@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-UjEnXe7M/Hur9xReosZu9gpnMkP6tjo+N96Oh28F6ic='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#5B4BFF">
 <meta name="mobile-web-app-capable" content="yes">
@@ -682,6 +684,10 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 .lockscr .lead { color: var(--muted); font-size: 16.5px; }
 .lkic { font-size: 56px; line-height: 1; }
 .lockscr > .btn { width: 100%; }
+/* v24 : code de vérification, écran de secours */
+.otp { font-family: var(--font-clock); font-size: 26px; letter-spacing: .3em; text-align: center; }
+.vfnav { justify-content: center; }
+.crash .card { display: grid; gap: 10px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -690,7 +696,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 <script>
 (function () {
   'use strict';
-  var APP_VER = 23;
+  var APP_VER = 24;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -775,7 +781,8 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function load() { try { var o = JSON.parse(localStorage.getItem(KEY)); if (o && o.app === 'agenda') return ensure(o); } catch (e) {} return fresh(); }
   var S = load();
   var quotaWarned = false;
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { if (!quotaWarned) { quotaWarned = true; showToast('Mémoire de l’appareil pleine : retire quelques photos (tâches ou tableau de rêves).'); } } cloudDirty(); if (typeof pushSoon === 'function') pushSoon(); }
+  function dailyCopy() { try { var t = todayISO(); if (localStorage.getItem('cadence.copy.day') === t) return; var cur = localStorage.getItem(KEY); if (!cur || cur.length > 1500000) return; var o = JSON.parse(cur); if (!o || !o.profile || !o.profile.done) return; localStorage.setItem('cadence.copy', cur); localStorage.setItem('cadence.copy.day', t); } catch (e) {} }
+  function save() { dailyCopy(); var ok0 = false, js0 = ''; try { js0 = JSON.stringify(S); localStorage.setItem(KEY, js0); ok0 = true; } catch (e) { try { if (js0) { localStorage.removeItem('cadence.copy'); localStorage.removeItem('cadence.copy.day'); localStorage.setItem(KEY, js0); ok0 = true; } } catch (e2) {} } if (!ok0 && !quotaWarned) { quotaWarned = true; showToast('Mémoire de l’appareil pleine : retire quelques photos (tâches ou tableau de rêves).'); } cloudDirty(); if (typeof pushSoon === 'function') pushSoon(); }
 
   function occurs(x, day) {
     if (!x.rep) return x.d === day;
@@ -958,7 +965,6 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       '<p class="tf">' + (n ? plural(n, 'session terminée', 'sessions terminées') + ' aujourd’hui' : 'Aucune session terminée aujourd’hui') + '</p></section>';
   }
   function viewPomo() {
-    var perm = ('Notification' in window) ? Notification.permission : 'unsupported';
     var h = pomoGoalCard() + '<p class="sub">Trois minuteurs indépendants. Travaille sans interruption, puis fais la pause. Touche une durée pour la changer librement.</p>';
     h += S.timers.map(timerCard).join('');
     h += '<p class="hint">Le minuteur continue si tu changes d’onglet. Pour être sûr d’entendre la sonnerie, laisse l’appli ouverte : un téléphone en veille peut la retarder.</p>';
@@ -1036,7 +1042,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     h += accountCard();
     h += '<section class="card"><h3>Mes données</h3><p class="sub">Garde une copie de tes données dans un fichier, ou recharge une copie. Importer remplace tout ce qui est sur cet appareil.</p>' +
       '<div class="btns"><button class="btn" data-act="export">Exporter (sauvegarde)</button><button class="btn" data-act="csv">Exporter mes tâches (tableur)</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
-      '<button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
+      copyBtn() + '<button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
     h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
     return h;
@@ -1105,7 +1111,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     return '<div class="toast" id="toast" role="status"><span>' + esc(toast.text) + '</span>' + (toast.undo ? '<button data-act="undo">Annuler</button>' : '') + '</div>';
   }
   function viewAll() {
-    if (cloudOn && !auth) return viewAuth() + sheetHtml() + recoverySheet() + toastHtml();
+    if (cloudOn && !auth) return (vf ? viewVerify() : viewAuth()) + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
     if (isLocked()) return lockView() + toastHtml();
     var body = tab === 'today' ? viewToday() : tab === 'agenda' ? viewAgenda() : tab === 'space' ? viewSpace() : tab === 'notes' ? viewNotes() : tab === 'goals' ? viewGoals() : tab === 'pomo' ? viewPomo() : viewProfile();
@@ -1117,15 +1123,15 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     document.querySelectorAll('[data-keep]').forEach(function (e) { if (e.id) keep['#' + e.id] = e.value; });
     document.querySelectorAll('[data-keepc]').forEach(function (e) { if (e.id) keep['c#' + e.id] = e.checked; });
     var y = window.scrollY;
-    app.innerHTML = viewAll();
+    var html; try { html = viewAll(); } catch (err) { logErr('affichage', err); sheet = null; html = crashView(); }
+    app.innerHTML = html;
     document.querySelectorAll('[data-keep]').forEach(function (e) { if (e.id && keep['#' + e.id] !== undefined) e.value = keep['#' + e.id]; });
     document.querySelectorAll('[data-keepc]').forEach(function (e) { if (e.id && keep['c#' + e.id] !== undefined) e.checked = keep['c#' + e.id]; });
     document.querySelectorAll('form.add input[name="t"]').forEach(function (e) { var k = (e.form.dataset.day || '') + '|' + (e.form.dataset.key || ''); if (keep[k]) e.value = keep[k]; });
     document.body.classList.toggle('noscroll', !!(sheet || recov));
     document.body.classList.toggle('gate', !!(cloudOn && !auth) || isLocked());
     if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
-    afterRender();
-    timerLoop();
+    try { afterRender(); timerLoop(); } catch (err) { logErr('après affichage', err); }
   }
 
   /* ---------- actions ---------- */
@@ -1147,10 +1153,12 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   }
   function focusAdd(sel0) { setTimeout(function () { var e = document.querySelector(sel0); if (e) { try { e.focus(); } catch (er) {} } }, 0); }
 
-  document.addEventListener('click', function (e) {
+  document.addEventListener('click', function (e) { try { onClick(e); } catch (err) { logErr('action', err); showToast('Oups, cette action n’a pas marché. Réessaie.'); try { render(); } catch (er2) {} } });
+  function onClick(e) {
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v24Click(a, b)) return;
     if (cloudClick(a)) return;
     if (v23Click(a, b)) return;
     if (v22Click(a, b)) return;
@@ -1235,13 +1243,15 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     }
     if (a === 'wipe') { if (!arm('wipe')) return; var keepP = S.profile, keepS = S.settings, keepO = S.owner, keepC = S.consent; S = fresh(); S.profile = keepP; S.settings = keepS; S.owner = keepO; S.consent = keepC; save(); showToast('Agenda et objectifs effacés'); render(); return; }
     if (a === 'updnow') { updNow(); return; }
-  });
+  }
 
 
-  document.addEventListener('submit', function (e) {
+  document.addEventListener('submit', function (e) { try { onSubmit(e); } catch (err) { try { e.preventDefault(); } catch (er) {} logErr('formulaire', err); showToast('Oups, ça n’a pas marché. Réessaie.'); try { render(); } catch (er2) {} } });
+  function onSubmit(e) {
     e.preventDefault();
     var f = e.target, id = f.id;
     if (id === 'acform') { cloudAuth(authMode); return; }
+    if (id === 'vfform') { cloudVerify(); return; }
     if (id === 'rcform') { cloudRecover(); return; }
     if (id === 'ob1') {
       var fi = (document.getElementById('ob-first') || {}).value || '', la = (document.getElementById('ob-last') || {}).value || '';
@@ -1278,7 +1288,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       else { var dd = f.dataset.day; addItem(dd, val, hh ? hh.value : ''); inp.value = ''; if (hh) hh.value = ''; render(); focusAdd('form.add[data-kind="item"][data-day="' + dd + '"] input[name="t"]'); }
       return;
     }
-  });
+  }
   document.addEventListener('input', function (e) {
     var el = e.target;
     if (el.dataset && el.dataset.pf) { S.profile[el.dataset.pf] = el.value.slice(0, el.maxLength > 0 ? el.maxLength : 40); save(); var av = document.querySelector('.avatar.big'); if (av && !S.profile.photo) av.textContent = initials(); return; }
@@ -1325,7 +1335,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     h += '<div class="seg" role="group" aria-label="Compte"><button aria-pressed="' + up + '" data-act="amode" data-v="up">Créer un compte</button><button aria-pressed="' + !up + '" data-act="amode" data-v="in">Se connecter</button></div>';
     h += '<form id="acform" class="card" autocomplete="on" novalidate><label class="f" for="a-mail">E-mail<input type="email" id="a-mail" data-keep autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="toi@exemple.fr"></label>' +
       '<label class="f" for="a-pass">Mot de passe<span class="pw"><input type="' + (peek ? 'text' : 'password') + '" id="a-pass" data-keep autocomplete="' + (up ? 'new-password' : 'current-password') + '"><button type="button" class="eye" data-act="peek" aria-pressed="' + peek + '">' + (peek ? 'Masquer' : 'Afficher') + '</button></span></label>' +
-      (up ? '<p class="hint">8 caractères minimum.</p><label class="chkline"><input type="checkbox" id="a-cgu" data-keepc> <span>J’accepte les <button type="button" class="lnk" data-act="legal" data-v="cgu">conditions d’utilisation</button> et la <button type="button" class="lnk" data-act="legal" data-v="privacy">politique de confidentialité</button>.</span></label>' : '') +
+      (up ? '<p class="hint">8 caractères minimum, avec au moins une lettre et un chiffre.</p><label class="chkline"><input type="checkbox" id="a-cgu" data-keepc> <span>J’accepte les <button type="button" class="lnk" data-act="legal" data-v="cgu">conditions d’utilisation</button> et la <button type="button" class="lnk" data-act="legal" data-v="privacy">politique de confidentialité</button>.</span></label>' : '') +
       (acct.err ? '<p class="err" role="alert">' + esc(acct.err) + '</p>' : '') + (acct.info ? '<p class="okmsg" role="status">' + esc(acct.info) + '</p>' : '') +
       '<button type="submit" class="btn primary big"' + dis + '>' + (acct.busy ? 'Un instant…' : up ? 'Créer mon compte' : 'Se connecter') + '</button>' +
       (!up ? '<button type="button" class="btn ghost" data-act="acforgot"' + dis + '>Mot de passe oublié ?</button>' : '') + '</form>';
@@ -1751,7 +1761,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     showToast(n ? plural(n, 'objectif ajouté', 'objectifs ajoutés') + ' pour la semaine prochaine' : 'Bilan terminé'); render();
   }
   function v19Click(a, b) {
-    var id = b.dataset.id, v = b.dataset.v, x, h;
+    var id = b.dataset.id, x, h;
     if (a === 'quick') { sheet = { k: 'quick', err: '' }; render(); focusAdd('#q-text'); return true; }
     if (a === 'carryall') { var t = todayISO(); overdue().forEach(function (z) { z.d = t; }); save(); anim = 'fade'; showToast('Tâches reprises aujourd’hui'); render(); return true; }
     if (a === 'carryno') { S.settings.carryDismiss = todayISO(); save(); render(); return true; }
@@ -2471,7 +2481,11 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   }
   function hashStr(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); }
   function pushSync(force) {
-    if (!pushOn() || !cloudOn || !auth || !S.profile.done) return;
+    // v24 : la file des rappels est aussi mise à jour depuis un appareil sans notifications (ordinateur…),
+    // dès que les notifications sont activées sur au moins un appareil du compte.
+    if (!cloudOn || !auth || !S.profile.done) return;
+    if (pushOn() && !S.settings.pushAny) { S.settings.pushAny = true; save(); }
+    if (!pushOn() && !S.settings.pushAny) return;
     var rows = pushRows(), hh = hashStr(JSON.stringify(rows)) + '|' + todayISO(), old = '';
     try { old = localStorage.getItem('cadence.push.h') || ''; } catch (e) {}
     if (!force && hh === old) return;
@@ -2531,7 +2545,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 
   /* --- actions v20 --- */
   function v20Click(a, b) {
-    var id = b.dataset.id, v = b.dataset.v, x, g, n, l, h, p;
+    var id = b.dataset.id, v = b.dataset.v, x, g, n, l, p;
     if (slAct(a, b)) return true;
     if (a === 'oday') { tab = 'agenda'; view = 'd'; cur = v; anim = 'fade'; sheet = null; render(); window.scrollTo(0, 0); return true; }
     if (a === 'palette') { setPalette(v); save(); render(); return true; }
@@ -2764,6 +2778,9 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       });
     }).then(function () { spCur(); rtSync(); if (!quiet || tab === 'space') softRender(); }).catch(function (er) { if (slNotReady(er)) { SP.err = 'notready'; softRender(); } });
   }
+  function spJoinMsg(c) {
+    return c === 'limite' ? 'Trop d’essais : réessaie dans une heure.' : c === 'email' ? 'Confirme d’abord ton adresse e-mail.' : c === 'auth' ? 'Reconnecte-toi, puis réessaie.' : 'Code incorrect ou expiré. Demande un nouveau code à la personne qui t’invite.';
+  }
   function spFail(er) { showToast(er && er.net ? 'Pas de connexion : réessaie quand internet revient.' : 'Erreur : ' + ((er && er.message) || '')); render(); }
   function spItemsOf(kind) { var s = spCur(); return s ? (SP.items[s.id] || []).filter(function (i) { return i.kind === kind; }) : []; }
   function spPost(row) {
@@ -2973,9 +2990,11 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
       var code = val('sp-code').replace(/\D/g, ''); if (code.length !== 6) { showToast('Le code fait 6 chiffres.'); render(); return true; }
       SP.busy = true; render();
       authed('POST', '/rest/v1/rpc/cadence_space_join', { p_code: code, p_member: myName() }).then(function (r) {
-        SP.busy = false; SP.cur = r.id; sheet = null; var e = document.getElementById('sp-code'); if (e) e.value = '';
+        SP.busy = false;
+        if (!r || r.error || !r.id) { showToast(spJoinMsg(r && r.error)); render(); return; }
+        SP.cur = r.id; sheet = null; var e = document.getElementById('sp-code'); if (e) e.value = '';
         confetti(true); showToast('Bienvenue dans « ' + r.name + ' » 🎉'); return spFetch();
-      }).catch(function (er) { SP.busy = false; showToast(/trop/i.test(er.message || '') ? 'Trop d’essais : réessaie dans une heure.' : /invalide/i.test(er.message || '') ? 'Code incorrect ou expiré. Demande un nouveau code.' : 'Erreur : ' + (er.message || '')); render(); });
+      }).catch(function (er) { SP.busy = false; showToast(er.net ? 'Pas de connexion : réessaie quand internet revient.' : /trop/i.test(er.message || '') ? spJoinMsg('limite') : /invalide/i.test(er.message || '') ? spJoinMsg('code') : 'Erreur : ' + (er.message || '')); render(); });
       return true;
     }
     if (f.dataset.kind === 'spshop') { var inp = f.querySelector('input[name="t"]'), tx = (inp.value || '').trim(); if (!tx) return true; inp.value = ''; spPost({ kind: 'shop', text: tx.slice(0, 120), aisle: guessAisle(tx) }); focusAdd('form[data-kind="spshop"] input[name="t"]'); return true; }
@@ -3147,6 +3166,72 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     if (t) lockPauseUntil = Date.now() + 120000;
   }, true);
   document.addEventListener('change', function (e) { if (e.target && e.target.type === 'file') lockPauseUntil = Date.now() + 3000; }, true);
+  /* ---------- v24 : fiabilité (journal d’erreurs, écran de secours, copie automatique) ---------- */
+  var ERRK = 'cadence.errors', COPYK = 'cadence.copy', COPYD = 'cadence.copy.day';
+  // garde les 20 dernières erreurs sur l’appareil (aucune donnée de l’agenda, seulement le message technique)
+  function logErr(where, er, quiet) {
+    var m = '';
+    try { m = String((er && (er.stack || er.message)) || er || '').slice(0, 600); } catch (e) { m = '?'; }
+    try {
+      var L = []; try { L = JSON.parse(localStorage.getItem(ERRK) || '[]'); } catch (e) { L = []; }
+      if (!Array.isArray(L)) L = [];
+      L.push({ at: new Date().toISOString(), w: String(where || ''), v: APP_VER, m: m });
+      localStorage.setItem(ERRK, JSON.stringify(L.slice(-20)));
+    } catch (e) {}
+    if (!quiet) { try { console.error('[Cadence] ' + where + ' : ' + m); } catch (e) {} }
+  }
+  function errList() { try { var L = JSON.parse(localStorage.getItem(ERRK) || '[]'); return Array.isArray(L) ? L : []; } catch (e) { return []; } }
+  window.addEventListener('error', function (e) { if (e && e.message) logErr('globale', e.error || e.message, true); });
+  window.addEventListener('unhandledrejection', function (e) { var r = e && e.reason; if (r && (r.net || r.message === 'noauth')) return; logErr('promesse', r, true); });
+  // protection contre l’affichage de Cadence dans le cadre d’un autre site (détournement de clics)
+  try { if (location.hostname === 'cadence-agenda.github.io' && window.top !== window.self) { document.documentElement.style.display = 'none'; window.top.location.href = window.self.location.href; } } catch (e) { document.documentElement.style.display = 'none'; }
+
+  function crashView() {
+    var locked = true; try { locked = isLocked(); } catch (e) {}
+    var c = locked ? null : copyInfo();
+    return '<div class="auth crash"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>' +
+      '<h1>Oups, un souci d’affichage</h1><p class="lead">Tes données ne sont pas perdues. Essaie d’abord de revenir à l’accueil, ou de recharger l’appli.</p>' +
+      '<div class="card"><button class="btn primary big" data-act="crashhome">Revenir à l’accueil</button><button class="btn" data-act="crashreload">Recharger l’appli</button>' +
+      (c ? '<button class="btn ' + (armKey === 'restore' ? 'armed' : '') + '" data-act="restorecopy">' + (armKey === 'restore' ? 'Confirmer : revenir à la copie' : 'Revenir à la copie du ' + esc(c.label)) + '</button>' : '') +
+      '<button class="btn ghost" data-act="errreport">Signaler le problème par e-mail</button></div></div>';
+  }
+  function errReport() {
+    var L = errList().slice(-5), body = 'Bonjour, voici le rapport technique de Cadence (version ' + APP_VER + ').\n\n';
+    L.forEach(function (x) { body += x.at + ' [' + x.w + '] ' + String(x.m || '').split('\n').slice(0, 3).join(' | ') + '\n'; });
+    try { body += '\nAppareil : ' + navigator.userAgent; } catch (e) {}
+    location.href = 'mailto:' + CONTACT + '?subject=' + encodeURIComponent('Cadence : problème (v' + APP_VER + ')') + '&body=' + encodeURIComponent(body.slice(0, 1800));
+  }
+
+  /* --- copie automatique du jour (gardée seulement sur ce téléphone) --- */
+  function copyInfo() {
+    try {
+      var raw0 = localStorage.getItem(COPYK), d = localStorage.getItem(COPYD);
+      if (!raw0 || !d || !/^\d{4}-\d\d-\d\d$/.test(d)) return null;
+      return { raw: raw0, day: d, label: dayShort(d) };
+    } catch (e) { return null; }
+  }
+  function copyClear() { try { localStorage.removeItem(COPYK); localStorage.removeItem(COPYD); } catch (e) {} }
+  function copyBtn() {
+    var c = copyInfo(); if (!c) return '';
+    return '<button class="btn ' + (armKey === 'restore' ? 'armed' : '') + '" data-act="restorecopy">' + (armKey === 'restore' ? 'Confirmer : revenir à la copie' : 'Revenir à la copie du ' + esc(c.label)) + '</button>';
+  }
+  function copyRestore() {
+    var c = copyInfo(); if (!c) { showToast('Aucune copie disponible.'); render(); return; }
+    var o = null; try { o = JSON.parse(c.raw); } catch (e) { o = null; }
+    if (!o || o.app !== 'agenda') { copyClear(); showToast('La copie est illisible : rien n’a été changé.'); render(); return; }
+    if (o.owner && S.owner && o.owner !== S.owner) { copyClear(); showToast('Cette copie appartient à un autre compte : rien n’a été changé.'); render(); return; }
+    var n; try { n = ensure(o); } catch (e) { logErr('copie', e); showToast('La copie est illisible : rien n’a été changé.'); render(); return; }
+    S = n; if (!S.owner && typeof auth !== 'undefined' && auth) S.owner = auth.uid;
+    save(); applyTheme(); sheet = null; tab = 'today';
+    showToast('Copie du ' + c.label + ' restaurée.'); render();
+  }
+  function v24Click(a) {
+    if (a === 'crashhome') { sheet = null; tab = 'today'; view = 'd'; cur = todayISO(); sel = cur; render(); return true; }
+    if (a === 'crashreload') { try { location.reload(); } catch (e) {} return true; }
+    if (a === 'errreport') { errReport(); return true; }
+    if (a === 'restorecopy') { if (!arm('restore')) return true; copyRestore(); return true; }
+    return false;
+  }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
@@ -3155,6 +3240,9 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function lsSet(k, v) { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
   var auth = null; try { auth = JSON.parse(lsGet(CK) || 'null'); if (!auth || !auth.rt || !auth.uid) auth = null; } catch (e) { auth = null; }
   var acct = { busy: false, err: '', info: '' }, recov = null;
+  var VK = 'cadence.verify', vf = null; try { vf = JSON.parse(lsGet(VK) || 'null'); if (!vf || !vf.email || auth) vf = null; else { vf.err = ''; vf.info = ''; vf.busy = false; } } catch (e) { vf = null; }
+  function pwOk(pw) { return pw.length >= 8 && /[a-z]/i.test(pw) && /[0-9]/.test(pw); }
+  var PW_RULE = 'Choisis un mot de passe d’au moins 8 caractères, avec au moins une lettre et un chiffre.';
   var sync = { st: 'idle', at: lsGet(CT) || '', err: '', conflict: null };
   var lastSer = null, pushT = null, pushing = false, again = false, syncing = false, lastPull = 0, refreshing = null, retryT = null, chg = 0;
 
@@ -3204,11 +3292,15 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     if (er && er.net) return 'Pas de connexion internet.';
     if (/invalid login|invalid_credentials/i.test(m + c)) return 'E-mail ou mot de passe incorrect.';
     if (/already registered|user_already_exists|already been registered/i.test(m + c)) return 'Un compte existe déjà avec cet e-mail. Appuie sur « Se connecter ».';
-    if (/weak_password|at least 6|password should/i.test(m + c)) return 'Mot de passe trop court : 6 caractères minimum.';
+    if (/weak_password|at least \d|password should/i.test(m + c)) return 'Mot de passe trop faible. ' + PW_RULE;
+    if (/email_not_confirmed|not.*confirmed/i.test(m + c)) return 'Confirme d’abord ton e-mail avec le code reçu.';
+    if (/otp_expired|token has expired|expired or is invalid/i.test(m + c)) return 'Code incorrect ou expiré. Vérifie les chiffres, ou demande un nouveau code.';
+    if (/email_address_not_authorized|address not authorized/i.test(m + c)) return 'L’envoi des e-mails n’est pas encore activé sur le serveur de Cadence. Réessaie un peu plus tard.';
+    if (/error sending|sending.*email|smtp/i.test(m + c)) return 'L’e-mail n’a pas pu partir pour le moment. Réessaie dans quelques minutes.';
+    if (/over_email_send_rate_limit|email rate limit/i.test(m + c)) return 'Trop d’e-mails envoyés pour le moment. Réessaie un peu plus tard.';
     if (/rate|too many/i.test(m + c) || (er && er.status === 429)) return 'Trop de tentatives. Réessaie dans quelques minutes.';
     if (/validate_email|email.*invalid|invalid.*email|unable to validate/i.test(m + c)) return 'Adresse e-mail non valide.';
     if (/signup.*disabled|signups not allowed/i.test(m + c)) return 'Les inscriptions sont désactivées.';
-    if (/not.*confirmed/i.test(m + c)) return 'Confirme d’abord ton e-mail.';
     if (/api key|apikey/i.test(m)) return 'Clé du serveur refusée : réglage de l’appli à corriger.';
     return 'Erreur : ' + m;
   }
@@ -3262,7 +3354,7 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     }).catch(function (er) { pushing = false; again = false; if (auth) setSt('err', frErr(er)); });
   }
   function wipeLocal() {
-    var th = S.settings.theme, sz = S.settings.size; S = fresh(); S.settings.theme = th; S.settings.size = sz;
+    copyClear(); var th = S.settings.theme, sz = S.settings.size; S = fresh(); S.settings.theme = th; S.settings.size = sz;
     try { localStorage.removeItem(KEY); } catch (e) {}
     lockSet(null); locked = false;
     SL.lists = []; SL.items = {}; lsSet('cadence.sl', null); SP.spaces = []; SP.items = {}; SP.cur = ''; lsSet('cadence.sp', null); rtClose(); lsSet('cadence.wx', null); wx = null; lsSet('cadence.push.h', null);
@@ -3309,17 +3401,79 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
     em = em.trim(); kind = kind === 'in' ? 'in' : 'up';
     acct.info = '';
     if (!/^\S+@\S+\.\S+$/.test(em)) { acct.err = 'Écris une adresse e-mail valide.'; render(); return; }
-    if (kind === 'up' && pw.length < 8) { acct.err = 'Choisis un mot de passe d’au moins 8 caractères.'; render(); return; }
+    if (kind === 'up' && !pwOk(pw)) { acct.err = PW_RULE; render(); return; }
     if (kind === 'in' && pw.length < 6) { acct.err = 'Mot de passe trop court.'; render(); return; }
     if (kind === 'up' && !((document.getElementById('a-cgu') || {}).checked)) { acct.err = 'Coche la case pour accepter les conditions d’utilisation.'; render(); return; }
     acct.busy = true; acct.err = ''; render();
     raw('POST', kind === 'up' ? '/auth/v1/signup' : '/auth/v1/token?grant_type=password', { email: em, password: pw }).then(function (j) {
       acct.busy = false;
-      if (!j || !j.access_token) { acct.info = 'Compte créé, mais il faut confirmer ton e-mail avant de te connecter : ouvre le message reçu, puis reviens ici.'; render(); return; }
+      if (!j || !j.access_token) {
+        var ids = j && (j.identities || (j.user && j.user.identities));
+        if (kind === 'up' && Array.isArray(ids) && !ids.length) { authMode = 'in'; acct.info = 'Un compte existe déjà avec cet e-mail : connecte-toi avec ton mot de passe.'; render(); return; }
+        var pa0 = document.getElementById('a-pass'); if (pa0) pa0.value = '';
+        startVerify(em, Date.now()); return;
+      }
       setAuth(j, em);
       var pa = document.getElementById('a-pass'); if (pa) pa.value = '';
       return afterLogin(kind === 'up');
-    }).catch(function (er) { acct.busy = false; acct.err = frErr(er); render(); });
+    }).catch(function (er) {
+      acct.busy = false;
+      if (kind === 'in' && /email_not_confirmed|not.*confirmed/i.test((er.code || '') + ' ' + (er.message || ''))) { var pa1 = document.getElementById('a-pass'); if (pa1) pa1.value = ''; startVerify(em, 0); cloudResend(true); return; }
+      acct.err = frErr(er); render();
+    });
+  }
+  /* --- v24 : vérification de l’e-mail par code --- */
+  function vfSave() { lsSet(VK, vf ? JSON.stringify({ email: vf.email, sent: vf.sent || 0 }) : null); }
+  function vfLeft() { return vf && vf.sent ? Math.max(0, Math.ceil((vf.sent + 60000 - Date.now()) / 1000)) : 0; }
+  function startVerify(em, sent) { vf = { email: em, sent: sent || 0, err: '', info: '', busy: false }; vfSave(); acct.busy = false; acct.err = ''; acct.info = ''; render(); focusAdd('#vf-code'); }
+  function vfResendLabel() { var l = vfLeft(); return l > 0 ? 'Renvoyer le code dans ' + l + ' s' : 'Renvoyer le code'; }
+  function viewVerify() {
+    var dis = vf.busy ? ' disabled' : '';
+    var h = '<div class="auth"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>';
+    h += '<h1>Vérifie ton e-mail</h1><p class="lead">Un code vient d’être envoyé à <b>' + esc(vf.email) + '</b>. Écris-le ici pour activer ton compte.</p>';
+    h += '<form id="vfform" class="card" autocomplete="off" novalidate><label class="f" for="vf-code">Code reçu par e-mail<input type="text" id="vf-code" class="otp" data-keep inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Code" enterkeyhint="done"></label>' +
+      (vf.err ? '<p class="err" role="alert">' + esc(vf.err) + '</p>' : '') + (vf.info ? '<p class="okmsg" role="status">' + esc(vf.info) + '</p>' : '') +
+      '<button type="submit" class="btn primary big"' + dis + '>' + (vf.busy ? 'Un instant…' : 'Valider le code') + '</button>' +
+      '<button type="button" class="btn" data-act="vfresend"' + (vf.busy || vfLeft() > 0 ? ' disabled' : '') + '>' + vfResendLabel() + '</button>' +
+      '<p class="hint">Pas reçu ? Regarde dans les courriers indésirables (spam), puis demande un nouveau code si besoin.</p></form>';
+    h += '<div class="btns vfnav"><button class="btn ghost" data-act="vfback">Changer d’adresse e-mail</button><button class="btn ghost" data-act="vflogin">J’ai déjà un compte : me connecter</button></div>';
+    return h + legalLinks() + '</div>';
+  }
+  function vfTick() { if (!vf || auth) return; var b = document.querySelector('[data-act="vfresend"]'); if (!b) return; var t = vfResendLabel(); if (b.textContent !== t) b.textContent = t; b.disabled = !!(vf.busy || vfLeft() > 0); }
+  setInterval(vfTick, 1000);
+  function cloudVerify() {
+    if (!vf || vf.busy) return;
+    var code = ((document.getElementById('vf-code') || {}).value || '').replace(/\D/g, '');
+    if (code.length < 6) { vf.err = 'Écris le code reçu par e-mail (seulement les chiffres).'; vf.info = ''; render(); focusAdd('#vf-code'); return; }
+    var em = vf.email; vf.busy = true; vf.err = ''; vf.info = ''; render();
+    raw('POST', '/auth/v1/verify', { type: 'email', email: em, token: code }).catch(function (er) {
+      if (er.status === 400 && /validation_failed|verification type/i.test((er.code || '') + (er.message || ''))) return raw('POST', '/auth/v1/verify', { type: 'signup', email: em, token: code });
+      throw er;
+    }).then(function (j) {
+      if (!j || !j.access_token) throw new Error('Réponse inattendue du serveur.');
+      vf = null; vfSave(); setAuth(j, em);
+      showToast('E-mail confirmé. Bienvenue dans Cadence !');
+      return afterLogin(true);
+    }).catch(function (er) {
+      if (!vf) return;
+      var e2 = document.getElementById('vf-code'); if (e2) e2.value = '';
+      vf.busy = false; vf.err = (er.status === 429 || /over_request_rate_limit/i.test(er.code || '')) ? 'Trop d’essais. Attends quelques minutes, puis réessaie.' : frErr(er); render(); focusAdd('#vf-code');
+    });
+  }
+  function cloudResend(auto) {
+    if (!vf || (!auto && vfLeft() > 0)) return;
+    var em = vf.email; vf.busy = true; vf.err = ''; if (!auto) vf.info = ''; render();
+    raw('POST', '/auth/v1/resend', { type: 'signup', email: em }).then(function () {
+      if (!vf || vf.email !== em) return;
+      vf.sent = Date.now(); vfSave(); vf.busy = false; vf.err = '';
+      vf.info = auto ? 'Ton adresse n’est pas encore confirmée : un nouveau code vient de t’être envoyé.' : 'Nouveau code envoyé. Regarde ta boîte mail (et les courriers indésirables).'; render();
+    }).catch(function (er) {
+      if (!vf || vf.email !== em) return;
+      vf.busy = false; var s0 = /after (\d+) seconds?/i.exec(er.message || '');
+      if (s0) { vf.sent = Date.now() - 60000 + Math.min(60, +s0[1]) * 1000; vfSave(); vf.err = ''; vf.info = 'Un code t’a été envoyé il y a moins d’une minute : regarde ta boîte mail.'; }
+      else vf.err = frErr(er);
+      render();
+    });
   }
   function cloudForgot() {
     var em = ((document.getElementById('a-mail') || {}).value || '').trim();
@@ -3342,13 +3496,13 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   function recoverySheet() {
     if (!recov) return '';
     return '<button class="scrim" data-act="rcclose" aria-label="Fermer"></button><section class="sheet" role="dialog" aria-label="Nouveau mot de passe"><div class="grab"></div><h2>Nouveau mot de passe</h2>' +
-      '<form id="rcform" autocomplete="off"><label class="f" for="rc-pass">Choisis un nouveau mot de passe (6 caractères minimum)<input type="password" id="rc-pass" data-keep autocomplete="new-password"></label>' +
+      '<form id="rcform" autocomplete="off"><label class="f" for="rc-pass">Choisis un nouveau mot de passe (8 caractères minimum, avec au moins une lettre et un chiffre)<input type="password" id="rc-pass" data-keep autocomplete="new-password"></label>' +
       (recov.err ? '<p class="err" role="alert">' + esc(recov.err) + '</p>' : '') + '<button type="submit" class="btn primary big"' + (recov.busy ? ' disabled' : '') + '>Enregistrer</button></form></section>';
   }
   function cloudRecover() {
     var pw = (document.getElementById('rc-pass') || {}).value || '';
     if (!recov) return;
-    if (pw.length < 6) { recov.err = 'Le mot de passe doit faire au moins 6 caractères.'; render(); return; }
+    if (!pwOk(pw)) { recov.err = PW_RULE; render(); return; }
     recov.busy = true; recov.err = ''; render();
     raw('PUT', '/auth/v1/user', { password: pw }, { Authorization: 'Bearer ' + recov.at }).then(function (u) {
       var rc = recov; recov = null;
@@ -3359,6 +3513,8 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
   }
   function cloudClick(a) {
     if (a === 'acforgot') { cloudForgot(); return true; }
+    if (a === 'vfresend') { cloudResend(false); return true; }
+    if (a === 'vfback' || a === 'vflogin') { var em0 = vf ? vf.email : ''; vf = null; vfSave(); authMode = a === 'vflogin' ? 'in' : 'up'; acct.err = ''; acct.info = ''; render(); var am = document.getElementById('a-mail'); if (am && a === 'vflogin') am.value = em0; focusAdd(a === 'vflogin' ? '#a-pass' : '#a-mail'); return true; }
     if (a === 'rcclose') { recov = null; render(); return true; }
     if (a === 'acsync') { lastPull = 0; cloudSync(); return true; }
     if (a === 'acout') { if (!arm('logout')) return true; cloudLogout(); return true; }
