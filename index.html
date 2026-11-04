@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZnrnElW6FvhCzwaHfA4tRfUQf/bE+PTUohEya/L36mc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0eoPkoXEHjpaqwM7bBxwReRRJs4Z2OBL0XsRb/KQUtE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1092,6 +1092,11 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 /* v56 */
 .tipc p { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; line-height: 1.45; } .tipc .ic { color: var(--accent); flex: none; margin-top: 2px; }
 .kidpb .chip b { margin-left: 4px; }
+/* v57 : outils du jour en ligne */
+.daytools { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; margin: 12px 0; }
+.daytools .autob { margin: 0; min-height: 76px; flex-direction: column; justify-content: center; gap: 6px; padding: 10px 8px; text-align: center; font-size: 13px; line-height: 1.25; }
+.daytools .autob span { flex: none; }
+.daytools .autob .ic.go { display: none; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1100,7 +1105,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 56;
+  var APP_VER = 57;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1524,7 +1529,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
     h += '<section class="card"><h3>Agenda</h3><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'w', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
       '<div class="f"><p class="sub">La semaine commence le</p>' + segOpt('wstart', st.weekStart === 7 ? 7 : 1, [[1, 'Lundi'], [7, 'Dimanche']], 'Premier jour de la semaine') + '</div>' +
-      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + holCard() + vacCard() + kidsCard() + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
+      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + holCard() + vacCard() + kidsCard() + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Dates, documents, animaux</button> <button class="btn sm" data-act="medman">Médicaments</button></div></section>';
     h += '<section class="card"><h3>Sons et vibrations</h3>' + sw2('sound', st.sound, 'Son à la fin d’un Pomodoro') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
       sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + wakeRow() + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
@@ -2412,7 +2417,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var t = todayISO(), its = itemsOn(t), h = '';
     h += netBadge() + vacBanner(t) + holLine(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
-    h += habitsDay(t) + kidsPtsBlock() + medsDay(t) + petsDue(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + kidsPtsBlock() + medsDay(t) + petsDue(t) + '<div class="daytools">' + autoBtn(t) + coachCta(t) + speakBtn() + '</div>' + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + tipCard(t) + quoteLine();
   }
@@ -4786,7 +4791,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   /* ---------- v48 : quotidien — médicaments, idées cadeaux, documents importants, gratitude ---------- */
   // médicaments
   function medsDay(t) {
-    var ms = S.meds || []; if (!ms.length) return '<div class="medl"><button class="lnk" data-act="medman">' + ic('pill') + ' Ajouter un rappel de médicament</button></div>';
+    var ms = S.meds || []; if (!ms.length) return '';
     var lg = (S.medlog || {})[t] || {}, n = 0, dn = 0, h = '';
     ms.forEach(function (m) { (m.times || []).forEach(function (tm) { n++; var k = m.id + '|' + tm, on = !!lg[k]; if (on) dn++; h += '<button class="chip medc" aria-pressed="' + on + '" data-act="medtog" data-v="' + k + '">' + ic(on ? 'check' : 'pill') + esc(tm + ' · ' + m.name) + '</button>'; }); });
     return '<section class="blk"><div class="sh"><h3>Médicaments</h3><span class="cnt">' + dn + '/' + n + '</span></div><div class="chips">' + h + '</div><button class="lnk" data-act="medman">Gérer</button></section>';
