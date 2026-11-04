@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tNjUndThzBCnzMOCNB3+iurVii3uYbvBXLzZnP85a6Y='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZnrnElW6FvhCzwaHfA4tRfUQf/bE+PTUohEya/L36mc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1089,6 +1089,9 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 /* v55 */
 .holl { display: flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; margin: 4px 2px 6px; color: #B35300; }
 .holl.vac { color: #1F7A3A; } .holl .ic { width: 15px; height: 15px; }
+/* v56 */
+.tipc p { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; line-height: 1.45; } .tipc .ic { color: var(--accent); flex: none; margin-top: 2px; }
+.kidpb .chip b { margin-left: 4px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1097,7 +1100,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 55;
+  var APP_VER = 56;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1592,8 +1595,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { kidrw: kidRwSheet, write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { kidrw: 'Points et récompenses', write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1660,6 +1663,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v56Click(a, b)) return;
     if (v55Click(a)) return;
     if (v54Click(a, b)) return;
     if (v53Click(a, b)) return;
@@ -2408,9 +2412,9 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var t = todayISO(), its = itemsOn(t), h = '';
     h += netBadge() + vacBanner(t) + holLine(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
-    h += habitsDay(t) + medsDay(t) + petsDue(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + kidsPtsBlock() + medsDay(t) + petsDue(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
-    return h + quoteLine();
+    return h + tipCard(t) + quoteLine();
   }
 
   /* --- plan du matin --- */
@@ -4316,6 +4320,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)');
     h += '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
     if (S.cats.length) h += '<div class="f"><p class="sub">Rappels par catégorie</p><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></div>';
+    h += sw2('tipstog', S.settings.tips !== false, 'Astuce du jour (dans Aujourd’hui)');
     h += sw2('mmsgtog', S.settings.mmsg !== false, 'Le mot du coach chaque matin (dans Aujourd’hui)');
     h += sw2('spall', !!s.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)');
     h += '<button class="btn sm" data-act="nhist">Historique des rappels</button>';
@@ -5350,6 +5355,48 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       var f = el.files && el.files[0]; el.value = ''; if (!f) return true;
       var rd = new FileReader(); rd.onload = function () { var r = importTasks(String(rd.result || '')); if (!r) { showToast('Fichier non reconnu : exporte un CSV depuis Todoist ou TickTick.'); render(); return; } save(); showToast(plural(r.n, 'tâche importée', 'tâches importées') + (r.ni ? ', ' + r.ni + ' sans date dans la boîte à idées' : '')); render(); }; rd.readAsText(f);
       return true;
+    }
+    return false;
+  }
+  /* ---------- v56 : tâches des enfants avec points et récompenses, astuce du jour ---------- */
+  function kidEarned(k) { var n = 0; S.items.forEach(function (x) { if (x.kid !== k.id) return; n += x.rep ? (x.doneOn || []).length : (x.done ? 1 : 0); }); return n * (k.ppt || 1); }
+  function kidPts(k) { return Math.max(0, kidEarned(k) - (k.spent || 0)); }
+  function kidsPtsBlock() {
+    var ks = S.kids || []; if (!ks.length) return '';
+    return '<section class="blk kidpb"><div class="sh"><h3>Points des enfants</h3></div><div class="chips">' + ks.map(function (k) { return '<button class="chip kidc" style="--kc:' + k.color + '" data-act="kidrw" data-id="' + k.id + '"><i></i>' + esc(k.name) + ' · <b>' + kidPts(k) + ' pts</b></button>'; }).join('') + '</div></section>';
+  }
+  function kidRwSheet() {
+    var k = kidOf(sheet.id); if (!k) { sheet = null; return ''; }
+    var p = kidPts(k), rw = k.rewards || [];
+    var h = '<h2>' + esc(k.name) + ' · ' + p + ' points</h2><p class="sub">Chaque tâche faite « pour ' + esc(k.name) + ' » rapporte ' + plural(k.ppt || 1, 'point', 'points') + '. Échange les points contre une récompense choisie ensemble.</p>';
+    h += '<div class="f"><p class="sub">Points par tâche</p>' + segOpt('kidppt', k.ppt || 1, [[1, '1'], [2, '2'], [5, '5'], [10, '10']], 'Points par tâche') + '</div>';
+    h += '<div class="list">' + rw.map(function (r) { return '<div class="row"><span class="he">' + ic('gift') + '</span><span class="txt"><span>' + esc(r.name) + '</span><small>' + r.cost + ' points</small></span><button class="btn sm' + (p >= r.cost ? ' primary' : '') + '" data-act="kidbuy" data-id="' + k.id + '" data-v="' + r.id + '"' + (p >= r.cost ? '' : ' disabled') + '>Échanger</button><button class="x" data-act="kidrwdel" data-id="' + k.id + '" data-v="' + r.id + '" aria-label="Retirer">×</button></div>'; }).join('') + '</div>';
+    h += '<div class="recnew"><input type="text" id="rw-name" data-keep maxlength="40" placeholder="Récompense (ex. Sortie au parc)" aria-label="Récompense"><input type="text" id="rw-cost" data-keep inputmode="numeric" maxlength="4" placeholder="Points" aria-label="Points"><button class="btn sm primary" data-act="kidrwadd" data-id="' + k.id + '">Ajouter</button></div>';
+    if ((k.log || []).length) h += '<p class="hint">Dernières récompenses : ' + k.log.slice(-3).reverse().map(function (l) { return esc(l.n) + ' (' + esc(dayShort(l.d)) + ')'; }).join(', ') + '.</p>';
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  // astuce du jour : faire découvrir l’appli, une fonction à la fois
+  var TIPS = [['Glisse une tâche vers la droite pour la cocher, vers la gauche pour la supprimer.', ''], ['Écris « dentiste jeudi 15h » : le jour et l’heure sont compris tout seuls.', 'quick'], ['Plusieurs choses à noter ? Dicte-les puis touche « Ranger avec l’IA ».', 'quick'], ['Photographie un ticket de caisse : la dépense va dans ton budget.', 'quick'], ['« Organiser ma journée » place tes tâches dans tes moments libres.', ''], ['Le coach peut faire le bilan de ta semaine et t’aider à trier.', 'coach'], ['Débordé ? « Je suis débordé » garde l’essentiel et reporte le reste.', ''], ['Dans Notes → Cuisine, une photo de recette suffit pour l’enregistrer.', 'cook'], ['Appui long sur une tâche puis glisse-la sur un autre jour dans la vue Semaine.', ''], ['Les routines ajoutent plusieurs tâches d’un coup (bouton + puis « Routines »).', 'quick'], ['Ensemble : partage les courses et les dépenses avec ta famille ou tes colocs.', 'space'], ['La loupe en haut cherche partout : tâches, notes, listes, budget.', ''], ['« Rédiger avec l’IA » prépare un message ou un e-mail pour une tâche.', ''], ['Chaque mois, ajoute loyer et abonnements une fois : ils reviennent tout seuls.', 'budget'], ['Le mode Focus n’affiche que ta tâche et un minuteur.', ''], ['Écris-toi une lettre au futur dans l’onglet Objectifs.', 'goals']];
+  function tipCard(t) {
+    if (S.settings.tips === false || (S.settings.tipHide === t)) return '';
+    var i = Math.floor(parseISO(t).getTime() / 864e5) % TIPS.length, tp = TIPS[i];
+    return '<section class="card tipc"><p>' + ic('sparkle') + '<span><b>Astuce :</b> ' + esc(tp[0]) + '</span></p><div class="btns">' + (tp[1] ? '<button class="btn sm" data-act="tipgo" data-v="' + tp[1] + '">Essayer</button>' : '') + '<button class="btn sm ghost" data-act="tiphide">Plus tard</button></div></section>';
+  }
+  function v56Click(a, b) {
+    if (a === 'kidrw') { sheet = { k: 'kidrw', id: b.dataset.id }; render(); return true; }
+    if (a === 'kidppt') { var k0 = kidOf(sheet.id); if (k0) { k0.ppt = +b.dataset.v; save(); render(); } return true; }
+    if (a === 'kidrwadd') { var k = kidOf(b.dataset.id), n = ((document.getElementById('rw-name') || {}).value || '').trim(), c = parseInt((document.getElementById('rw-cost') || {}).value || '0', 10); if (!k || !n || !(c > 0)) { showToast('Écris la récompense et son nombre de points.'); return true; } k.rewards = (k.rewards || []).concat([{ id: uid(), name: n.slice(0, 40), cost: Math.min(9999, c) }]); ['rw-name', 'rw-cost'].forEach(function (i) { var e = document.getElementById(i); if (e) e.value = ''; }); save(); render(); return true; }
+    if (a === 'kidrwdel') { var k2 = kidOf(b.dataset.id); if (k2) { k2.rewards = (k2.rewards || []).filter(function (r) { return r.id !== b.dataset.v; }); save(); render(); } return true; }
+    if (a === 'kidbuy') { var k3 = kidOf(b.dataset.id), r = k3 && (k3.rewards || []).filter(function (z) { return z.id === b.dataset.v; })[0]; if (!r || kidPts(k3) < r.cost) return true; k3.spent = (k3.spent || 0) + r.cost; k3.log = (k3.log || []).concat([{ n: r.name, d: todayISO() }]).slice(-20); save(); uiSound('pop'); showToast('Bravo ' + k3.name + ' : « ' + r.name + ' » !'); render(); return true; }
+    if (a === 'tiphide') { S.settings.tipHide = todayISO(); save(); render(); return true; }
+    if (a === 'tipstog') { S.settings.tips = S.settings.tips === false; save(); render(); return true; }
+    if (a === 'tipgo') {
+      var v = b.dataset.v; S.settings.tipHide = todayISO(); save();
+      if (v === 'quick') { sheet = { k: 'quick', err: '' }; render(); focusAdd('#q-text'); }
+      else if (v === 'coach') { sheet = { k: 'coach' }; render(); }
+      else if (v === 'cook') { tab = 'notes'; notesView = 'menus'; sheet = null; render(); }
+      else { tab = v === 'space' ? 'space' : v === 'budget' ? 'budget' : 'goals'; sheet = null; render(); }
+      window.scrollTo(0, 0); return true;
     }
     return false;
   }
