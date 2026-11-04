@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PnUFBsjyYN8cjWwTSm+1IhcZ1stSfaSXyn+7bo9BCa0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ehff8hFT2DpYC6aXV++k27NIpUcg9gId93bbT6zaAS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -922,6 +922,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .inum { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
 .ish { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
 .inst .btn.ghost { margin-top: 8px; }
+/* v38 : gestes, routines */
+.list .row[data-rid] { touch-action: pan-y; }
+.row.swiping { transition: none; position: relative; z-index: 2; }
+.row.sw-r { background: color-mix(in srgb, var(--ok, #34C759) 22%, var(--surface)); }
+.row.sw-l { background: color-mix(in srgb, var(--bad) 22%, var(--surface)); }
+.row.dragging { position: relative; z-index: 3; box-shadow: 0 8px 24px rgba(0,0,0,.25); transform: scale(1.02); user-select: none; -webkit-user-select: none; }
+.carryall { margin-top: 10px; gap: 6px; }
+.rtchips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.rtchips .sub { margin: 0 4px 0 0; }
+.chip.ghost { color: var(--accent); border-style: dashed; }
+.rtc { display: grid; gap: 8px; margin-bottom: 10px; }
+.rtc textarea { width: 100%; font: inherit; }
+.rtc .btn { justify-self: start; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -930,7 +943,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 37;
+  var APP_VER = 38;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1411,6 +1424,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         '<button type="submit" class="btn primary big">' + (isAdd ? 'Ajouter' : 'Enregistrer') + '</button>';
       if (!isAdd) h += '<button type="button" class="btn" data-act="postpone" data-id="' + x.id + '" data-d="' + (sheet.d || x.d) + '">Reporter à demain</button>';
       if (!isAdd) h += gcalHtml(x, sheet.d || x.d);
+      if (!isAdd) h += '<div class="btns">' + shareBtn(x) + '</div>';
       if (!isAdd) h += x.rep ? '<div class="btns"><button type="button" class="btn danger" data-act="idelone" data-id="' + x.id + '" data-d="' + sheet.d + '">Supprimer ce jour</button><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer la série</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>' :
         '<div class="btns"><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>';
       h += '</form>';
@@ -1420,8 +1434,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1487,6 +1501,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v38Click(a, b)) return;
     if (v37Click(a)) return;
     if (v33Click(a, b)) return;
     if (v31Click(a, b)) return;
@@ -1635,6 +1650,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v38Change(el)) return;
     if (v33Change(el)) return;
     if (v31Change(el)) return;
     if (v20Change(el)) return;
@@ -1948,7 +1964,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quickSheet() {
     return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><span class="pw"><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done" value="' + esc(sheet.pre || '') + '">' + micBtn('#q-text') + '</span></label>' +
       '<div id="q-prev">' + nlPreview(parseNL(sheet.pre || '', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
-      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + scanBtn() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
+      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + scanBtn() + routChips() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
   }
   function quickSubmit() {
     var raw = (document.getElementById('q-text') || {}).value || '', p = parseNL(raw, quickBase());
@@ -2209,7 +2225,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
     h += carryCard() + intentLine(t) + heroToday(its) + dayTimeline(t, its);
-    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + '</section>' + gcalBlock(t);
+    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t);
     h += habitsDay(t) + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + quoteLine();
@@ -3733,6 +3749,127 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function v37Click(a) {
     if (a === 'instgo') { if (BIP) { var e = BIP; e.prompt(); e.userChoice.then(function (c) { if (c && c.outcome === 'accepted') INST.done = true; BIP = null; render(); }, function () {}); } return true; }
     if (a === 'instskip') { try { localStorage.setItem('cadence.noinst', '1'); } catch (e) {} render(); return true; }
+    return false;
+  }
+  /* ---------- v38 : gestes sur les tâches, tout reporter, partager, routines ---------- */
+  // glisser à droite = faite, à gauche = supprimer ; appui long = déplacer
+  var GS = null, gsBlock = 0;
+  function gsReset() { if (!GS) return; clearTimeout(GS.lp); var r = GS.row; r.style.transform = ''; r.classList.remove('swiping', 'sw-r', 'sw-l', 'dragging'); GS = null; }
+  document.addEventListener('pointerdown', function (e) {
+    if (e.button > 0 || GS) return;
+    var row = e.target.closest && e.target.closest('.list .row[data-rid]');
+    if (!row || e.target.closest('input, select, textarea, .sheet')) return;
+    var p = row.dataset.rid.split('|');
+    GS = { row: row, x: e.clientX, y: e.clientY, dx: 0, mode: '', id: p[0], d: p[1] };
+    GS.lp = setTimeout(function () {
+      if (!GS || GS.mode || row.querySelector('.tm')) return;
+      GS.mode = 'drag'; row.classList.add('dragging');
+      try { if (navigator.vibrate) navigator.vibrate(15); } catch (er) {}
+    }, 450);
+  }, { passive: true });
+  document.addEventListener('touchmove', function (e) { if (GS && GS.mode === 'drag') e.preventDefault(); }, { passive: false });
+  document.addEventListener('pointermove', function (e) {
+    if (!GS) return;
+    var dx = e.clientX - GS.x, dy = e.clientY - GS.y, r = GS.row;
+    if (!GS.mode) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) >= Math.abs(dx)) { gsReset(); return; }
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) { GS.mode = 'sw'; clearTimeout(GS.lp); r.classList.add('swiping'); }
+      else return;
+    }
+    if (GS.mode === 'sw') {
+      GS.dx = dx; r.style.transform = 'translateX(' + dx + 'px)';
+      r.classList.toggle('sw-r', dx > 40); r.classList.toggle('sw-l', dx < -40);
+    } else if (GS.mode === 'drag') {
+      var list = r.parentNode, rows = Array.prototype.filter.call(list.children, function (z) { return z !== r && z.matches('.row[data-rid]') && !z.querySelector('.tm'); });
+      rows.forEach(function (z) {
+        var b = z.getBoundingClientRect();
+        if (e.clientY > b.top && e.clientY < b.bottom) { if (e.clientY < b.top + b.height / 2) list.insertBefore(r, z); else list.insertBefore(r, z.nextSibling); }
+      });
+    }
+  }, { passive: true });
+  function gsEnd() {
+    if (!GS) return;
+    var g = GS, r = g.row;
+    if (g.mode === 'sw' && Math.abs(g.dx) > 90) {
+      gsReset();
+      if (g.dx > 0) { var ck = r.querySelector('.ck'); if (ck) ck.click(); }
+      else { var x = byId(g.id), t = document.createElement('button'); t.dataset.act = x && x.rep ? 'idelone' : 'idel'; t.dataset.id = g.id; t.dataset.d = g.d; t.hidden = true; document.body.appendChild(t); t.click(); t.remove(); }
+      gsBlock = Date.now(); return;
+    }
+    if (g.mode === 'drag') {
+      var ids = Array.prototype.filter.call(r.parentNode.children, function (z) { return z.matches('.row[data-rid]') && !z.querySelector('.tm'); }).map(function (z) { return z.dataset.rid.split('|')[0]; });
+      var objs = ids.map(byId).filter(Boolean), pos = objs.map(function (o) { return S.items.indexOf(o); }).sort(function (a, b) { return a - b; });
+      gsReset(); gsBlock = Date.now();
+      objs.forEach(function (o, i) { S.items[pos[i]] = o; }); save(); render(); return;
+    }
+    if (g.mode) gsBlock = Date.now();
+    gsReset();
+  }
+  document.addEventListener('pointerup', gsEnd, true);
+  document.addEventListener('pointercancel', function () { gsReset(); }, true);
+  document.addEventListener('click', function (e) { if (Date.now() - gsBlock < 400) { e.stopPropagation(); e.preventDefault(); } }, true);
+  document.addEventListener('contextmenu', function (e) { if (GS && GS.mode === 'drag') e.preventDefault(); });
+
+  // le soir : tout reporter à demain
+  function carryBtn(t) {
+    if (new Date().getHours() < 17) return '';
+    var n = S.items.filter(function (x) { return !x.rep && !x.done && x.d === t; }).length;
+    return n ? '<button class="btn sm carryall" data-act="carryall">' + ic('next') + '<span>' + (n === 1 ? 'Reporter la tâche restante à demain' : 'Reporter les ' + n + ' tâches restantes à demain') + '</span></button>' : '';
+  }
+  // partager une tâche
+  function shareBtn(x) { return '<button type="button" class="btn sm ghost" data-act="ishare" data-id="' + x.id + '" data-d="' + (sheet && sheet.d || x.d) + '">' + ic('arrow') + '<span>Partager</span></button>'; }
+  function shareTxt(x, d) {
+    var s = x.text + ' — ' + cap1(dayLong(d)) + (x.time ? ' à ' + x.time : '');
+    if (x.loc) s += ' · ' + x.loc;
+    return s;
+  }
+  // routines
+  function routs() { if (!Array.isArray(S.routines)) S.routines = [{ id: uid(), name: 'Routine du matin', tasks: '7h Réveil\n7h15 Douche\n7h30 Petit-déjeuner' }]; return S.routines; }
+  function routChips() {
+    var r = Array.isArray(S.routines) ? S.routines : [];
+    return '<div class="rtchips"><span class="sub">Routines</span>' + r.map(function (x) { return '<button type="button" class="chip" data-act="rtgo" data-id="' + x.id + '">' + esc(x.name) + '</button>'; }).join('') + '<button type="button" class="chip ghost" data-act="rtman">' + (r.length ? 'Gérer' : '+ Créer une routine') + '</button></div>';
+  }
+  function routSheet() {
+    var h = '<h2>Routines</h2><p class="sub">Une routine ajoute plusieurs tâches d’un coup. Écris une tâche par ligne ; l’heure est reconnue (« 7h30 Douche »).</p>';
+    routs().forEach(function (r) {
+      h += '<div class="card rtc"><input type="text" class="catn" data-rtn="' + r.id + '" value="' + esc(r.name) + '" maxlength="40" aria-label="Nom de la routine"><textarea data-rtt="' + r.id + '" rows="4" maxlength="1500" aria-label="Tâches de la routine">' + esc(r.tasks) + '</textarea><button class="btn sm ' + (armKey === 'rt:' + r.id ? 'armed' : 'ghost') + '" data-act="rtdel" data-id="' + r.id + '">' + (armKey === 'rt:' + r.id ? 'Confirmer la suppression' : 'Supprimer') + '</button></div>';
+    });
+    return h + '<button class="btn" data-act="rtnew">+ Nouvelle routine</button><button class="btn primary big" data-act="sclose">Terminé</button>';
+  }
+  function v38Click(a, b) {
+    var t = todayISO(), x;
+    if (a === 'carryall') {
+      var tm = addDays(t, 1), moved = S.items.filter(function (z) { return !z.rep && !z.done && z.d === t; });
+      moved.forEach(function (z) { z.d = tm; }); save();
+      showToast(plural(moved.length, 'tâche reportée', 'tâches reportées') + ' à demain', function () { moved.forEach(function (z) { z.d = t; }); save(); });
+      render(); return true;
+    }
+    if (a === 'ishare') {
+      x = byId(b.dataset.id); if (!x) return true;
+      var s = shareTxt(x, b.dataset.d || x.d);
+      if (navigator.share) navigator.share({ text: s }).catch(function () {});
+      else { try { navigator.clipboard.writeText(s).then(function () { showToast('Tâche copiée : colle-la dans un message.'); render(); }); } catch (e) { prompt('Copie ce texte :', s); } }
+      return true;
+    }
+    if (a === 'rtman') { routs(); save(); sheet = { k: 'routines' }; render(); return true; }
+    if (a === 'rtnew') { routs().push({ id: uid(), name: 'Nouvelle routine', tasks: '' }); save(); render(); return true; }
+    if (a === 'rtdel') { if (!arm('rt:' + b.dataset.id)) return true; S.routines = routs().filter(function (r) { return r.id !== b.dataset.id; }); save(); render(); return true; }
+    if (a === 'rtgo') {
+      var r = routs().filter(function (z) { return z.id === b.dataset.id; })[0]; if (!r) return true;
+      var day = quickBase(), added = [];
+      String(r.tasks || '').split('\n').forEach(function (ln) {
+        if (!ln.trim()) return; var p = parseNL(ln, day);
+        var it = { id: uid(), d: day, text: (p.text || ln.trim()).slice(0, 200), time: p.time || '', done: false, cat: '', rep: '', rem: '' }; S.items.push(it); added.push(it);
+      });
+      sheet = null; save(); uiSound('pop');
+      showToast(r.name + ' : ' + plural(added.length, 'tâche ajoutée', 'tâches ajoutées'), function () { S.items = S.items.filter(function (z) { return added.indexOf(z) < 0; }); save(); });
+      render(); return true;
+    }
+    return false;
+  }
+  function v38Change(el) {
+    var d = el.dataset || {};
+    if (d.rtn || d.rtt) { routs().forEach(function (r) { if (r.id === (d.rtn || d.rtt)) { if (d.rtn) r.name = (el.value.trim() || r.name).slice(0, 40); else r.tasks = el.value.slice(0, 1500); } }); save(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
