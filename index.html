@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KY1ILCbaFnlpUPM6RXf03k+QHvWUYEUaDvkQTaKdkrk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0jlGInc4pGjujkQxQk3dThPLF9DkI7KnDq4cnTSzjtQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1029,6 +1029,11 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .mcol.now i { background: var(--accent); }
 .mcol small { font-size: 10px; color: var(--muted); white-space: nowrap; }
 .mcol span { font-size: 12px; color: var(--muted); }
+/* v48 */
+.medl { margin: 8px 2px; }
+.medc .ic { width: 16px; height: 16px; }
+.bdg { width: 100%; margin-top: 4px; font-size: 13px; padding: 6px 8px; }
+.grat { display: grid; gap: 6px; margin: 10px 0; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1037,7 +1042,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 47;
+  var APP_VER = 48;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1531,8 +1536,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1599,6 +1604,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v48Click(a, b)) return;
     if (v47Click(a, b)) return;
     if (v46Click(a, b)) return;
     if (v45Click(a, b)) return;
@@ -1756,6 +1762,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v48Change(el)) return;
     if (v40Change(el)) return;
     if (v38Change(el)) return;
     if (v33Change(el)) return;
@@ -1813,7 +1820,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<p>Cette page explique quelles données Cadence utilise, pourquoi, et quels sont tes droits (Règlement général sur la protection des données, RGPD).</p>' +
       '<h3>Qui est responsable de tes données ?</h3><p>' + EDITOR + ', éditeur de Cadence. Contact : ' + mail + '.</p>' +
       '<h3>Quelles données ?</h3><ul><li>Ton adresse e-mail et ton mot de passe, pour ton compte. Le mot de passe n’est jamais visible : il est enregistré sous une forme protégée (hachée).</li>' +
-      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), espaces communs (ce que toi et les membres y ajoutez, ainsi que vos prénoms, est visible par tous les membres de l’espace), réglages des minuteurs et préférences d’affichage.</li>' +
+      '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), espaces communs (ce que toi et les membres y ajoutez, ainsi que vos prénoms, est visible par tous les membres de l’espace), réglages des minuteurs et préférences d’affichage, et si tu les ajoutes : rappels de médicaments, dates d’expiration de documents, idées cadeaux, lettres au futur moi et gratitude.</li>' +
       '<li>Si tu utilises la lecture de photo, la Saisie magique ou le Coach : la photo, le texte ou un résumé de ton agenda (tâches, habitudes, totaux du budget) sont envoyés à Google (service Gemini) uniquement pour être traités, puis elle n’est pas conservée par Cadence. Avec la formule gratuite de Google, les photos envoyées peuvent être utilisées par Google pour améliorer ses produits : évite de photographier des informations sensibles.</li>' +
       '<li>Si tu relies Google Agenda (Profil, Connexions) : l’adresse secrète de ton agenda est enregistrée avec tes données, et le serveur de Cadence lit tes événements Google pour les afficher dans l’appli. Ils ne sont pas copiés dans ton agenda Cadence et restent sur ton appareil. Le lien d’abonnement que tu peux créer permet à Google Agenda de lire tes tâches Cadence ; tu peux le changer à tout moment.</li>' +
       '<li>Si tu actives le verrouillage : ton code est enregistré uniquement sur ton téléphone, sous une forme protégée (hachée). Ton empreinte digitale ne quitte jamais ton téléphone : ni Cadence ni son éditeur n’y ont accès.</li>' +
@@ -1966,7 +1973,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var tom = itemsOn(addDays(todayISO(), 1));
     return '<section class="card eve"><h3>Ton bilan du jour</h3><p>' + (n ? d + ' tâche' + (d > 1 ? 's' : '') + ' faite' + (d > 1 ? 's' : '') + ' sur ' + n : 'Aucune tâche prévue aujourd’hui') + (ses ? ', ' + plural(ses, 'session Pomodoro', 'sessions Pomodoro') : '') + '.</p>' +
       (tom.length ? '<p class="sub">Demain : ' + tom.slice(0, 3).map(function (x) { return esc(x.text); }).join(', ') + (tom.length > 3 ? ' et ' + (tom.length - 3) + ' autre' + (tom.length > 4 ? 's' : '') : '') + '.</p>' : '<p class="sub">Rien de prévu demain pour l’instant.</p>') +
-      '<button class="btn sm" data-act="addsheet" data-v="' + addDays(todayISO(), 1) + '">Préparer demain</button></section>';
+      gratBlock(todayISO()) + '<button class="btn sm" data-act="addsheet" data-v="' + addDays(todayISO(), 1) + '">Préparer demain</button></section>';
   }
   /* --- totaux --- */
   function totals() {
@@ -2272,11 +2279,11 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     }).join('') + '<form id="cdform" class="add2" autocomplete="off"><input type="text" id="cd-name" data-keep maxlength="40" placeholder="Ex. Vacances"><input type="date" id="cd-date" data-keep aria-label="Date"><button type="submit" class="addplus" aria-label="Ajouter le compte à rebours">+</button></form></div>';
     h += '<h3>Anniversaires</h3><div class="list">' + (S.bdays || []).slice().sort(function (a, b) { return a.md < b.md ? -1 : 1; }).map(function (b) {
       var p = b.md.split('-');
-      return '<div class="row"><span class="he">' + eico('🎂') + '</span><div class="txt"><span>' + esc(b.name) + '</span><small>' + (+p[1]) + ' ' + MOIS[+p[0] - 1] + (b.y ? ' ' + b.y : '') + '</small></div><button class="x" data-act="bddel" data-id="' + b.id + '" aria-label="Supprimer ' + esc(b.name) + '">×</button></div>';
+      return '<div class="row"><span class="he">' + eico('🎂') + '</span><div class="txt"><span>' + esc(b.name) + '</span><small>' + (+p[1]) + ' ' + MOIS[+p[0] - 1] + (b.y ? ' ' + b.y : '') + '</small><input type="text" class="bdg" data-bdg="' + b.id + '" value="' + esc(b.gifts || '') + '" maxlength="200" placeholder="Idées cadeaux…" aria-label="Idées cadeaux pour ' + esc(b.name) + '"></div><button class="x" data-act="bddel" data-id="' + b.id + '" aria-label="Supprimer ' + esc(b.name) + '">×</button></div>';
     }).join('') + '<form id="bdform" class="add2" autocomplete="off"><input type="text" id="bd-name" data-keep maxlength="40" placeholder="Prénom"><input type="date" id="bd-date" data-keep aria-label="Date de naissance"><button type="submit" class="addplus" aria-label="Ajouter l’anniversaire">+</button></form></div>' +
       '<label class="chkline"><input type="checkbox" id="bd-noy" data-keepc> <span>Je ne connais pas l’année de naissance</span></label>' +
       (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
-      '<p class="hint">Les anniversaires apparaissent dans ton agenda et, si les notifications sont activées, tu es prévenu le jour même à 9 h.</p><button class="btn big" data-act="sclose">Fermer</button>';
+      docsHtml() + '<p class="hint">Les anniversaires apparaissent dans ton agenda et, si les notifications sont activées, tu es prévenu le jour même à 9 h.</p><button class="btn big" data-act="sclose">Fermer</button>';
     return h;
   }
   var CDEMO = [[/vacance|voyage|plage/, '🏖️'], [/anniv|fete|soiree/, '🎉'], [/examen|bac|partiel|concours/, '📚'], [/mariage/, '💍'], [/concert|festival/, '🎵'], [/match|course|marathon/, '🏅'], [/noel/, '🎄'], [/demenag/, '📦'], [/bebe|naissance/, '👶'], [/entretien|travail|job/, '💼']];
@@ -2333,7 +2340,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var t = todayISO(), its = itemsOn(t), h = '';
     h += vacBanner(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t);
-    h += habitsDay(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + medsDay(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + quoteLine();
   }
@@ -4186,7 +4193,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     });
     // heures calmes : les rappels automatiques ne sont pas envoyés (ceux mis sur une tâche, si)
     out = out.filter(function (r) { return !(inQuiet(r.at) && r.ref && ['morn', 'veille', 'eve', 'bd', 'hab'].indexOf(r.ref.k) >= 0 || inQuiet(r.at) && /^ins-/.test(r.p.tag || '')); });
-    recPushRows(now).forEach(function (r) { out.push(r); });
+    recPushRows(now).concat(dailyPushRows(t, now)).forEach(function (r) { out.push(r); });
     out = out.filter(function (r) { return !inVac(isoOf(new Date(r.at))); });
     (S.letters || []).forEach(function (l) { if (!l.read && l.at > t) add(atOf(l.at, '10:00').getTime(), { title: 'Une lettre de toi t’attend', body: 'Écrite le ' + dayLong(l.w) + '. Ouvre Cadence pour la lire.', tag: 'lett-' + l.id, url: './?tab=today' }, { k: 'lett', d: l.at }); });
     try { nlogPut(out); } catch (e) {}
@@ -4666,6 +4673,70 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       recApply(); save(); showToast('Ajouté chaque mois le ' + r.day + '.'); render(); return true;
     }
     if (a === 'recdel') { if (!arm('rec:' + b.dataset.id)) return true; S.money.rec = (S.money.rec || []).filter(function (r) { return r.id !== b.dataset.id; }); save(); render(); return true; }
+    return false;
+  }
+  /* ---------- v48 : quotidien — médicaments, idées cadeaux, documents importants, gratitude ---------- */
+  // médicaments
+  function medsDay(t) {
+    var ms = S.meds || []; if (!ms.length) return '<div class="medl"><button class="lnk" data-act="medman">' + ic('pill') + ' Ajouter un rappel de médicament</button></div>';
+    var lg = (S.medlog || {})[t] || {}, n = 0, dn = 0, h = '';
+    ms.forEach(function (m) { (m.times || []).forEach(function (tm) { n++; var k = m.id + '|' + tm, on = !!lg[k]; if (on) dn++; h += '<button class="chip medc" aria-pressed="' + on + '" data-act="medtog" data-v="' + k + '">' + ic(on ? 'check' : 'pill') + esc(tm + ' · ' + m.name) + '</button>'; }); });
+    return '<section class="blk"><div class="sh"><h3>Médicaments</h3><span class="cnt">' + dn + '/' + n + '</span></div><div class="chips">' + h + '</div><button class="lnk" data-act="medman">Gérer</button></section>';
+  }
+  function medSheet() {
+    var h = '<h2>Médicaments</h2><p class="sub">Un rappel à chaque heure choisie, et tu coches « pris » dans Aujourd’hui.</p><div class="list">' + (S.meds || []).map(function (m) {
+      return '<div class="row"><span class="he">' + ic('pill') + '</span><div class="txt"><span>' + esc(m.name) + '</span><small>' + esc((m.times || []).join(' · ')) + '</small></div><button class="x' + (armKey === 'med:' + m.id ? ' armed' : '') + '" data-act="meddel" data-id="' + m.id + '" aria-label="Supprimer ' + esc(m.name) + '">' + (armKey === 'med:' + m.id ? 'OK ?' : '×') + '</button></div>';
+    }).join('') + '</div>';
+    h += '<label class="f">Nom<input type="text" id="med-name" data-keep maxlength="60" placeholder="Ex. Vitamine D"></label><div class="cols">' + [1, 2, 3].map(function (i) { return '<label class="f">Heure ' + i + '<input type="time" id="med-t' + i + '" data-keep' + (i === 1 ? ' value="08:00"' : '') + '></label>'; }).join('') + '</div>';
+    return h + '<button class="btn primary" data-act="medadd">Ajouter</button><button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  // documents importants (dates d’expiration)
+  function docsHtml() {
+    var t = todayISO();
+    return '<h3>Documents importants</h3><div class="list">' + (S.docs || []).slice().sort(function (a, b) { return a.exp < b.exp ? -1 : 1; }).map(function (d) {
+      var n = daysBetween(t, d.exp);
+      return '<div class="row"><span class="he">' + ic('note') + '</span><div class="txt"><span>' + esc(d.name) + '</span><small>expire le ' + esc(dayShort(d.exp)) + (n < 0 ? ' · <b class="miss">expiré</b>' : n <= 60 ? ' · <b class="miss">dans ' + plural(n, 'jour', 'jours') + '</b>' : '') + '</small></div><button class="x" data-act="docdel" data-id="' + d.id + '" aria-label="Supprimer ' + esc(d.name) + '">×</button></div>';
+    }).join('') + '<div class="add2"><input type="text" id="doc-name" data-keep maxlength="40" placeholder="Ex. Passeport, assurance auto"><input type="date" id="doc-exp" data-keep aria-label="Date d’expiration"><button type="button" class="addplus" data-act="docadd" aria-label="Ajouter le document">+</button></div></div><p class="hint">Rappel 1 mois puis 1 semaine avant l’expiration.</p>';
+  }
+  // gratitude (le soir)
+  function gratBlock(t) {
+    var g = (S.grat || {})[t] || ['', '', ''];
+    return '<div class="grat"><p class="sub">3 choses positives aujourd’hui</p>' + [0, 1, 2].map(function (i) { return '<input type="text" data-grat="' + i + '" value="' + esc(g[i] || '') + '" maxlength="120" placeholder="' + ['Un bon moment…', 'Quelqu’un qui m’a aidé…', 'Une petite victoire…'][i] + '" aria-label="Chose positive ' + (i + 1) + '">'; }).join('') + '</div>';
+  }
+  function dailyPushRows(t, now) {
+    var rows = [], add = function (at, p, ref) { if (at > now) rows.push({ at: new Date(at).toISOString(), p: p, ref: ref }); };
+    for (var k = 0; k < 8; k++) {
+      var day = addDays(t, k), lg = (S.medlog || {})[day] || {};
+      (S.meds || []).forEach(function (m) { (m.times || []).forEach(function (tm) { if (!lg[m.id + '|' + tm]) add(atOf(day, tm).getTime(), { title: 'Médicament : ' + m.name, body: 'À ' + tm + '. Coche « pris » dans Cadence.', tag: 'med-' + m.id + '-' + day + '-' + tm, url: './?tab=today' }, { k: 'med', d: day }); }); });
+      bdOn(addDays(day, 7)).forEach(function (b) { add(atOf(day, '10:00').getTime(), { title: 'Anniversaire de ' + b.name + ' dans 7 jours', body: b.gifts ? 'Idées cadeaux : ' + b.gifts : 'Pense au cadeau !', tag: 'bd7-' + b.id + '-' + day, url: './?tab=today' }, { k: 'bd', d: day }); });
+    }
+    (S.docs || []).forEach(function (d) { [30, 7].forEach(function (n) { add(atOf(addDays(d.exp, -n), '10:00').getTime(), { title: d.name + ' expire dans ' + (n === 30 ? '1 mois' : '1 semaine'), body: 'Le ' + dayLong(d.exp) + '. Pense à le renouveler.', tag: 'doc-' + d.id + '-' + n, url: './?tab=today' }, { k: 'doc', d: d.exp }); }); });
+    return rows;
+  }
+  function v48Click(a, b) {
+    var t = todayISO();
+    if (a === 'medman') { sheet = { k: 'meds' }; render(); return true; }
+    if (a === 'medtog') { S.medlog = S.medlog || {}; var lg = S.medlog[t] = S.medlog[t] || {}; if (lg[b.dataset.v]) delete lg[b.dataset.v]; else { lg[b.dataset.v] = 1; haptic(); } Object.keys(S.medlog).forEach(function (d) { if (d < addDays(t, -60)) delete S.medlog[d]; }); save(); render(); return true; }
+    if (a === 'medadd') {
+      var nm = ((document.getElementById('med-name') || {}).value || '').trim(), ts = [1, 2, 3].map(function (i) { return (document.getElementById('med-t' + i) || {}).value || ''; }).filter(function (x) { return /^\d\d:\d\d$/.test(x); });
+      if (!nm || !ts.length) { showToast('Écris le nom et au moins une heure.'); return true; }
+      S.meds = (S.meds || []).concat([{ id: uid(), name: nm.slice(0, 60), times: ts.filter(function (x, i) { return ts.indexOf(x) === i; }).sort() }]);
+      var e = document.getElementById('med-name'); if (e) e.value = ''; save(); render(); return true;
+    }
+    if (a === 'meddel') { if (!arm('med:' + b.dataset.id)) return true; S.meds = (S.meds || []).filter(function (m) { return m.id !== b.dataset.id; }); save(); render(); return true; }
+    if (a === 'docadd') {
+      var dn = ((document.getElementById('doc-name') || {}).value || '').trim(), de = (document.getElementById('doc-exp') || {}).value || '';
+      if (!dn || !/^\d{4}-\d\d-\d\d$/.test(de)) { showToast('Écris le document et sa date d’expiration.'); return true; }
+      S.docs = (S.docs || []).concat([{ id: uid(), name: dn.slice(0, 40), exp: de }]);
+      ['doc-name', 'doc-exp'].forEach(function (i) { var x = document.getElementById(i); if (x) x.value = ''; }); save(); render(); return true;
+    }
+    if (a === 'docdel') { S.docs = (S.docs || []).filter(function (d) { return d.id !== b.dataset.id; }); save(); render(); return true; }
+    return false;
+  }
+  function v48Change(el) {
+    var d = el.dataset || {};
+    if (d.grat !== undefined) { var t = todayISO(); S.grat = S.grat || {}; var g = S.grat[t] = S.grat[t] || ['', '', '']; g[+d.grat] = el.value.trim().slice(0, 120); save(); return true; }
+    if (d.bdg) { (S.bdays || []).forEach(function (b) { if (b.id === d.bdg) b.gifts = el.value.trim().slice(0, 200); }); save(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
