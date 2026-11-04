@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-EJ8Z6mT0W4gEmaycNQRDgue/5zg6KVHIxZrxXREE+as='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-wMesVZx9ih7Myae2lmpsI9XBCkfVc7YDfATO3S1wBz0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -862,7 +862,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 28;
+  var APP_VER = 29;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1281,7 +1281,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
     h += '<section class="card"><h3>Agenda</h3><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'w', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
       '<div class="f"><p class="sub">La semaine commence le</p>' + segOpt('wstart', st.weekStart === 7 ? 7 : 1, [[1, 'Lundi'], [7, 'Dimanche']], 'Premier jour de la semaine') + '</div>' +
-      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '<div class="f"><p class="sub">Météo</p><button class="btn sm" data-act="city">' + (st.city ? esc(st.city.name) + ' (changer)' : 'Choisir ma ville') + '</button></div><div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
+      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
     h += '<section class="card"><h3>Sons et vibrations</h3>' + sw2('sound', st.sound, 'Son à la fin d’un Pomodoro') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
       sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
@@ -2014,7 +2014,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
 
   /* --- météo (Open-Meteo, sans clé) --- */
-  var WXC = { 0: ['☀️', 'Ensoleillé'], 1: ['🌤️', 'Plutôt dégagé'], 2: ['⛅', 'Quelques nuages'], 3: ['☁️', 'Couvert'], 45: ['🌫️', 'Brouillard'], 48: ['🌫️', 'Brouillard givrant'], 51: ['🌦️', 'Bruine légère'], 53: ['🌦️', 'Bruine'], 55: ['🌧️', 'Bruine forte'], 56: ['🌧️', 'Bruine verglaçante'], 57: ['🌧️', 'Bruine verglaçante'], 61: ['🌦️', 'Pluie faible'], 63: ['🌧️', 'Pluie'], 65: ['🌧️', 'Forte pluie'], 66: ['🌧️', 'Pluie verglaçante'], 67: ['🌧️', 'Pluie verglaçante'], 71: ['🌨️', 'Neige faible'], 73: ['🌨️', 'Neige'], 75: ['❄️', 'Forte neige'], 77: ['🌨️', 'Grésil'], 80: ['🌦️', 'Averses'], 81: ['🌧️', 'Averses'], 82: ['⛈️', 'Fortes averses'], 85: ['🌨️', 'Averses de neige'], 86: ['🌨️', 'Averses de neige'], 95: ['⛈️', 'Orage'], 96: ['⛈️', 'Orage et grêle'], 99: ['⛈️', 'Orage et grêle'] };
   var wx = null, wxBusy = false;
   try { wx = JSON.parse(localStorage.getItem('cadence.wx') || 'null'); } catch (e) { wx = null; }
   function wxLoad(force) {
@@ -2029,18 +2028,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         if (!editing() && (!sheet || sheet.k === 'plan')) render();
       }).catch(function () { wxBusy = false; });
   }
-  function wxText() {
-    var c = S.settings.city; if (!c || !wx || wx.lat !== c.lat || wx.lon !== c.lon) return '';
-    var w = WXC[wx.c] || ['🌡️', 'Météo'];
-    return { e: w[0], l: w[1], t: wx.t, min: wx.min, max: wx.max, rain: wx.rain, city: c.name };
-  }
-  function wxCard() {
-    var c = S.settings.city;
-    if (!c) return '<button class="card wxadd" data-act="city">' + ic('cloudsun') + '<span>Ajouter ma ville pour la météo</span></button>';
-    var w = wxText();
-    if (!w) return '<button class="card wx" data-act="city"><span class="we">' + eico('🌡️') + '</span><div><b>' + esc(c.name) + '</b><small>Météo en cours de chargement…</small></div></button>';
-    return '<button class="card wx" data-act="city" aria-label="Météo à ' + esc(w.city) + ', modifier la ville"><span class="we">' + eico(w.e) + '</span><b class="wt">' + w.t + '°</b><span class="wl">' + esc(w.l) + '</span><small>' + esc(w.city) + '</small></button>';
-  }
+
   function citySheet() {
     var s = sheet, c = S.settings.city;
     var h = '<h2>Ma ville pour la météo</h2>' + (c ? '<p class="sub">Actuellement : <b>' + esc(c.name) + '</b></p>' : '') +
@@ -2123,18 +2111,17 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var t = todayISO(), its = itemsOn(t), h = '';
     h += carryCard() + intentLine(t) + heroToday(its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + '</section>';
-    h += habitsDay(t) + planCta(t) + wxCard() + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + quoteLine();
   }
 
   /* --- plan du matin --- */
   function planSheet() {
-    var t = todayISO(), its = itemsOn(t).filter(function (x) { return !x.done; }), od = overdue(), w = wxText();
+    var t = todayISO(), its = itemsOn(t).filter(function (x) { return !x.done; }), od = overdue();
     if (!sheet.pick) { sheet.pick = its.filter(function (x) { return x.prio; }).slice(0, 3).map(function (x) { return x.id + '|' + x.d; }); }
     var cand = its.map(function (x) { return { x: x, late: false }; }).concat(od.map(function (x) { return { x: occ(x, x.d), late: true }; }));
     var h = '<div class="dplan"><p class="date">' + esc(cap1(dayLong(t))) + '</p><h2>' + (new Date().getHours() < 12 ? 'Bonjour' : 'Re-bonjour') + (callName() ? ' ' + esc(callName()) : '') + '</h2>';
-    if (w) h += '<p class="sub">' + w.t + '° · ' + esc(w.l) + ' · ' + esc(w.city) + '</p>';
     h += '<label class="f">Mon intention du jour<input type="text" id="pl-int" data-keep maxlength="120" placeholder="Aujourd’hui, je veux…" value="' + esc((S.intent || {}).d === t ? S.intent.text : '') + '"></label>';
     h += '<div class="f"><p class="sub">Choisis jusqu’à 3 priorités (' + sheet.pick.length + '/3)</p>';
     if (cand.length) h += '<div class="list">' + cand.map(function (o) {
