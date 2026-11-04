@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-4ZwTLu6Zp+wDC5c/jJmId0geSXr/V/2l/nO1/DlKGJk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-AcGIVXQnaFVrHaT7i6bGPj8/gufPMOihUaS39PUaAVI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -997,6 +997,14 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .chdots i.on { background: var(--accent); }
 .chdots i.na { opacity: .35; }
 .chdel { margin-top: 6px; font-size: 13px; color: var(--muted); }
+/* v44 : micro dans chaque champ */
+.micw { position: relative; display: flex; align-items: center; flex: 1 1 auto; min-width: 0; width: 100%; }
+.micw > input, .micw > textarea { flex: 1 1 auto; width: 100%; min-width: 0; padding-right: 46px !important; text-overflow: ellipsis; }
+.micw > .mic { position: absolute; right: 5px; width: 36px; height: 36px; border-radius: 50%; background: transparent; color: var(--accent); }
+.micw.ta > .mic { top: 6px; }
+.micw > .mic svg { width: 20px; height: 20px; }
+.micw > .mic.on { background: var(--bad); color: #fff; }
+.form.add .micw, form.add .micw { flex: 1 1 auto; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1005,7 +1013,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 43;
+  var APP_VER = 44;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1534,6 +1542,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     document.querySelectorAll('[data-keep]').forEach(function (e) { if (e.id && keep['#' + e.id] !== undefined) e.value = keep['#' + e.id]; });
     document.querySelectorAll('[data-keepc]').forEach(function (e) { if (e.id && keep['c#' + e.id] !== undefined) e.checked = keep['c#' + e.id]; });
     document.querySelectorAll('form.add input[name="t"]').forEach(function (e) { var k = (e.form.dataset.day || '') + '|' + (e.form.dataset.key || ''); if (keep[k]) e.value = keep[k]; });
+    try { micAll(); } catch (err) { logErr('micro', err); }
     document.body.classList.toggle('noscroll', !!(sheet || recov));
     document.body.classList.toggle('gate', !!(cloudOn && !auth) || isLocked());
     if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
@@ -2367,6 +2376,20 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   /* --- dictée vocale --- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null, recog = null, recogT = '';
   function micBtn(target) { return SR ? '<button type="button" class="mic' + (recog && recogT === target ? ' on' : '') + '" data-act="mic" data-v="' + target + '" aria-label="' + (recog && recogT === target ? 'Arrêter la dictée' : 'Dicter') + '">' + (recog && recogT === target ? '<i class="mstop"></i>' : ic('mic')) + '</button>' : ''; }
+  // v44 : un micro dans chaque champ de texte (on choisit de s’en servir ou non)
+  function micAll() {
+    if (!SR) return;
+    var root = document.getElementById('app') || document.body;
+    root.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea').forEach(function (el, i) {
+      if (el.readOnly || el.disabled || el.hasAttribute('data-nomic') || /numeric|decimal|tel|email/.test(el.inputMode || '') || el.closest('.micw') || el.type === 'hidden') return;
+      if (!el.id) el.id = 'mx' + i;
+      if (document.querySelector('.mic[data-v="#' + el.id + '"]')) return;
+      var w = document.createElement('span'), foc = document.activeElement === el, a = el.selectionStart, b = el.selectionEnd;
+      w.className = 'micw' + (el.tagName === 'TEXTAREA' ? ' ta' : '');
+      el.parentNode.insertBefore(w, el); w.appendChild(el); w.insertAdjacentHTML('beforeend', micBtn('#' + el.id));
+      if (foc) { el.focus(); try { el.setSelectionRange(a, b); } catch (e) {} }
+    });
+  }
   function micToggle(target) {
     if (!SR) return;
     if (recog) { try { recog.stop(); } catch (e) {} recog = null; recogT = ''; render(); return; }
