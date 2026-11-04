@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RGh83XA87ucOyZKgF8ZRRHLUkft5wyBWqzV9gzxBq0o='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-cDZAKoCic83xW68sjWkH/1MqrwMETUHhWHTFXLtRlVI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1112,6 +1112,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .wkprint { margin: 12px 0 0; }
 .sh h3 small.cnt { display: inline; margin-left: 6px; font-weight: 500; }
 .startc p { line-height: 1.5; } .startc .btn { gap: 8px; margin-top: 4px; }
+.sugc p { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; line-height: 1.45; } .sugc .ic { color: var(--accent); flex: none; margin-top: 2px; }
+.stips { margin-top: 10px; } .stips .row { width: 100%; justify-content: space-between; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1120,7 +1122,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 62;
+  var APP_VER = 63;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1692,6 +1694,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v63Click(a, b)) return;
     if (v56Click(a, b)) return;
     if (v55Click(a)) return;
     if (v54Click(a, b)) return;
@@ -2416,7 +2419,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   // v61 : premier pas, quand l’agenda est encore vide
   function startCard(t, its) {
     if ((S.items || []).length >= 3 || its.length) return '';
-    return '<section class="card startc"><h3>Bien démarrer</h3><p>Vide ta tête : écris ou dicte tout ce que tu as à faire, comme ça vient. Par exemple « dentiste jeudi 15h, appeler maman, courses samedi ». Cadence range tout pour toi.</p><button class="btn primary" data-act="quick">' + ic('plus') + '<span>Ajouter mes premières tâches</span></button><p class="hint">Tu peux aussi prendre en photo ton agenda papier depuis ce même bouton.</p></section>';
+    var tips = startTips();
+    return '<section class="card startc"><h3>Bien démarrer</h3><p>Vide ta tête : écris ou dicte tout ce que tu as à faire, comme ça vient. Par exemple « dentiste jeudi 15h, appeler maman, courses samedi ». Cadence range tout pour toi.</p><button class="btn primary" data-act="quick">' + ic('plus') + '<span>Ajouter mes premières tâches</span></button><p class="hint">Tu peux aussi prendre en photo ton agenda papier depuis ce même bouton.</p>' + (tips.length ? '<div class="list stips">' + tips.map(function (x) { return '<button class="row" data-act="stip" data-v="' + x[1] + '"><span class="txt"><span>' + esc(x[0]) + '</span></span>' + ic('next', 'chev') + '</button>'; }).join('') + '</div>' : '') + '</section>';
   }
   // v59 : tous les outils du jour au même endroit, en tuiles
   function dayTools(t, its) {
@@ -2456,7 +2460,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
     // v59 : ordre clair — infos du jour, ma journée, mes tâches, mon quotidien, à venir, bilans
-    h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + startCard(t, its) + heroToday(its) + dayTools(t, its) + (its.length ? energyBlock(t, its) : '') + (its.some(function (x) { return x.time; }) || (typeof gcalOn === 'function' && gcalOn(t).some(function (e) { return e.t; })) ? dayTimeline(t, its) : '') + (its.length ? freeLeft(t, its) : '');
+    h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + startCard(t, its) + sugCard() + heroToday(its) + dayTools(t, its) + (its.length ? energyBlock(t, its) : '') + (its.some(function (x) { return x.time; }) || (typeof gcalOn === 'function' && gcalOn(t).some(function (e) { return e.t; })) ? dayTimeline(t, its) : '') + (its.length ? freeLeft(t, its) : '');
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t) + inboxBlock(t);
     h += habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
@@ -2506,7 +2510,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return '<div class="ob">' + obDots(0) + '<h1>Bienvenue sur Cadence</h1><p class="lead">Comment t’appelles-tu ? Tu pourras le modifier dans le Profil.</p>' +
         '<form id="ob1" class="card" autocomplete="on"><div class="cols"><label class="f">Prénom<input type="text" id="ob-first" data-keep value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label>' +
         '<label class="f">Nom (facultatif)<input type="text" id="ob-last" data-keep value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
-        (notice ? '<p class="err" role="alert">' + esc(notice) + '</p>' : '') + '<button type="submit" class="btn primary big">Continuer</button></form></div>';
+        usesChips() + (notice ? '<p class="err" role="alert">' + esc(notice) + '</p>' : '') + '<button type="submit" class="btn primary big">Continuer</button></form></div>';
     }
     if (obStep === 1) {
       var st = pushState();
@@ -2523,7 +2527,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function finishOnboarding() {
     var t = todayISO();
     obHabs.forEach(function (i) { var x = HTPL[i]; if (x && !(S.habits || []).some(function (h) { return h.name === x[1]; })) S.habits.push({ id: uid(), name: x[1], emoji: x[0], log: {}, days: [], rem: '' }); });
-    obHabs = []; S.settings.news20 = '1'; S.settings.planSeen = t;
+    obHabs = []; applyUses(); S.settings.news20 = '1'; S.settings.planSeen = t;
     S.profile.done = true; save(); tab = 'today'; view = (['d', 'w', 'm', 'y'].indexOf(S.settings.defView) >= 0 ? S.settings.defView : 'w'); cur = t; obStep = 0; render(); window.scrollTo(0, 0);
     setTimeout(function () { slJoinPending(); pushSync(true); if (cloudOn && auth) slFetch(true); }, 50);
   }
@@ -5442,6 +5446,76 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       else { tab = v === 'space' ? 'space' : v === 'budget' ? 'budget' : 'goals'; sheet = null; render(); }
       window.scrollTo(0, 0); return true;
     }
+    return false;
+  }
+  /* ---------- v63 : accueil personnalisé + suggestions apprises ---------- */
+  var USES = [['etudes', 'Études'], ['travail', 'Travail'], ['famille', 'Famille et enfants'], ['maison', 'Maison et courses'], ['sante', 'Sport et santé'], ['budget', 'Budget']];
+  var obUses = [];
+  function usesChips() {
+    return '<div class="f"><p class="sub">Tu vas surtout utiliser Cadence pour… (facultatif, plusieurs choix possibles)</p><div class="chips">' + USES.map(function (u) { return '<button type="button" class="chip" aria-pressed="' + (obUses.indexOf(u[0]) >= 0) + '" data-act="obuse" data-v="' + u[0] + '">' + esc(u[1]) + '</button>'; }).join('') + '</div><p class="hint">Cadence prépare des catégories, routines et habitudes adaptées. Tu pourras tout changer.</p></div>';
+  }
+  var PRESET = {
+    etudes: { cats: [['Cours', '#0066CC']], rout: ['Révisions', '18h Relire les cours\n18h30 Exercices\n19h Préparer le sac'], habs: [['📖', 'Lire 20 min']] },
+    travail: { rout: ['Début de journée', '9h Lire mes e-mails\n9h15 Choisir 3 priorités'] },
+    famille: { cats: [['Famille', '#FF9F0A']], rout: ['Matin en famille', '7h Réveil des enfants\n7h30 Petit-déjeuner\n8h Départ à l’école'] },
+    maison: { rout: ['Ménage du samedi', '10h Aspirateur\n10h30 Lessive\n11h Sortir les poubelles'] },
+    sante: { rout: ['Séance de sport', '18h Échauffement\n18h10 Séance\n19h Étirements'], habs: [['💪', 'Faire du sport'], ['💧', 'Boire 1,5 L d’eau']] },
+    budget: {}
+  };
+  function applyUses() {
+    if (!obUses.length) return;
+    S.profile.uses = obUses.slice();
+    obUses.forEach(function (u) {
+      var p = PRESET[u] || {};
+      (p.cats || []).forEach(function (c) { if (!S.cats.some(function (z) { return nrm(z.name) === nrm(c[0]); })) S.cats.push({ id: uid(), name: c[0], color: c[1] }); });
+      if (p.rout) { S.routines = Array.isArray(S.routines) ? S.routines : []; if (!S.routines.some(function (r) { return r.name === p.rout[0]; })) S.routines.push({ id: uid(), name: p.rout[0], tasks: p.rout[1] }); }
+      (p.habs || []).forEach(function (hb) { if (!(S.habits || []).some(function (h) { return h.name === hb[1]; })) S.habits.push({ id: uid(), name: hb[1], emoji: hb[0], log: {}, days: [], rem: '' }); });
+    });
+    obUses = [];
+  }
+  // conseils de départ selon le profil
+  function startTips() {
+    var u = S.profile.uses || [], t = [];
+    if (u.indexOf('etudes') >= 0 || u.indexOf('famille') >= 0) t.push(['Choisis ta zone de vacances scolaires', 'tab-profile']);
+    if (u.indexOf('famille') >= 0) t.push(['Ajoute tes enfants (Profil → Agenda → Famille)', 'tab-profile']);
+    if (u.indexOf('budget') >= 0) t.push(['Note ton loyer et tes abonnements une fois pour toutes', 'tab-budget']);
+    if (u.indexOf('maison') >= 0) t.push(['Crée ta liste de courses', 'tab-notes']);
+    if (u.indexOf('sante') >= 0 || u.indexOf('etudes') >= 0) t.push(['Lance une routine en 1 geste (bouton +)', 'quick']);
+    return t.slice(0, 3);
+  }
+  // suggestions apprises : une chose faite souvent le même jour de la semaine
+  function sugFind() {
+    var t = todayISO(), lim = addDays(t, -42), by = {};
+    S.items.forEach(function (x) {
+      if (x.rep || x.d < lim || x.d > t || !x.text) return;
+      var k = nrm(x.text).trim(), w = dow(x.d), key = k + '|' + w; if (!k) return;
+      var o = by[key] = by[key] || { text: x.text, w: w, weeks: {}, times: {} };
+      o.weeks[weekStart(x.d)] = 1; if (x.time) o.times[x.time] = (o.times[x.time] || 0) + 1;
+    });
+    var no = S.sugNo || {}, best = null;
+    Object.keys(by).forEach(function (key) {
+      var o = by[key], n = Object.keys(o.weeks).length; if (n < 3 || no[key]) return;
+      if (S.items.some(function (x) { return x.rep && nrm(x.text).trim() === key.split('|')[0]; })) return;
+      if (!best || n > best.n) { var tm = Object.keys(o.times).sort(function (a, b) { return o.times[b] - o.times[a]; })[0] || ''; best = { key: key, text: o.text, w: o.w, n: n, time: tm }; }
+    });
+    return best;
+  }
+  function sugCard() {
+    var s = sugFind(); if (!s) return '';
+    return '<section class="card sugc"><p>' + ic('sparkle') + '<span>Tu fais souvent « <b>' + esc(s.text) + '</b> » le ' + JOURS[s.w - 1] + (s.time ? ' vers ' + esc(s.time) : '') + '. Je l’ajoute chaque semaine ?</span></p><div class="btns"><button class="btn sm primary" data-act="sugyes" data-v="' + esc(s.key) + '">Oui, chaque ' + JOURS[s.w - 1] + '</button><button class="btn sm ghost" data-act="sugno" data-v="' + esc(s.key) + '">Non merci</button></div></section>';
+  }
+  function v63Click(a, b) {
+    if (a === 'obuse') { var v = b.dataset.v, i = obUses.indexOf(v); if (i >= 0) obUses.splice(i, 1); else obUses.push(v); var keep = { f: (document.getElementById('ob-first') || {}).value, l: (document.getElementById('ob-last') || {}).value }; render(); var e1 = document.getElementById('ob-first'), e2 = document.getElementById('ob-last'); if (e1 && keep.f !== undefined) e1.value = keep.f; if (e2 && keep.l !== undefined) e2.value = keep.l; return true; }
+    if (a === 'sugyes') {
+      var s = sugFind(); if (!s || s.key !== b.dataset.v) return true;
+      var t = todayISO(), d = t; while (dow(d) !== s.w) d = addDays(d, 1);
+      var fut = S.items.filter(function (x) { return !x.rep && !x.done && nrm(x.text).trim() === s.key.split('|')[0] && x.d >= t; });
+      S.items = S.items.filter(function (x) { return fut.indexOf(x) < 0; });
+      S.items.push({ id: uid(), d: d, text: s.text, time: s.time || '', done: false, cat: '', rep: 'w', rem: '' });
+      save(); showToast('« ' + s.text + ' » ajouté chaque ' + JOURS[s.w - 1]); render(); return true;
+    }
+    if (a === 'sugno') { S.sugNo = S.sugNo || {}; S.sugNo[b.dataset.v] = 1; save(); render(); return true; }
+    if (a === 'stip') { var v2 = b.dataset.v; if (v2 === 'quick') { sheet = { k: 'quick', err: '' }; render(); } else { tab = v2.replace('tab-', ''); sheet = null; render(); window.scrollTo(0, 0); } return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
