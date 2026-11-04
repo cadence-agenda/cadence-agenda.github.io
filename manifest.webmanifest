@@ -45,7 +45,7 @@
   },
   "shortcuts": [
     {
-      "name": "Ajout rapide",
+      "name": "Ajouter une tâche",
       "short_name": "Ajouter",
       "url": "./?add=1",
       "icons": [
@@ -56,9 +56,9 @@
       ]
     },
     {
-      "name": "Aujourd’hui",
-      "short_name": "Aujourd’hui",
-      "url": "./?tab=today",
+      "name": "Lire une photo",
+      "short_name": "Photo",
+      "url": "./?go=scan",
       "icons": [
         {
           "src": "icon-192.png",
@@ -67,9 +67,20 @@
       ]
     },
     {
-      "name": "Notes",
-      "short_name": "Notes",
-      "url": "./?tab=notes",
+      "name": "Parler au coach",
+      "short_name": "Coach",
+      "url": "./?go=coach",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Liste de courses",
+      "short_name": "Courses",
+      "url": "./?go=courses",
       "icons": [
         {
           "src": "icon-192.png",

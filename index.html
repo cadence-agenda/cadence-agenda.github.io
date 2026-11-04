@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-cDZAKoCic83xW68sjWkH/1MqrwMETUHhWHTFXLtRlVI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ueAlVdcJfRj6o2VyBhsIRAtxB0u8OwnVbYPJlf8YBf8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1114,6 +1114,45 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .startc p { line-height: 1.5; } .startc .btn { gap: 8px; margin-top: 4px; }
 .sugc p { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 8px; line-height: 1.45; } .sugc .ic { color: var(--accent); flex: none; margin-top: 2px; }
 .stips { margin-top: 10px; } .stips .row { width: 100%; justify-content: space-between; }
+/* v64 */
+.vnb { gap: 6px; }
+.vnmic { display: grid; place-items: center; width: 96px; height: 96px; margin: 14px auto 4px; border-radius: 50%; border: 0; background: var(--accent); color: #fff; cursor: pointer; box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 35%, transparent); }
+.vnmic .ic { width: 40px; height: 40px; } .vnmic.on { background: var(--bad); } .vnmic .mstop { width: 26px; height: 26px; border-radius: 6px; background: #fff; display: block; }
+.vnst { text-align: center; color: var(--muted); margin: 6px 0 10px; }
+.cmem { margin-top: 10px; }
+/* v65 */
+.wkovb { display: flex; align-items: center; gap: 6px; margin: -4px auto 14px; }
+.wknav { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 10px; }
+.wknav span { font-weight: 600; }
+.wksum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.wksum div { background: var(--card2, var(--card)); border-radius: 14px; padding: 10px; text-align: center; }
+.wksum b { display: block; font-size: 18px; } .wksum small { color: var(--muted); }
+.wkl { display: grid; gap: 8px; margin-bottom: 12px; }
+.wkd { display: block; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; color: inherit; font: inherit; cursor: pointer; }
+.wkd.now { border-color: var(--accent); } .wkd.past { opacity: .75; }
+.wkdh { display: flex; justify-content: space-between; align-items: baseline; } .wkdh small { color: var(--accent); font-weight: 600; }
+.wkd ul { list-style: none; margin: 6px 0 0; padding: 0; } .wkd li { padding: 2px 0; } .wkd li.d { text-decoration: line-through; color: var(--muted); }
+.wkd .tm { display: inline-block; min-width: 48px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.wkc { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; } .wkc span { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; background: var(--bg); border-radius: 999px; padding: 3px 9px; } .wkc .ic { width: 14px; height: 14px; }
+.wke { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+label.pulse { animation: pulse 1.2s ease 3; } @keyframes pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent); } }
+/* v66 */
+.plrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: -4px 0 4px; }
+.plc { display: inline-flex; align-items: center; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 0 4px 0 10px; }
+.plc button { background: none; border: 0; color: inherit; font: inherit; font-size: 14px; padding: 5px 2px; cursor: pointer; } .plc .x { padding: 4px 6px; color: var(--muted); }
+/* v67 */
+.guest { max-width: 560px; margin: 0 auto; padding-top: 18px; }
+.ghead { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; } .ghead img { border-radius: 12px; } .ghead b { font-size: 18px; }
+.guest .row small { display: block; color: var(--muted); font-size: 12px; }
+.gcta { margin-top: 22px; text-align: center; } .gcta p { margin: 6px 0 12px; }
+/* v68 */
+.soirdots { display: flex; gap: 6px; justify-content: center; margin: 2px 0 6px; } .soirdots i { width: 28px; height: 5px; border-radius: 3px; background: var(--line); } .soirdots i.on { background: var(--accent); } .soirdots i.ok { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.soirst { text-align: center; color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+.soirbig { font-size: 19px; font-weight: 600; margin: 4px 0 8px; }
+.soirnav { margin-top: 14px; justify-content: flex-end; }
+/* v68 : le message du bas ne cache plus les boutons d’une fenêtre ouverte */
+body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0px)); }
+.toast span { pointer-events: none; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1122,7 +1161,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 63;
+  var APP_VER = 68;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1626,8 +1665,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { kidrw: kidRwSheet, write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { kidrw: 'Points et récompenses', write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { soir: soirSheet, wkov: wkovSheet, vnote: vnoteSheet, kidrw: kidRwSheet, write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { soir: 'Bilan du soir', wkov: 'Ma semaine', vnote: 'Note vocale', kidrw: 'Points et récompenses', write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1645,6 +1684,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return '<div class="toast" id="toast" role="status"><span>' + esc(toast.text) + '</span>' + (toast.undo ? '<button data-act="undo">Annuler</button>' : '') + '</div>';
   }
   function viewAll() {
+    if (guestOn()) return guestView() + toastHtml();
     if (needInstall() && !vf) return viewInstall() + toastHtml();
     if (cloudOn && !auth) return (vf ? viewVerify() : viewAuth()) + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
@@ -1663,7 +1703,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     document.querySelectorAll('[data-keep]').forEach(function (e) { if (e.id && keep['#' + e.id] !== undefined) e.value = keep['#' + e.id]; });
     document.querySelectorAll('[data-keepc]').forEach(function (e) { if (e.id && keep['c#' + e.id] !== undefined) e.checked = keep['c#' + e.id]; });
     document.querySelectorAll('form.add input[name="t"]').forEach(function (e) { var k = (e.form.dataset.day || '') + '|' + (e.form.dataset.key || ''); if (keep[k]) e.value = keep[k]; });
-    try { micAll(); } catch (err) { logErr('micro', err); }
+    try { micAll(); if (VN.rec && (!sheet || sheet.k !== 'vnote')) vnStop(); } catch (err) { logErr('micro', err); }
     document.body.classList.toggle('noscroll', !!(sheet || recov));
     document.body.classList.toggle('gate', !!(cloudOn && !auth) || isLocked());
     if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
@@ -1694,6 +1734,11 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v68Click(a, b)) return;
+    if (v67Click(a, b)) return;
+    if (v66Click(a, b)) return;
+    if (v65Click(a, b)) return;
+    if (v64Click(a, b)) return;
     if (v63Click(a, b)) return;
     if (v56Click(a, b)) return;
     if (v55Click(a)) return;
@@ -1743,7 +1788,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'openday') { cur = v; view = 'd'; render(); window.scrollTo(0, 0); return; }
     if (a === 'openmonth') { cur = v; view = 'm'; render(); window.scrollTo(0, 0); return; }
     if (a === 'selday') { sel = v; if (v.slice(0, 7) !== cur.slice(0, 7)) cur = v; render(); return; }
-    if (a === 'itog') { x = byId(id); if (x) { var dd0 = b.dataset.d || x.d, nowDone; popRid = x.id + '|' + dd0; if (x.rep) { x.doneOn = x.doneOn || []; var k0 = x.doneOn.indexOf(dd0); if (k0 >= 0) x.doneOn.splice(k0, 1); else x.doneOn.push(dd0); nowDone = k0 < 0; } else { x.done = !x.done; nowDone = x.done; if (x.done) x.doneAt = todayISO(); else delete x.doneAt; } if (nowDone) { try { if (S.settings.vibrate && navigator.vibrate) navigator.vibrate(12); } catch (er) {} } uiSound(nowDone ? 'tick' : 'untick'); save(); render(); if (nowDone) afterDone(dd0, b); } return; }
+    if (a === 'itog') { x = byId(id); if (x) { var dd0 = b.dataset.d || x.d, nowDone; popRid = x.id + '|' + dd0; if (x.rep) { x.doneOn = x.doneOn || []; var k0 = x.doneOn.indexOf(dd0); if (k0 >= 0) x.doneOn.splice(k0, 1); else x.doneOn.push(dd0); nowDone = k0 < 0; } else { x.done = !x.done; nowDone = x.done; if (x.done) x.doneAt = todayISO(); else delete x.doneAt; } if (nowDone) { try { if (S.settings.vibrate && navigator.vibrate) navigator.vibrate(12); } catch (er) {} } goalBump(x, nowDone); uiSound(nowDone ? 'tick' : 'untick'); save(); render(); if (nowDone) afterDone(dd0, b); } return; }
     if (a === 'iedit') { sheet = { k: 'edit', id: id, d: b.dataset.d || '', err: '' }; render(); return; }
     if (a === 'scat') { if (sheet) { sheet.cat = v; render(); } return; }
     if (a === 'sprio') { if (sheet) { sheet.prio = !sheet.prio; render(); } return; }
@@ -1816,6 +1861,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       if (!fi.trim()) { notice = 'Écris ton prénom pour continuer.'; render(); return; }
       notice = ''; S.profile.first = fi.trim().slice(0, 40); S.profile.last = la.trim().slice(0, 40); S.profile.nick = ((document.getElementById('ob-nick') || {}).value || '').trim().slice(0, 30); save(); obStep = 1; render(); window.scrollTo(0, 0); return;
     }
+    if (v67Submit(f)) return;
     if (v23Submit(f)) return;
     if (v22Submit(f)) return;
     if (v21Submit(f)) return;
@@ -1833,7 +1879,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       var x;
       if (sheet.k === 'add') { x = addItem(dt, tx, tm); showToast('Tâche ajoutée pour ' + (relDay(dt) ? relDay(dt).toLowerCase() : dayLong(dt))); }
       else { x = byId(sheet.id); if (x) { x.text = tx.trim().slice(0, 200); x.d = dt; x.time = /^\d\d:\d\d$/.test(tm) ? tm : ''; } }
-      if (x) { var gv = function (s) { return (document.getElementById(s) || {}).value || ''; }; x.dur = gv('s-dur'); x.proj = gv('s-proj'); x.loc = gv('s-loc').trim().slice(0, 160); if (gv('s-kid')) x.kid = gv('s-kid'); else delete x.kid; x.trav = /^\d+$/.test(gv('s-trav')) ? gv('s-trav') : ''; x.rem2 = gv('s-rem2'); if (x.rem2 !== '' && !x.time) x.rem2 = ''; if (sheet.photo !== undefined) x.photo = sheet.photo; if (sheet.k === 'add' && sheet.subs) x.subs = sheet.subs; }
+      if (x) { var gv = function (s) { return (document.getElementById(s) || {}).value || ''; }; x.dur = gv('s-dur'); x.proj = gv('s-proj'); x.loc = gv('s-loc').trim().slice(0, 160); if (gv('s-kid')) x.kid = gv('s-kid'); else delete x.kid; if (gv('s-goal')) x.goal = gv('s-goal'); else delete x.goal; x.trav = /^\d+$/.test(gv('s-trav')) ? gv('s-trav') : ''; x.rem2 = gv('s-rem2'); if (x.rem2 !== '' && !x.time) x.rem2 = ''; if (sheet.photo !== undefined) x.photo = sheet.photo; if (sheet.k === 'add' && sheet.subs) x.subs = sheet.subs; }
       if (x) { x.cat = sheet.cat || ''; x.prio = !!sheet.prio; x.rem = rmv; if (rp !== (x.rep || '')) { x.rep = rp; if (rp) { x.doneOn = x.done ? [x.d] : []; x.skip = []; delete x.done; } else { x.done = (x.doneOn || []).indexOf(x.d) >= 0; delete x.doneOn; delete x.skip; } } save(); }
       sheet = null; render(); return;
     }
@@ -1926,6 +1972,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<li>Si tu utilises la lecture de photo, la Saisie magique ou le Coach : la photo, le texte ou un résumé de ton agenda (tâches, habitudes, totaux du budget) sont envoyés à Google (service Gemini) uniquement pour être traités, puis elle n’est pas conservée par Cadence. Avec la formule gratuite de Google, les photos envoyées peuvent être utilisées par Google pour améliorer ses produits : évite de photographier des informations sensibles.</li>' +
       '<li>Dans un espace commun, les dépenses partagées et les défis (montants, qui a payé, jours cochés) sont visibles par tous les membres de l’espace.</li>' +
       '<li>Si tu actives le résumé de la semaine par e-mail : un e-mail est envoyé chaque dimanche à ton adresse avec un résumé de ton agenda. Tu peux l’arrêter à tout moment (Profil, Notifications).</li>' +
+      '<li>Une personne sans compte qui ouvre le lien d’une de tes listes partagées peut la voir, cocher et ajouter ; seul le prénom qu’elle écrit est enregistré.</li>' +
+      '<li>Le coach peut retenir quelques informations utiles que tu lui donnes (par exemple un objectif). Tu les vois et les effaces dans la fenêtre du coach.</li>' +
       '<li>Si tu te connectes avec Google : Google transmet à Cadence ton adresse e-mail et ton nom, rien d’autre.</li>' +
       '<li>Si tu relies Google Agenda (Profil, Connexions) : l’adresse secrète de ton agenda est enregistrée avec tes données, et le serveur de Cadence lit tes événements Google pour les afficher dans l’appli. Ils ne sont pas copiés dans ton agenda Cadence et restent sur ton appareil. Le lien d’abonnement que tu peux créer permet à Google Agenda de lire tes tâches Cadence ; tu peux le changer à tout moment.</li>' +
       '<li>Si tu actives le verrouillage : ton code est enregistré uniquement sur ton téléphone, sous une forme protégée (hachée). Ton empreinte digitale ne quitte jamais ton téléphone : ni Cadence ni son éditeur n’y ont accès.</li>' +
@@ -2078,7 +2126,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var tom = itemsOn(addDays(todayISO(), 1));
     return '<section class="card eve"><h3>Ton bilan du jour</h3><p>' + (n ? d + ' tâche' + (d > 1 ? 's' : '') + ' faite' + (d > 1 ? 's' : '') + ' sur ' + n : 'Aucune tâche prévue aujourd’hui') + (ses ? ', ' + plural(ses, 'session Pomodoro', 'sessions Pomodoro') : '') + '.</p>' +
       (tom.length ? '<p class="sub">Demain : ' + tom.slice(0, 3).map(function (x) { return esc(x.text); }).join(', ') + (tom.length > 3 ? ' et ' + (tom.length - 3) + ' autre' + (tom.length > 4 ? 's' : '') : '') + '.</p>' : '<p class="sub">Rien de prévu demain pour l’instant.</p>') +
-      gratBlock(todayISO()) + '<button class="btn sm" data-act="addsheet" data-v="' + addDays(todayISO(), 1) + '">Préparer demain</button></section>';
+      gratBlock(todayISO()) + soirBtn() + '<button class="btn sm" data-act="addsheet" data-v="' + addDays(todayISO(), 1) + '">Préparer demain</button></section>';
   }
   /* --- totaux --- */
   function totals() {
@@ -2462,7 +2510,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     // v59 : ordre clair — infos du jour, ma journée, mes tâches, mon quotidien, à venir, bilans
     h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + startCard(t, its) + sugCard() + heroToday(its) + dayTools(t, its) + (its.length ? energyBlock(t, its) : '') + (its.some(function (x) { return x.time; }) || (typeof gcalOn === 'function' && gcalOn(t).some(function (e) { return e.t; })) ? dayTimeline(t, its) : '') + (its.length ? freeLeft(t, its) : '');
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t) + inboxBlock(t);
-    h += habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + weekOvBtn() + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + tipCard(t) + quoteLine();
   }
@@ -2573,7 +2621,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function notesPane() {
     var ns = notesSorted();
-    var h = '<form id="nform" class="card ncomp" autocomplete="off"><label class="vh" for="n-text">Nouvelle note</label><textarea id="n-text" data-keep maxlength="2000" rows="2" placeholder="Note une idée, un numéro, un truc à ne pas oublier…"></textarea><div class="btns">' + micBtn('#n-text') + '<button type="submit" class="btn primary sm">Noter</button></div></form>';
+    var h = '<form id="nform" class="card ncomp" autocomplete="off"><label class="vh" for="n-text">Nouvelle note</label><textarea id="n-text" data-keep maxlength="2000" rows="2" placeholder="Note une idée, un numéro, un truc à ne pas oublier…"></textarea><div class="btns">' + micBtn('#n-text') + '' + vnoteBtn() + '<button type="submit" class="btn primary sm">Noter</button></div></form>';
     if (!ns.length) h += '<p class="empty card">Ton vide-tête est vide. Note tout ce qui te passe par la tête, tu le rangeras plus tard (tâche, liste…).</p>';
     else h += '<div class="notes">' + ns.map(noteCard).join('') + '</div>';
     return h;
@@ -3015,7 +3063,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       if (s.nEve !== false) {
         var left = its.filter(function (x) { return !x.done; }), tomo = itemsOn(addDays(day, 1));
         var at2 = atOf(day, s.eveHour || '21:00').getTime();
-        if ((left.length || tomo.length) && at2 > now) rows.push({ at: new Date(at2).toISOString(), p: { title: 'Prépare demain', body: (tomo.length ? 'Demain : ' + tomo.slice(0, 3).map(function (x) { return (x.time ? x.time + ' ' : '') + x.text; }).join(', ') + (tomo.length > 3 ? '…' : '') : 'Rien de prévu demain') + (left.length ? ' · ' + plural(left.length, 'tâche pas faite', 'tâches pas faites') + ' aujourd’hui' : ''), tag: 'eve-' + day, url: './?tab=today' }, ref: { k: 'eve', d: day } });
+        if ((left.length || tomo.length) && at2 > now) rows.push({ at: new Date(at2).toISOString(), p: { title: 'Ton bilan du soir (30 s)', body: (tomo.length ? 'Demain : ' + tomo.slice(0, 3).map(function (x) { return (x.time ? x.time + ' ' : '') + x.text; }).join(', ') + (tomo.length > 3 ? '…' : '') : 'Rien de prévu demain') + (left.length ? ' · ' + plural(left.length, 'tâche pas faite', 'tâches pas faites') + ' aujourd’hui' : ''), tag: 'eve-' + day, url: './?go=soir' }, ref: { k: 'eve', d: day } });
       }
       if (s.nBday !== false) bdOn(day).forEach(function (b) {
         var at3 = atOf(day, '09:00').getTime(); if (at3 <= now) return;
@@ -3087,12 +3135,12 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += '<div class="f"><p class="sub">Sous-tâches' + (subs.length ? ' (' + subs.filter(function (s) { return s.done; }).length + '/' + subs.length + ')' : '') + '</p><div class="list">' + subs.map(function (s, i) {
       return '<div class="row' + (s.done ? ' done' : '') + '"><button type="button" class="ck" aria-pressed="' + !!s.done + '" aria-label="' + (s.done ? 'Décocher' : 'Cocher') + ' : ' + esc(s.t) + '" data-act="ssub" data-v="' + i + '">' + CHECK + '</button><div class="txt"><span>' + esc(s.t) + '</span></div><button type="button" class="x" data-act="ssubdel" data-v="' + i + '" aria-label="Retirer ' + esc(s.t) + '">×</button></div>';
     }).join('') + (isAdd ? '' : splitBtn(x)) + '<div class="add"><input type="text" id="s-sub" data-keep maxlength="120" placeholder="Ajouter une sous-tâche" aria-label="Nouvelle sous-tâche"><button type="button" class="addplus" data-act="ssubadd" aria-label="Ajouter la sous-tâche">+</button></div></div></div>';
-    var more = sheet.more || !!(pv || loc || ph || (x && x.rem2) || subs.length || durV);
-    h = '<details class="more"' + (more ? ' open' : '') + '><summary>Plus d’options<small>Durée, sous-tâches, projet, lieu, photo</small></summary><div class="grid">' + h;
+    var more = sheet.more || !!((x && x.goal) || pv || loc || ph || (x && x.rem2) || subs.length || durV);
+    h = '<details class="more"' + (more ? ' open' : '') + '><summary>Plus d’options<small>Durée, sous-tâches, projet, objectif, lieu, photo</small></summary><div class="grid">' + h;
     h += '<label class="f">Projet<select id="s-proj" data-keep><option value="">Aucun</option>' + (S.projects || []).map(function (p) { return '<option value="' + p.id + '"' + (pv === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>'; }).join('') + '</select></label>';
     h += '<label class="f">Deuxième rappel<select id="s-rem2" data-keep>' + ['', '0', '5', '10', '15', '30', '60', '1440'].map(function (k) { return '<option value="' + k + '"' + (k === (x ? String(x.rem2 || '') : '') ? ' selected' : '') + '>' + REML[k] + '</option>'; }).join('') + '</select></label>';
-    h += kidSelect(isAdd ? null : x);
-    h += '<label class="f">Lieu ou adresse<input type="text" id="s-loc" data-keep maxlength="160" value="' + esc(loc) + '" placeholder="Ex. 12 rue de la Paix, Paris"></label>';
+    h += kidSelect(isAdd ? null : x) + goalLinkSelect(isAdd ? null : x);
+    h += '<label class="f">Lieu ou adresse<input type="text" id="s-loc" data-keep maxlength="160" value="' + esc(loc) + '" placeholder="Ex. 12 rue de la Paix, Paris"></label>' + placesRow();
     var trv = String((sheet.k === 'edit' && byId(sheet.id) && byId(sheet.id).trav) || '');
     h += '<label class="f">Temps de trajet (rappel « Il est temps de partir »)<select id="s-trav" data-keep>' + [['', 'Pas de rappel de départ'], ['10', '10 min'], ['15', '15 min'], ['20', '20 min'], ['30', '30 min'], ['45', '45 min'], ['60', '1 h'], ['90', '1 h 30'], ['120', '2 h']].map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === trv ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
     if (loc) h += '<a class="btn sm" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(loc) + '" target="_blank" rel="noopener">Ouvrir l’itinéraire</a>';
@@ -4153,7 +4201,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     }
     if (a === 'ishare') {
       x = byId(b.dataset.id); if (!x) return true;
-      var s = shareTxt(x, b.dataset.d || x.d);
+      var s = shareTxt(x, b.dataset.d || x.d) + '\nAjouter à ton agenda : ' + gcalLink(x, b.dataset.d || x.d);
       if (navigator.share) navigator.share({ text: s }).catch(function () {});
       else { try { navigator.clipboard.writeText(s).then(function () { showToast('Tâche copiée : colle-la dans un message.'); render(); }); } catch (e) { prompt('Copie ce texte :', s); } }
       return true;
@@ -4528,7 +4576,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (COACH.err) h += '<p class="err" role="alert">' + esc(COACH.err) + '</p>';
     h += '</div><div class="chips csug">' + COACH_SUG.map(function (q) { return '<button type="button" class="chip" data-act="coachq" data-v="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div>';
     h += '<form id="coachf" class="coachf" autocomplete="off"><textarea id="coach-in" data-keep rows="2" maxlength="1000" placeholder="Écris ta question…" aria-label="Question au coach"></textarea><button type="submit" class="btn primary"' + (COACH.busy ? ' disabled' : '') + '>Envoyer</button></form>';
-    return h + coachVoiceRow() + (COACH.hist.length ? '<button class="btn ghost sm" data-act="coachclr">Effacer la discussion</button>' : '');
+    return h + coachVoiceRow() + coachMemHtml() + (COACH.hist.length ? '<button class="btn ghost sm" data-act="coachclr">Effacer la discussion</button>' : '');
   }
   function coachFmt(t) { return esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/^\s*[-*•]\s+/gm, '• ').replace(/\n/g, '<br>'); }
   function coachAsk(q) {
@@ -4536,8 +4584,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser le coach.'); return; }
     var hist = COACH.hist.slice(-8);
     COACH.hist.push({ r: 'u', t: q.slice(0, 1000) }); COACH.busy = true; COACH.err = ''; coachSave(); render(); coachScroll();
-    authed('POST', '/functions/v1/cadence-coach', { msg: q, ctx: coachCtx().slice(0, 5200) + ACT_HELP.replace('{T}', todayISO()), hist: hist.map(function (m) { return { r: m.r, t: m.t }; }), name: callName() || '' }).then(function (r) {
-      var sp = coachSplitActs(String((r && r.text) || '…'));
+    authed('POST', '/functions/v1/cadence-coach', { msg: q, ctx: coachCtx().slice(0, 4800) + coachMemCtx() + MEMO_HELP + ACT_HELP.replace('{T}', todayISO()), hist: hist.map(function (m) { return { r: m.r, t: m.t }; }), name: callName() || '' }).then(function (r) {
+      var mm = coachTakeMemo(String((r && r.text) || '…')), sp = coachSplitActs(mm.t); if (mm.n) showToast('Le coach a retenu une information sur toi.');
       COACH.busy = false; COACH.hist.push({ r: 'a', t: sp.t || '…', acts: sp.acts }); coachSpeak(sp.t || ''); coachSave(); render(); coachScroll();
     }).catch(function (er) {
       COACH.busy = false; COACH.hist.pop(); coachSave();
@@ -5518,6 +5566,233 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'stip') { var v2 = b.dataset.v; if (v2 === 'quick') { sheet = { k: 'quick', err: '' }; render(); } else { tab = v2.replace('tab-', ''); sheet = null; render(); window.scrollTo(0, 0); } return true; }
     return false;
   }
+  /* ---------- v64 : notes vocales + coach qui se souvient ---------- */
+  // note vocale : dictée longue, puis résumé et tâches par l’IA
+  var VN = { rec: null, txt: '', base: '', busy: '' };
+  function vnoteBtn() { return SR ? '<button type="button" class="btn sm vnb" data-act="vnote">' + ic('mic') + '<span>Note vocale</span></button>' : ''; }
+  function vnoteSheet() {
+    var on = !!VN.rec, h = '<h2>Note vocale</h2><p class="sub">Parle librement : idées, choses à faire, rendez-vous. Le texte s’écrit en direct. Ensuite, l’IA peut résumer et créer les tâches.</p>';
+    h += '<button class="vnmic' + (on ? ' on' : '') + '" data-act="vnrec" aria-label="' + (on ? 'Arrêter' : 'Parler') + '">' + (on ? '<i class="mstop"></i>' : ic('mic')) + '</button><p class="vnst">' + (on ? 'Je t’écoute… touche pour arrêter' : VN.txt ? 'Touche pour continuer à parler' : 'Touche pour parler') + '</p>';
+    h += '<textarea id="vn-txt" rows="7" maxlength="4000" placeholder="Le texte apparaîtra ici…">' + esc(VN.txt) + '</textarea>';
+    if (VN.txt.trim() && !on) h += '<div class="btns"><button class="btn primary" data-act="vnsave" data-v="tasks"' + (VN.busy ? ' disabled' : '') + '>' + ic('sparkle') + '<span>Créer les tâches</span></button><button class="btn" data-act="vnsave" data-v="sum"' + (VN.busy ? ' disabled' : '') + '>' + ic('note') + '<span>' + (VN.busy === 'sum' ? 'Résumé…' : 'Résumer en note') + '</span></button><button class="btn ghost" data-act="vnsave" data-v="raw">Garder tel quel</button></div>';
+    return h + '<button class="btn ghost" data-act="vnclose">Fermer</button>';
+  }
+  function vnStop() { if (VN.rec) { try { VN.rec.stop(); } catch (e) {} VN.rec = null; } }
+  function vnStart() {
+    if (!SR) return; var el = document.getElementById('vn-txt'); VN.txt = el ? el.value : VN.txt; VN.base = VN.txt ? VN.txt.replace(/\s*$/, ' ') : '';
+    try {
+      var r = new SR(); r.lang = 'fr-FR'; r.interimResults = true; r.continuous = true;
+      r.onresult = function (ev) { var tx = ''; for (var i = 0; i < ev.results.length; i++) tx += ev.results[i][0].transcript; VN.txt = (VN.base + tx.trim()).slice(0, 4000); var e2 = document.getElementById('vn-txt'); if (e2) e2.value = VN.txt; };
+      r.onerror = function (ev) { if (ev && ev.error === 'not-allowed') showToast('Micro refusé : autorise-le dans les réglages du navigateur.'); };
+      r.onend = function () { if (VN.rec === r) { VN.rec = null; render(); } };
+      VN.rec = r; r.start(); render();
+    } catch (e) { VN.rec = null; showToast('La dictée n’est pas disponible ici.'); render(); }
+  }
+  // mémoire du coach (visible et effaçable)
+  var MEMO_HELP = '\nSi la personne t’apprend une information durable et utile sur elle (objectif, préférence, contrainte d’emploi du temps), ajoute avant tout le reste une ligne « MEMO: » suivie de cette information en une phrase courte. Jamais d’information de santé, d’argent précise ou de données sensibles.';
+  function coachMemCtx() { var m = S.coachMem || []; return m.length ? '\nCe que tu sais déjà de la personne : ' + m.map(function (x) { return x.t; }).join(' ; ') + '.' : ''; }
+  function coachTakeMemo(txt) {
+    var out = [], t = String(txt || '').replace(/^\s*MEMO\s*:\s*(.+)$/gim, function (_, m) { out.push(m.trim().slice(0, 160)); return ''; }).trim();
+    if (out.length) { S.coachMem = (S.coachMem || []).concat(out.filter(function (m) { return !(S.coachMem || []).some(function (z) { return nrm(z.t) === nrm(m); }); }).map(function (m) { return { id: uid(), t: m, at: todayISO() }; })).slice(-20); save(); }
+    return { t: t, n: out.length };
+  }
+  function coachMemHtml() {
+    var m = S.coachMem || []; if (!m.length) return '';
+    return '<details class="gchelp cmem"><summary>Ce que le coach retient de toi (' + m.length + ')</summary><div class="list">' + m.map(function (x) { return '<div class="row"><span class="txt"><span>' + esc(x.t) + '</span></span><button class="x" data-act="cmemdel" data-id="' + x.id + '" aria-label="Oublier">×</button></div>'; }).join('') + '</div><button class="btn sm ghost" data-act="cmemclr">Tout oublier</button></details>';
+  }
+  function v64Click(a, b) {
+    if (a === 'vnote') { VN.txt = ''; VN.busy = ''; sheet = { k: 'vnote' }; render(); vnStart(); return true; }
+    if (a === 'vnrec') { if (VN.rec) { vnStop(); var e = document.getElementById('vn-txt'); if (e) VN.txt = e.value; render(); } else vnStart(); return true; }
+    if (a === 'vnclose') { vnStop(); sheet = null; render(); return true; }
+    if (a === 'vnsave') {
+      var el = document.getElementById('vn-txt'), tx = ((el && el.value) || VN.txt).trim(); if (!tx) return true; VN.txt = tx;
+      if (b.dataset.v === 'raw') { addNote(tx); sheet = null; VN.txt = ''; showToast('Note enregistrée'); tab = 'notes'; notesView = 'notes'; render(); return true; }
+      if (b.dataset.v === 'tasks') { scanRun({ text: tx.slice(0, 2000) }, true); addNote(tx); VN.txt = ''; return true; }
+      if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return true; }
+      VN.busy = 'sum'; render();
+      authed('POST', '/functions/v1/cadence-coach', { msg: 'Résume cette note vocale en 3 à 5 points courts, en gardant les infos importantes (noms, dates, chiffres). Réponds uniquement avec les points, un par ligne, commençant par « - ».', ctx: 'Note vocale : ' + tx.slice(0, 4000) }).then(function (r) {
+        VN.busy = ''; var su = String((r && r.text) || '').trim(); addNote(('Résumé :\n' + su + '\n\nTexte complet :\n' + tx).slice(0, 2000)); VN.txt = ''; sheet = null; showToast('Note résumée enregistrée'); tab = 'notes'; notesView = 'notes'; render();
+      }).catch(function () { VN.busy = ''; showToast('Le résumé n’a pas marché. Réessaie ou garde le texte tel quel.'); render(); });
+      return true;
+    }
+    if (a === 'cmemdel') { S.coachMem = (S.coachMem || []).filter(function (x) { return x.id !== b.dataset.id; }); save(); render(); return true; }
+    if (a === 'cmemclr') { S.coachMem = []; save(); showToast('Le coach a tout oublié.'); render(); return true; }
+    return false;
+  }
+  /* ---------- v65 : vue d’ensemble de la semaine ---------- */
+  var wkOff = 0;
+  function weekOvBtn() { return '<button class="lnk wkovb" data-act="wkov">' + ic('cal') + '<span>Toute ma semaine en un coup d’œil</span></button>'; }
+  function wkovSheet() {
+    var a = addDays(weekStart(todayISO()), wkOff * 7), z = addDays(a, 6), t = todayISO();
+    var tot = 0, dn = 0, spend = 0, hT = 0, hD = 0, rows = '';
+    for (var i = 0; i < 7; i++) {
+      var d = addDays(a, i), its = itemsOn(d), tim = its.filter(function (x) { return x.time; }), free = its.filter(function (x) { return !x.time; });
+      var ex = ((S.money && S.money.tx) || []).filter(function (x) { return x.d === d && x.type === 'out'; }).reduce(function (s, x) { return s + (+x.amt || 0); }, 0);
+      var hs = (S.habits || []).filter(function (h) { return habOn(h, d); }), hd = hs.filter(function (h) { return (h.log || {})[d]; }).length, bds = bdOn(d);
+      tot += its.length; dn += its.filter(function (x) { return x.done; }).length; spend += ex; if (d <= t) { hT += hs.length; hD += hd; }
+      var chips = [];
+      if (free.length) chips.push(ic('check') + plural(free.length, 'tâche', 'tâches') + (free.every(function (x) { return x.done; }) ? ' ✓' : ''));
+      if (ex) chips.push('💶 ' + eur(ex));
+      if (hs.length) chips.push('🔁 ' + hd + '/' + hs.length + ' habitude' + (hs.length > 1 ? 's' : ''));
+      bds.forEach(function (b) { chips.push('🎂 ' + esc(b.name)); });
+      rows += '<button class="wkd' + (d === t ? ' now' : '') + (d < t ? ' past' : '') + '" data-act="oday" data-v="' + d + '"><div class="wkdh"><b>' + esc(dayLong(d)) + '</b>' + (d === t ? '<small>Aujourd’hui</small>' : '') + '</div>' +
+        (tim.length ? '<ul>' + tim.map(function (x) { return '<li' + (x.done ? ' class="d"' : '') + '><span class="tm">' + esc(x.time) + '</span>' + esc(x.text) + '</li>'; }).join('') + '</ul>' : '') +
+        (chips.length ? '<div class="wkc">' + chips.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</div>' : (!tim.length ? '<p class="wke">Rien de prévu</p>' : '')) + '</button>';
+    }
+    var h = '<h2>Ma semaine</h2><div class="seg wknav"><button data-act="wkovm" data-v="-1" aria-label="Semaine précédente">‹</button><span>' + esc(parseISO(a).getDate() + ' ' + MOIS[parseISO(a).getMonth()] + ' – ' + parseISO(z).getDate() + ' ' + MOIS[parseISO(z).getMonth()]) + '</span><button data-act="wkovm" data-v="1" aria-label="Semaine suivante">›</button></div>';
+    h += '<div class="wksum"><div><b>' + dn + '/' + tot + '</b><small>tâches faites</small></div><div><b>' + eur(spend) + '</b><small>dépensés</small></div><div><b>' + (hT ? Math.round(hD / hT * 100) + ' %' : '–') + '</b><small>habitudes</small></div></div>';
+    return h + '<div class="wkl">' + rows + '</div><button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  function v65Click(a, b) {
+    if (a === 'wkov') { wkOff = 0; sheet = { k: 'wkov' }; render(); return true; }
+    if (a === 'wkovm') { wkOff = Math.max(-8, Math.min(8, wkOff + (+b.dataset.v))); render(); return true; }
+    return false;
+  }
+  // raccourcis de l’icône (appui long) : ?go=scan|coach|courses|vnote
+  (function () {
+    try {
+      var g = new URLSearchParams(location.search).get('go'); if (!g) return;
+      history.replaceState(null, '', location.pathname);
+      setTimeout(function () {
+        if (!S.profile.done) return;
+        if (g === 'coach') { tab = 'today'; sheet = { k: 'coach' }; COACH.err = ''; }
+        else if (g === 'courses') { tab = 'notes'; notesView = 'lists'; sheet = null; }
+        else if (g === 'scan') { tab = 'today'; sheet = { k: 'quick', err: '' }; setTimeout(function () { var l = document.querySelector('label[for="scan-file"]'); if (l) l.classList.add('pulse'); }, 60); }
+        else if (g === 'soir') { tab = 'today'; sheet = { k: 'soir', st: 0 }; }
+        else if (g === 'vnote' && SR) { tab = 'notes'; notesView = 'notes'; VN.txt = ''; sheet = { k: 'vnote' }; }
+        render();
+      }, 400);
+    } catch (e) {}
+  })();
+  /* ---------- v66 : tâches reliées aux objectifs + lieux favoris ---------- */
+  function goalLinkSelect(x) {
+    var gs = (S.goals || []).filter(function (g) { return g.target && !g.done; }), v = (x && x.goal) || ''; if (!gs.length && !v) return '';
+    return '<label class="f">Fait avancer l’objectif<select id="s-goal" data-keep><option value="">Aucun</option>' + gs.map(function (g) { return '<option value="' + g.id + '"' + (v === g.id ? ' selected' : '') + '>' + esc(g.text.slice(0, 50)) + ' (' + (g.cur || 0) + '/' + g.target + ')</option>'; }).join('') + '</select></label>';
+  }
+  // quand on coche une tâche reliée : +1 sur l’objectif (−1 si on décoche)
+  function goalBump(x, on) {
+    var g = x && x.goal ? goalById(x.goal) : null; if (!g || !g.target) return;
+    g.cur = Math.max(0, (g.cur || 0) + (on ? 1 : -1));
+    if (on) { if (g.cur >= g.target) goalReached(g); else showToast('Objectif « ' + g.text.slice(0, 40) + ' » : ' + g.cur + '/' + g.target); }
+  }
+  function placesRow() {
+    var ps = S.places || [], h = '<div class="plrow" role="group" aria-label="Lieux favoris">';
+    h += ps.map(function (p) { return '<span class="plc"><button type="button" data-act="favpick" data-id="' + p.id + '">' + esc(p.n) + '</button><button type="button" class="x" data-act="favdel" data-id="' + p.id + '" aria-label="Retirer ' + esc(p.n) + '">×</button></span>'; }).join('');
+    return h + '<button type="button" class="lnk" data-act="favadd">+ Enregistrer ce lieu</button></div>';
+  }
+  function v66Click(a, b) {
+    if (a === 'favpick') {
+      var p = (S.places || []).filter(function (z) { return z.id === b.dataset.id; })[0]; if (!p) return true;
+      var l = document.getElementById('s-loc'), tr = document.getElementById('s-trav'); if (l) l.value = p.a; if (tr && p.t) tr.value = p.t; showToast(p.n + ' : lieu ajouté'); return true;
+    }
+    if (a === 'favadd') {
+      var a2 = ((document.getElementById('s-loc') || {}).value || '').trim(), t2 = (document.getElementById('s-trav') || {}).value || '';
+      if (!a2) { showToast('Écris d’abord une adresse.'); var e = document.getElementById('s-loc'); if (e) e.focus(); return true; }
+      var nm = window.prompt('Nom du lieu (ex. Maison, Travail, Salle de sport) :', a2.split(',')[0].slice(0, 24)); if (nm === null) return true; nm = nm.trim().slice(0, 24) || a2.slice(0, 24);
+      S.places = (S.places || []).filter(function (z) { return nrm(z.n) !== nrm(nm); }).concat([{ id: uid(), n: nm, a: a2.slice(0, 160), t: /^\d+$/.test(t2) ? t2 : '' }]).slice(-8); save();
+      sheet.more = true; showToast('Lieu « ' + nm + ' » enregistré'); render(); return true;
+    }
+    if (a === 'favdel') { S.places = (S.places || []).filter(function (z) { return z.id !== b.dataset.id; }); save(); sheet.more = true; render(); return true; }
+    return false;
+  }
+  /* ---------- v67 : liste partagée ouverte sans compte + rendez-vous envoyé par lien ---------- */
+  var GUEST = { st: '', l: null, id: '', code: '', busy: false };
+  function guestOn() {
+    if (GUEST.st === 'off') return false;
+    if (!GUEST.st) {
+      var j = ''; try { j = localStorage.getItem('cadence.join') || ''; } catch (e) {}
+      var p = j.split('~');
+      if (!cloudOn || auth || p.length !== 2) { GUEST.st = 'off'; return false; }
+      GUEST.st = 'load'; GUEST.id = p[0]; GUEST.code = p[1]; guestLoad();
+    }
+    return true;
+  }
+  function guestLoad() {
+    return raw('POST', '/rest/v1/rpc/cadence_list_guest', { p_id: GUEST.id, p_code: GUEST.code }).then(function (r) {
+      if (!r) { GUEST.st = 'bad'; try { localStorage.removeItem('cadence.join'); } catch (e) {} } else { GUEST.st = 'ok'; GUEST.l = r; }
+      render();
+    }).catch(function () { if (GUEST.st === 'load') GUEST.st = 'net'; render(); });
+  }
+  function gName() { try { return localStorage.getItem('cadence.gname') || ''; } catch (e) { return ''; } }
+  function guestView() {
+    var h = '<main class="pg guest"><div class="ghead"><img src="icon-192.png" alt="" width="44" height="44"><b>Cadence</b></div>';
+    if (GUEST.st === 'load') return h + '<p class="sub">Ouverture de la liste…</p></main>';
+    if (GUEST.st === 'net') return h + '<p class="sub">Pas de connexion. Vérifie ton réseau.</p><button class="btn primary" data-act="greload">Réessayer</button></main>';
+    if (GUEST.st === 'bad') return h + '<h1>Lien plus valable</h1><p class="sub">Cette liste a été supprimée ou le lien a changé. Demande un nouveau lien à la personne qui te l’a envoyé.</p><button class="btn" data-act="gskip">Découvrir Cadence</button></main>';
+    var l = GUEST.l, its = l.items || [], left = its.filter(function (i) { return !i.done; }).length;
+    h += '<h1>' + eico(l.emoji || '📝') + ' ' + esc(l.name) + '</h1><p class="sub">Liste partagée avec toi. Tu peux cocher et ajouter, sans créer de compte. ' + (its.length ? plural(left, 'chose', 'choses') + ' à faire.' : '') + '</p>';
+    h += '<label class="f">Ton prénom (pour que les autres sachent qui a coché)<input type="text" id="g-name" data-keep maxlength="30" value="' + esc(gName()) + '" placeholder="Ex. Marie"></label>';
+    h += '<div class="list">' + its.map(function (i) { return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.text) + '" data-act="gltog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.text) + '</span>' + (i.done && i.by ? '<small>par ' + esc(i.by) + '</small>' : '') + '</div></div>'; }).join('') + '</div>';
+    h += '<form id="gadd" class="add" autocomplete="off"><input type="text" id="g-new" maxlength="200" placeholder="Ajouter à la liste" aria-label="Ajouter à la liste"><button type="submit" class="addplus" aria-label="Ajouter"' + (GUEST.busy ? ' disabled' : '') + '>+</button></form>';
+    h += '<button class="lnk" data-act="greload">Actualiser</button>';
+    h += '<div class="card gcta"><b>Toi aussi, organise ta vie avec Cadence</b><p class="sub">Agenda, listes, budget, objectifs : gratuit. Avec un compte, cette liste arrive directement dans ton appli.</p><button class="btn primary" data-act="gskip">Créer mon compte gratuit</button></div>';
+    return h + '</main>';
+  }
+  function gSaveName() { var e = document.getElementById('g-name'), v = e ? e.value.trim().slice(0, 30) : ''; try { localStorage.setItem('cadence.gname', v); } catch (er) {} return v; }
+  function gFail(er) { GUEST.busy = false; if (er && /invalide/.test(er.message || '')) { GUEST.st = 'bad'; } else showToast(er && er.net ? 'Pas de connexion : réessaie.' : 'Ça n’a pas marché : réessaie.'); render(); }
+  function v67Click(a, b) {
+    if (a === 'gltog') {
+      var it = ((GUEST.l && GUEST.l.items) || []).filter(function (z) { return z.id === b.dataset.id; })[0]; if (!it) return true;
+      var nm = gSaveName(); it.done = !it.done; it.by = it.done ? (nm || 'Invité') : null; uiSound(it.done ? 'tick' : 'untick'); render();
+      raw('POST', '/rest/v1/rpc/cadence_list_guest_tog', { p_id: GUEST.id, p_code: GUEST.code, p_item: it.id, p_name: nm }).catch(gFail); return true;
+    }
+    if (a === 'greload') { GUEST.st = GUEST.st === 'net' ? 'load' : GUEST.st; render(); guestLoad(); return true; }
+    if (a === 'gskip') { gSaveName(); GUEST.st = 'off'; render(); return true; }
+    return false;
+  }
+  function v67Submit(f) {
+    if (f.id !== 'gadd') return false;
+    var e = document.getElementById('g-new'), tx = e ? e.value.trim() : ''; if (!tx || GUEST.busy) return true;
+    var nm = gSaveName(); GUEST.busy = true;
+    raw('POST', '/rest/v1/rpc/cadence_list_guest_add', { p_id: GUEST.id, p_code: GUEST.code, p_text: tx, p_name: nm }).then(function () { GUEST.busy = false; if (e) e.value = ''; return guestLoad(); }).catch(gFail);
+    return true;
+  }
+  // rendez-vous : lien « Ajouter à mon agenda » (Google Agenda), lisible sans Cadence
+  function gcalLink(x, d) {
+    var ymd = d.replace(/-/g, ''), dates;
+    if (x.time) { var st = parseISO(d); st.setHours(+x.time.slice(0, 2), +x.time.slice(3, 5), 0, 0); var en = new Date(st.getTime() + (+x.dur || 60) * 60000), f = function (z) { return iso(z).replace(/-/g, '') + 'T' + p2(z.getHours()) + p2(z.getMinutes()) + '00'; }; dates = f(st) + '/' + f(en); }
+    else dates = ymd + '/' + addDays(d, 1).replace(/-/g, '');
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(x.text) + '&dates=' + dates + (x.loc ? '&location=' + encodeURIComponent(x.loc) : '');
+  }
+  /* ---------- v68 : bilan du soir guidé en 30 secondes ---------- */
+  var SOIR = ['Ce que tu as fait', 'Ce qui reste', 'Du positif', 'Demain'];
+  function soirSheet() {
+    var t = todayISO(), tm = addDays(t, 1), st = sheet.st || 0, its = itemsOn(t), dn = its.filter(function (x) { return x.done; }).length, left = its.filter(function (x) { return !x.done; });
+    var h = '<h2>Bilan du soir</h2><div class="soirdots" aria-label="Étape ' + (st + 1) + ' sur 4">' + SOIR.map(function (n, i) { return '<i' + (i === st ? ' class="on"' : i < st ? ' class="ok"' : '') + '></i>'; }).join('') + '</div><p class="soirst">' + (st + 1) + '/4 · ' + SOIR[st] + '</p>';
+    if (st === 0) {
+      h += '<p class="soirbig">' + (its.length ? (dn ? 'Bravo : ' + plural(dn, 'tâche faite', 'tâches faites') + ' aujourd’hui.' : 'Une journée calme côté tâches.') : 'Aucune tâche prévue aujourd’hui.') + '</p>';
+      if (left.length) h += '<p class="sub">Tu en as fait d’autres sans cocher ? Coche-les :</p><div class="list">' + left.slice(0, 8).map(function (x) { return '<div class="row"><button class="ck" aria-pressed="false" aria-label="Cocher : ' + esc(x.text) + '" data-act="itog" data-id="' + x.id + '" data-d="' + t + '">' + CHECK + '</button><div class="txt"><span>' + esc(x.text) + '</span></div></div>'; }).join('') + '</div>';
+    } else if (st === 1) {
+      var mv = left.filter(function (x) { return !x.rep; });
+      h += mv.length ? '<p class="soirbig">' + plural(mv.length, 'tâche reste', 'tâches restent') + '.</p><p class="sub">' + esc(mv.slice(0, 4).map(function (x) { return x.text; }).join(', ')) + (mv.length > 4 ? '…' : '') + '</p><div class="btns"><button class="btn primary" data-act="soirmv">Tout mettre à demain</button><button class="btn" data-act="soirnx">Je verrai plus tard</button></div>'
+        : '<p class="soirbig">Rien ne traîne. 👌</p>';
+    } else if (st === 2) {
+      h += '<p class="soirbig">Qu’est-ce qui t’a fait du bien aujourd’hui ?</p>' + gratBlock(t);
+    } else {
+      var tomo = itemsOn(tm), it = S.intent || {};
+      h += '<p class="soirbig">Ta priorité pour demain ?</p>' + (tomo.length ? '<p class="sub">Demain : ' + esc(tomo.slice(0, 3).map(function (x) { return (x.time ? x.time + ' ' : '') + x.text; }).join(', ')) + (tomo.length > 3 ? '…' : '') + '</p>' : '<p class="sub">Rien de prévu demain pour l’instant.</p>');
+      h += '<label class="f">Demain, l’important c’est…<input type="text" id="soir-int" data-keep maxlength="120" value="' + esc(it.d === tm ? it.text : '') + '" placeholder="Ex. Finir le dossier"></label>';
+    }
+    h += '<div class="btns soirnav">' + (st ? '<button class="btn ghost" data-act="soirbk">Retour</button>' : '') + (st < 3 ? (st !== 1 || !left.filter(function (x) { return !x.rep; }).length ? '<button class="btn primary" data-act="soirnx">Suivant</button>' : '') : '<button class="btn primary" data-act="soirend">Terminer · bonne nuit</button>') + '</div>';
+    return h;
+  }
+  function v68Click(a) {
+    if (a === 'soir') { sheet = { k: 'soir', st: 0 }; render(); return true; }
+    if (a === 'soirnx') { sheet.st = Math.min(3, (sheet.st || 0) + 1); render(); return true; }
+    if (a === 'soirbk') { sheet.st = Math.max(0, (sheet.st || 0) - 1); render(); return true; }
+    if (a === 'soirmv') {
+      var t = todayISO(), tm = addDays(t, 1), n = 0;
+      itemsOn(t).forEach(function (o) { if (o.done || o.rep) return; var x = byId(o.id); if (x && !x.rep) { x.d = tm; n++; } });
+      save(); showToast(plural(n, 'tâche mise', 'tâches mises') + ' à demain'); sheet.st = 2; render(); return true;
+    }
+    if (a === 'soirend') {
+      var v = ((document.getElementById('soir-int') || {}).value || '').trim();
+      if (v) S.intent = { d: addDays(todayISO(), 1), text: v.slice(0, 120) };
+      S.soirLog = S.soirLog || {}; S.soirLog[todayISO()] = 1; save(); sheet = null; uiSound('pop'); showToast('Bilan fait. Bonne nuit 🌙'); render(); return true;
+    }
+    return false;
+  }
+  function soirBtn() { var h = new Date().getHours(); return h >= 18 && !(S.soirLog || {})[todayISO()] ? '<button class="btn sm primary" data-act="soir">' + ic('moon') + '<span>Faire mon bilan (30 s)</span></button>' : ''; }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
