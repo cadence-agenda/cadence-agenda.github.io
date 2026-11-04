@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hlQYEQy4uY8oaug504FO+st5ZOzI6TFYaNWnnUY8dpU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lae6PTYGfBI6vJZPHZ1gO1leoal7LadsMaGNQOpQHyE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -907,6 +907,14 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .gcsep { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line, rgba(127,127,127,.2)); }
 .gclink { width: 100%; font-size: 12px; margin: 6px 0; }
 .btn.magic { width: 100%; margin-top: 8px; gap: 8px; }
+/* v35 : micro plus propre, dans le champ */
+.pw { position: relative; display: flex; align-items: center; }
+.pw input { padding-right: 52px; }
+.pw .mic { position: absolute; right: 6px; width: 38px; height: 38px; border-radius: 50%; background: transparent; color: var(--accent); }
+.pw .mic svg { width: 22px; height: 22px; }
+.mic:hover { background: var(--soft); }
+.mic.on { background: var(--bad); color: #fff; }
+.mic .mstop { width: 12px; height: 12px; border-radius: 3px; background: #fff; display: block; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -915,7 +923,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 34;
+  var APP_VER = 35;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -2264,15 +2272,17 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   /* --- dictée vocale --- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null, recog = null, recogT = '';
-  function micBtn(target) { return SR ? '<button type="button" class="mic' + (recog && recogT === target ? ' on' : '') + '" data-act="mic" data-v="' + target + '" aria-label="' + (recog && recogT === target ? 'Arrêter la dictée' : 'Dicter') + '"></button>' : ''; }
+  function micBtn(target) { return SR ? '<button type="button" class="mic' + (recog && recogT === target ? ' on' : '') + '" data-act="mic" data-v="' + target + '" aria-label="' + (recog && recogT === target ? 'Arrêter la dictée' : 'Dicter') + '">' + (recog && recogT === target ? '<i class="mstop"></i>' : ic('mic')) + '</button>' : ''; }
   function micToggle(target) {
     if (!SR) return;
     if (recog) { try { recog.stop(); } catch (e) {} recog = null; recogT = ''; render(); return; }
     try {
-      var r = new SR(); r.lang = 'fr-FR'; r.interimResults = false; r.continuous = false; r.maxAlternatives = 1;
+      // v35 : le texte s’écrit en direct pendant qu’on parle
+      var r = new SR(); r.lang = 'fr-FR'; r.interimResults = true; r.continuous = true; r.maxAlternatives = 1;
+      var el0 = document.querySelector(target), base = el0 && el0.value ? el0.value.replace(/\s*$/, ' ') : '';
       r.onresult = function (ev) {
-        var txt = ''; for (var i = ev.resultIndex; i < ev.results.length; i++) if (ev.results[i].isFinal) txt += ev.results[i][0].transcript;
-        var el = document.querySelector(target); if (el && txt) { el.value = (el.value ? el.value.replace(/\s*$/, ' ') : '') + txt.trim(); el.dispatchEvent(new Event('input', { bubbles: true })); }
+        var txt = ''; for (var i = 0; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+        var el = document.querySelector(target); if (el) { el.value = (base + txt.trim()).slice(0, el.maxLength > 0 ? el.maxLength : 5000); el.dispatchEvent(new Event('input', { bubbles: true })); }
       };
       r.onerror = function (ev) { if (ev && ev.error === 'not-allowed') showToast('Micro refusé : autorise-le dans les réglages du navigateur.'); };
       r.onend = function () { recog = null; recogT = ''; render(); };
