@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-wMesVZx9ih7Myae2lmpsI9XBCkfVc7YDfATO3S1wBz0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KYVejTbAYDILInuHJoDQPrNKGIw00VmW8cnOcFlvZbM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -854,6 +854,24 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .row .txt small .rp, .row .txt small .rm { display: inline-flex; align-items: center; gap: 3px; }
 .msep { color: var(--line); }
 .top .date #clk { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+/* v30 : ligne de temps de la journée */
+.tline { padding: 12px 14px 8px; gap: 4px; }
+.tlz { position: relative; }
+.tlg { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.tlb { position: absolute; height: 30px; min-width: 6px; border: 0; border-radius: 7px; padding: 0 6px; background: color-mix(in srgb, var(--accent) 18%, var(--surface)); box-shadow: inset 3px 0 0 var(--accent); color: var(--ink); font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; overflow: hidden; }
+.tlb span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tlb.prio { background: color-mix(in srgb, var(--accent) 30%, var(--surface)); }
+.tlb.done { background: var(--soft); box-shadow: inset 3px 0 0 var(--muted); color: var(--muted); text-decoration: line-through; }
+.tlnow { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--bad); border-radius: 1px; }
+.tlnow::before { content: ""; position: absolute; top: -3px; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--bad); }
+.tlh { position: relative; height: 16px; }
+.tlh small { position: absolute; transform: translateX(-50%); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tlh small:first-child { transform: none; } .tlh small:last-child { transform: translateX(-100%); }
+.tlb { overflow: visible; padding: 0; min-width: 8px; }
+.tlb span { position: absolute; left: calc(100% + 5px); top: 50%; transform: translateY(-50%); max-width: 170px; color: var(--ink); font-weight: 500; }
+.tlb span b { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tlb.done span { color: var(--muted); }
+.tline { overflow: hidden; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -862,7 +880,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 29;
+  var APP_VER = 30;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -2106,10 +2124,31 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (S.settings.planDone === t) return '';
     return '<button class="planbtn" data-act="plan">' + ic('sun') + '<span>Planifier ma journée</span>' + ic('arrow', 'go') + '</button>';
   }
+  /* --- v30 : la journée sur une ligne de temps --- */
+  function hm2m(s) { var p = String(s || '').split(':'); return (+p[0] || 0) * 60 + (+p[1] || 0); }
+  function dayTimeline(t, its) {
+    var tm = its.filter(function (x) { return x.time; }).map(function (x) { var a = hm2m(x.time); return { x: x, a: a, b: a + Math.max(20, +(x.src.dur || 0) || 30) }; }).sort(function (p, q) { return p.a - q.a; });
+    var lo = 8 * 60, hi = 22 * 60;
+    tm.forEach(function (o) { lo = Math.min(lo, Math.floor(o.a / 60) * 60); hi = Math.max(hi, Math.ceil(o.b / 60) * 60); });
+    hi = Math.min(hi, 24 * 60); var span = hi - lo, lanes = [];
+    var ppm = 330 / span;
+    tm.forEach(function (o) { o.lbl = o.x.time + ' ' + o.x.text; var e = Math.max(o.b, o.a + (Math.min(o.lbl.length, 26) * 6.4 + 16) / ppm), l = 0; while (lanes[l] !== undefined && lanes[l] > o.a) l++; lanes[l] = e; o.l = Math.min(l, 2); });
+    var nl = Math.max(1, Math.min(3, lanes.length)), pc = function (m) { return Math.max(0, Math.min(100, (m - lo) / span * 100)); };
+    var h = '<section class="blk tlw"><div class="sh"><h3>Ma journée</h3><span class="cnt">' + (tm.length ? plural(tm.length, 'tâche à heure fixe', 'tâches à heure fixe') : 'Aucune tâche à heure fixe') + '</span></div><div class="card tline"><div class="tlz" style="height:' + (nl * 34 + 6) + 'px">';
+    for (var hh = lo; hh <= hi; hh += 120) h += '<i class="tlg" style="left:' + pc(hh) + '%"></i>';
+    tm.forEach(function (o) {
+      h += '<button class="tlb' + (o.x.done ? ' done' : '') + (o.x.prio ? ' prio' : '') + '" style="left:' + pc(o.a) + '%;width:' + Math.max(2.5, pc(o.b) - pc(o.a)) + '%;top:' + (o.l * 34 + 3) + 'px" data-act="iedit" data-id="' + o.x.id + '" data-d="' + o.x.d + '" aria-label="' + esc(o.lbl) + '"><span><b>' + esc(o.x.time) + '</b> ' + esc(o.x.text) + '</span></button>';
+    });
+    var nm = new Date().getHours() * 60 + new Date().getMinutes();
+    if (nm >= lo && nm <= hi) h += '<i class="tlnow" style="left:' + pc(nm) + '%"></i>';
+    h += '</div><div class="tlh">';
+    for (var h2 = lo; h2 <= hi; h2 += 120) h += '<small style="left:' + pc(h2) + '%">' + (h2 / 60) + 'h</small>';
+    return h + '</div></div></section>';
+  }
   function quoteLine() { return '<p class="qline">' + esc(quoteOfDay()) + '</p>'; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
-    h += carryCard() + intentLine(t) + heroToday(its);
+    h += carryCard() + intentLine(t) + heroToday(its) + dayTimeline(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + '</section>';
     h += habitsDay(t) + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
