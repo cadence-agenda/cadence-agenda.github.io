@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-M1Gbf4MGpor/pLov2UEamhJcwbTiFhDxrxkDBOqzHCU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PnUFBsjyYN8cjWwTSm+1IhcZ1stSfaSXyn+7bo9BCa0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -915,6 +915,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .mic:hover { background: var(--soft); }
 .mic.on { background: var(--bad); color: #fff; }
 .mic .mstop { width: 12px; height: 12px; border-radius: 3px; background: #fff; display: block; }
+/* v37 : écran d’installation */
+.inst h1 { margin: 8px 0 4px; }
+.isteps { list-style: none; padding: 0; margin: 18px 0; display: grid; gap: 12px; text-align: left; }
+.isteps li { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border-radius: 14px; padding: 12px 14px; line-height: 1.4; }
+.inum { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.ish { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
+.inst .btn.ghost { margin-top: 8px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -923,7 +930,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 36;
+  var APP_VER = 37;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1432,6 +1439,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return '<div class="toast" id="toast" role="status"><span>' + esc(toast.text) + '</span>' + (toast.undo ? '<button data-act="undo">Annuler</button>' : '') + '</div>';
   }
   function viewAll() {
+    if (needInstall() && !vf) return viewInstall() + toastHtml();
     if (cloudOn && !auth) return (vf ? viewVerify() : viewAuth()) + sheetHtml() + recoverySheet() + toastHtml();
     if (!S.profile.done) return (booting ? viewLoading() : viewWelcome()) + sheetHtml() + recoverySheet() + toastHtml();
     if (isLocked()) return lockView() + toastHtml();
@@ -1479,6 +1487,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v37Click(a)) return;
     if (v33Click(a, b)) return;
     if (v31Click(a, b)) return;
     if (v24Click(a, b)) return;
@@ -3693,6 +3702,38 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       rows.push({ at: new Date(at).toISOString(), p: { title: e.title, body: (day === t ? 'Aujourd’hui' : day === addDays(t, 1) ? 'Demain' : cap1(dayLong(day))) + ' à ' + e.t + ' · ' + e.c.name, tag: 'gc-' + hashStr(e.c.id + day + e.t + e.title), url: './?tab=today' }, ref: { k: 'gcal', d: day, tz: tz } });
     });
     return rows;
+  }
+  /* ---------- v37 : proposer d’installer l’appli avant la création du compte ---------- */
+  var BIP = null, INST = { done: false };
+  function isApp() { try { return window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || window.navigator.standalone === true; } catch (e) { return false; } }
+  function instSkip() { try { return localStorage.getItem('cadence.noinst') === '1'; } catch (e) { return false; } }
+  function instPlat() {
+    var u = navigator.userAgent || '';
+    if (/FBAN|FBAV|Instagram|Snapchat|BytedanceWebview|musical_ly|Line\/|LinkedInApp|\bwv\)/i.test(u)) return 'inapp';
+    if (/iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1)) return 'ios';
+    if (/Android/.test(u)) return 'android';
+    return 'pc';
+  }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); BIP = e; if (needInstall()) render(); });
+  window.addEventListener('appinstalled', function () { BIP = null; INST.done = true; render(); });
+  function needInstall() { return cloudOn && !auth && !isApp() && !instSkip(); }
+  var SHARE_IC = '<svg viewBox="0 0 24 24" class="ish" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11H5v10h14V11h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function instStep(n, t) { return '<li><span class="inum">' + n + '</span><span>' + t + '</span></li>'; }
+  function viewInstall() {
+    var p = instPlat(), h = '<div class="auth inst"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>';
+    if (INST.done) return h + '<h1>C’est installé</h1><p class="lead">Ferme cette page et ouvre <b>Cadence</b> depuis ton écran d’accueil pour créer ton compte.</p></div>';
+    h += '<h1>Installe Cadence</h1><p class="lead">Ajoute l’appli sur ton écran d’accueil : elle s’ouvre en plein écran comme une vraie appli, et tu reçois tes rappels. C’est gratuit et ça prend 10 secondes.</p>';
+    if (BIP) h += '<button class="btn primary big" data-act="instgo">Installer l’application</button>';
+    else if (p === 'ios') h += '<ol class="isteps">' + instStep(1, 'Touche le bouton <b>Partager</b> ' + SHARE_IC + ' en bas de l’écran (ou en haut sur iPad).') + instStep(2, 'Descends et touche <b>Sur l’écran d’accueil</b>.') + instStep(3, 'Touche <b>Ajouter</b>, puis ouvre Cadence depuis ton écran d’accueil.') + '</ol>';
+    else if (p === 'inapp') h += '<ol class="isteps">' + instStep(1, 'Tu es dans le navigateur d’une autre appli. Touche le menu <b>⋯</b> en haut à droite.') + instStep(2, 'Choisis <b>Ouvrir dans le navigateur</b> (Chrome ou Safari).') + instStep(3, 'Tu pourras alors installer Cadence.') + '</ol>';
+    else if (p === 'android') h += '<ol class="isteps">' + instStep(1, 'Touche le menu <b>⋮</b> en haut à droite de Chrome.') + instStep(2, 'Touche <b>Installer l’application</b> (ou <b>Ajouter à l’écran d’accueil</b>).') + instStep(3, 'Ouvre Cadence depuis ton écran d’accueil.') + '</ol>';
+    else h += '<ol class="isteps">' + instStep(1, 'Dans Chrome ou Edge, touche l’icône d’installation à droite de la barre d’adresse.') + instStep(2, 'Clique sur <b>Installer</b>.') + '</ol>';
+    return h + '<button class="btn ghost" data-act="instskip">Continuer dans le navigateur</button></div>';
+  }
+  function v37Click(a) {
+    if (a === 'instgo') { if (BIP) { var e = BIP; e.prompt(); e.userChoice.then(function (c) { if (c && c.outcome === 'accepted') INST.done = true; BIP = null; render(); }, function () {}); } return true; }
+    if (a === 'instskip') { try { localStorage.setItem('cadence.noinst', '1'); } catch (e) {} render(); return true; }
+    return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
