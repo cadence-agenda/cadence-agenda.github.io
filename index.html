@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-v0utCl27ma2Q4e/4eGqHfrB8QWlzqYpDGUua7ZiqB4M='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-UHEAOsYZ6f7j27Dd5/0hV5eCpTmf1/D5MKwRx7oAhC4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1186,6 +1186,24 @@ b.warn { color: var(--warn); }
 .jday { display: block; } .jday summary { cursor: pointer; list-style: none; display: flex; flex-direction: column; gap: 2px; } .jday summary::-webkit-details-marker { display: none; } .jday small { color: var(--muted); } .jday p { margin: 8px 0 2px; line-height: 1.45; }
 .rotr { width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; display: flex; align-items: center; } .rotr .txt { flex: 1; display: flex; flex-direction: column; } .rotr small { color: var(--muted); }
 .tlb.wk span { left: 8px; max-width: calc(100% - 12px); } .tlb.wk span b { color: var(--muted); }
+/* v73 */
+.hall .ic { width: 20px; height: 20px; }
+.allh { margin: 16px 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.allg { display: grid; gap: 6px; }
+.allb { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; color: var(--ink); font: inherit; cursor: pointer; }
+.allb .alli { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 13%, transparent); color: var(--accent); } .allb .alli .ic { width: 19px; height: 19px; }
+.allb .allt { flex: 1; min-width: 0; display: flex; flex-direction: column; } .allb small { color: var(--muted); font-size: 13px; line-height: 1.3; } .allb .chev { width: 16px; height: 16px; color: var(--muted); }
+#all-q { width: 100%; box-sizing: border-box; margin-top: 4px; }
+.tmore { background: var(--surface); border-radius: 18px; border: 1px solid var(--line); }
+.tmore > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; cursor: pointer; } .tmore > summary::-webkit-details-marker { display: none; }
+.tmore > summary span { display: flex; flex-direction: column; } .tmore > summary small { color: var(--muted); font-size: 13px; } .tmore > summary .chev { transition: transform .2s; color: var(--muted); } .tmore[open] > summary .chev { transform: rotate(90deg); }
+.tmore .tmb { display: grid; gap: 18px; padding: 0 12px 14px; }
+.pgrp { font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); margin: 14px 4px -4px; }
+details.fold > summary span small { display: block; font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+/* v73 : en-tête plus aéré, libellés de « Ma journée » jamais coupés */
+.top h1 { font-size: clamp(24px, 7.4vw, 32px); overflow-wrap: anywhere; }
+.top .hact { gap: 6px; } .top .icb { width: 40px; height: 40px; }
+.tlb.lft span { left: auto; right: calc(100% + 5px); text-align: right; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1194,7 +1212,7 @@ b.warn { color: var(--warn); }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 72;
+  var APP_VER = 73;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -1422,6 +1440,8 @@ b.warn { color: var(--warn); }
     dumbbell: '<path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/>',
     pen: '<path d="M15.5 4.5l4 4L8 20H4v-4z"/>',
     nophone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M4 4l16 16"/>',
+    grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/>',
+    play: '<path d="M8 5.5v13l10-6.5z"/>',
     sparkle: '<path d="M12 3.5l1.8 5 5 1.8-5 1.8-1.8 5-1.8-5-5-1.8 5-1.8z"/>',
     smile: '<circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/>',
     pill: '<path d="M10.5 20.5a4.6 4.6 0 0 1-6.5-6.5l7-7a4.6 4.6 0 0 1 6.5 6.5z"/><path d="M7.5 10.5l6 6"/>',
@@ -1646,11 +1666,12 @@ b.warn { color: var(--warn); }
     h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><button data-act="review">Donner mon avis</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
     // v59 : sections du profil rangées par thème (de l’usage quotidien vers le compte)
-    var ORD = ['Apparence', 'Agenda', 'Catégories', 'Notifications', 'Assistant', 'Sons et vibrations', 'Connexions', 'Verrouillage de l’appli', 'Mon compte', 'Mes données', 'Abonnement', 'Informations'];
+    var ORD = PGRP.reduce(function (a, g) { return a.concat(g[1]); }, []);
     var ver = h.slice(h.lastIndexOf('<p class="ver">')), body = h.slice(0, h.lastIndexOf('<p class="ver">')), parts = body.split(/(?=<section class="card)/), head = parts[0].indexOf('<section') === 0 ? '' : parts.shift(), first = parts.shift();
     var key = function (p) { var m = /<h3>([^<]+)<\/h3>/.exec(p); var i = m ? ORD.indexOf(m[1]) : -1; return i < 0 ? 99 : i; };
     parts.sort(function (a, b) { return key(a) - key(b); });
-    h = head + first + inviteCard() + parts.join('') + ver;
+    var lastG = '', grp = function (p) { var m = /<h3>([^<]+)<\/h3>/.exec(p), t = m ? m[1] : ''; for (var gi = 0; gi < PGRP.length; gi++) if (PGRP[gi][1].indexOf(t) >= 0) return PGRP[gi][0]; return ''; };
+    h = head + first + inviteCard() + parts.map(function (p) { var g = grp(p), out = g && g !== lastG ? '<h2 class="pgrp">' + esc(g) + '</h2>' : ''; if (g) lastG = g; return out + p; }).join('') + ver;
     return foldify(h);
   }
   /* v26 : Profil en sections repliables (l’état ouvert/fermé survit aux mises à jour de l’écran) */
@@ -1659,7 +1680,7 @@ b.warn { color: var(--warn); }
   function foldify(h) {
     var i = h.indexOf('</section>') + 10, head = h.slice(0, i), rest = h.slice(i);
     rest = rest.replace(/<section class="card( prem)?"><h3>([^<]+)<\/h3>/g, function (m, pr, t) {
-      return '<details class="card fold' + (pr || '') + '" data-k="' + t + '"' + (FOLD[t] ? ' open' : '') + '><summary><span>' + t + '</span>' + ic('next', 'chev') + '</summary><div class="fb">';
+      return '<details class="card fold' + (pr || '') + '" data-k="' + t + '"' + (FOLD[t] ? ' open' : '') + '><summary><span>' + t + (FOLDD[t] ? '<small>' + FOLDD[t] + '</small>' : '') + '</span>' + ic('next', 'chev') + '</summary><div class="fb">';
     }).replace(/<\/section>/g, '</div></details>');
     return head + rest;
   }
@@ -1708,13 +1729,13 @@ b.warn { color: var(--warn); }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { sprot: sprotSheet, soir: soirSheet, wkov: wkovSheet, vnote: vnoteSheet, kidrw: kidRwSheet, write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { sprot: 'Tour de rôle', soir: 'Bilan du soir', wkov: 'Ma semaine', vnote: 'Note vocale', kidrw: 'Points et récompenses', write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { allf: allSheet, sprot: sprotSheet, soir: soirSheet, wkov: wkovSheet, vnote: vnoteSheet, kidrw: kidRwSheet, write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { allf: 'Tout Cadence', sprot: 'Tour de rôle', soir: 'Bilan du soir', wkov: 'Ma semaine', vnote: 'Note vocale', kidrw: 'Points et récompenses', write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
-    var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
+    var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
     return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + (tab === 'today' ? '<span class="clk"> · <time id="clk">' + nowHM() + '</time></span>' : '') + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
-      '<div class="hact">' + searchIc() + (tab !== 'profile' ? avatarHtml(false, true) : '') + '</div></header>';
+      '<div class="hact">' + allBtn() + searchIc() + (tab !== 'profile' ? avatarHtml(false, true) : '') + '</div></header>';
   }
   function navHtml() {
     var running = S.timers.some(function (t) { return t.phase !== 'idle' && !t.paused; });
@@ -1778,6 +1799,7 @@ b.warn { color: var(--warn); }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v73Click(a, b)) return;
     if (v72Click(a, b)) return;
     if (v71Click(a)) return;
     if (v69Click(a)) return;
@@ -2541,13 +2563,13 @@ b.warn { color: var(--warn); }
     tm.forEach(function (o) { lo = Math.min(lo, Math.floor(o.a / 60) * 60); hi = Math.max(hi, Math.ceil(o.b / 60) * 60); });
     hi = Math.min(hi, 24 * 60); var span = hi - lo, lanes = [];
     var ppm = 330 / span;
-    tm.forEach(function (o) { o.lbl = o.x.time + ' ' + o.x.text; var e = o.wk ? o.b : Math.max(o.b, o.a + (Math.min(o.lbl.length, 26) * 6.4 + 16) / ppm), l = 0; while (lanes[l] !== undefined && lanes[l] > o.a) l++; lanes[l] = e; o.l = Math.min(l, 2); });
+    tm.forEach(function (o) { o.lbl = o.x.time + ' ' + o.x.text; var lw = (Math.min(o.lbl.length, 26) * 6.4 + 16) / ppm; o.lft = !o.wk && (o.a - lo) / span > 0.66; var s0 = o.lft ? o.a - lw : o.a, e = o.wk || o.lft ? o.b : Math.max(o.b, o.a + lw), l = 0; while (lanes[l] !== undefined && lanes[l] > s0) l++; lanes[l] = e; o.l = Math.min(l, 2); });
     var nl = Math.max(1, Math.min(3, lanes.length)), pc = function (m) { return Math.max(0, Math.min(100, (m - lo) / span * 100)); };
     var h = '<section class="blk tlw"><div class="sh"><h3>Ma journée</h3><span class="cnt">' + (function (n, g) { return n || g ? (n ? plural(n, 'tâche à heure fixe', 'tâches à heure fixe') : '') + (n && g ? ' · ' : '') + (g ? plural(g, 'événement', 'événements') : '') : 'Aucune tâche à heure fixe'; })(tm.filter(function (o) { return !o.gc; }).length, tm.filter(function (o) { return o.gc; }).length) + '</span></div><div class="card tline"><div class="tlz" style="height:' + (nl * 34 + 6) + 'px">';
     for (var hh = lo; hh <= hi; hh += 120) h += '<i class="tlg" style="left:' + pc(hh) + '%"></i>';
     tm.forEach(function (o) {
-      if (o.gc) { h += '<span class="tlb gc' + (o.wk ? ' wk' : '') + '" style="--gc:' + o.gc + ';left:' + pc(o.a) + '%;width:' + Math.max(2.5, pc(o.b) - pc(o.a)) + '%;top:' + (o.l * 34 + 3) + 'px" role="img" aria-label="Google : ' + esc(o.lbl) + '"><span><b>' + esc(o.x.time) + '</b> ' + esc(o.x.text) + '</span></span>'; return; }
-      h += '<button class="tlb' + (o.x.done ? ' done' : '') + (o.x.prio ? ' prio' : '') + '" style="left:' + pc(o.a) + '%;width:' + Math.max(2.5, pc(o.b) - pc(o.a)) + '%;top:' + (o.l * 34 + 3) + 'px" data-act="iedit" data-id="' + o.x.id + '" data-d="' + o.x.d + '" aria-label="' + esc(o.lbl) + '"><span><b>' + esc(o.x.time) + '</b> ' + esc(o.x.text) + '</span></button>';
+      if (o.gc) { h += '<span class="tlb gc' + (o.wk ? ' wk' : o.lft ? ' lft' : '') + '" style="--gc:' + o.gc + ';left:' + pc(o.a) + '%;width:' + Math.max(2.5, pc(o.b) - pc(o.a)) + '%;top:' + (o.l * 34 + 3) + 'px" role="img" aria-label="Google : ' + esc(o.lbl) + '"><span><b>' + esc(o.x.time) + '</b> ' + esc(o.x.text) + '</span></span>'; return; }
+      h += '<button class="tlb' + (o.lft ? ' lft' : '') + (o.x.done ? ' done' : '') + (o.x.prio ? ' prio' : '') + '" style="left:' + pc(o.a) + '%;width:' + Math.max(2.5, pc(o.b) - pc(o.a)) + '%;top:' + (o.l * 34 + 3) + 'px" data-act="iedit" data-id="' + o.x.id + '" data-d="' + o.x.d + '" aria-label="' + esc(o.lbl) + '"><span><b>' + esc(o.x.time) + '</b> ' + esc(o.x.text) + '</span></button>';
     });
     var nm = new Date().getHours() * 60 + new Date().getMinutes();
     if (nm >= lo && nm <= hi) h += '<i class="tlnow" style="left:' + pc(nm) + '%"></i>';
@@ -2561,9 +2583,11 @@ b.warn { color: var(--warn); }
     // v59 : ordre clair — infos du jour, ma journée, mes tâches, mon quotidien, à venir, bilans
     h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + startCard(t, its) + sugCard() + heroToday(its) + dayTools(t, its) + (its.length ? energyBlock(t, its) : '') + (its.some(function (x) { return x.time; }) || workEv(t).length || (typeof gcalOn === 'function' && gcalOn(t).some(function (e) { return e.t; })) ? dayTimeline(t, its) : '') + (its.length ? freeLeft(t, its) : '');
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t) + inboxBlock(t);
-    h += chkCard(t) + habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + weekOvBtn() + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    // v73 : l’essentiel visible, le reste replié sous « Voir plus »
+    var hasHab = (S.habits || []).length;
     if (new Date().getHours() >= 18) h += eveningCard(its);
-    return h + tipCard(t) + quoteLine();
+    h += chkCard(t) + (hasHab ? habitsDay(t) : '') + medsDay(t) + petsDue(t) + sharedBlock(t);
+    return h + todayMore(weekStrip(t) + weekOvBtn() + datesStrip(t) + goalsBlock('d', t) + (hasHab ? '' : habitsDay(t)) + kidsPtsBlock() + monthReviewCard() + weekReview() + tipCard(t) + quoteLine());
   }
 
   /* --- plan du matin --- */
@@ -2673,7 +2697,7 @@ b.warn { color: var(--warn); }
   }
   function notesPane() {
     var ns = notesSorted();
-    var h = '<form id="nform" class="card ncomp" autocomplete="off"><label class="vh" for="n-text">Nouvelle note</label><textarea id="n-text" data-keep maxlength="2000" rows="2" placeholder="Note une idée, un numéro, un truc à ne pas oublier…"></textarea><div class="btns">' + micBtn('#n-text') + '' + vnoteBtn() + '<button type="submit" class="btn primary sm">Noter</button></div></form>';
+    var h = '<form id="nform" class="card ncomp" autocomplete="off"><label class="vh" for="n-text">Nouvelle note</label><textarea id="n-text" data-keep maxlength="2000" rows="2" placeholder="Note une idée, un numéro, un truc à ne pas oublier…"' + (SR ? ' data-nomic' : '') + '></textarea><div class="btns">' + (SR ? '' : micBtn('#n-text')) + vnoteBtn() + '<button type="submit" class="btn primary sm">Noter</button></div></form>';
     if (!ns.length) h += '<p class="empty card">Ton vide-tête est vide. Note tout ce qui te passe par la tête, tu le rangeras plus tard (tâche, liste…).</p>';
     else h += '<div class="notes">' + ns.map(noteCard).join('') + '</div>';
     return h;
@@ -6049,6 +6073,60 @@ b.warn { color: var(--warn); }
     if (el.id === 'work-a' || el.id === 'work-b') { var w = S.settings.work; if (!w || !/^\d\d:\d\d$/.test(el.value)) return true; w[el.id === 'work-a' ? 'a' : 'b'] = el.value; save(); render(); return true; }
     return false;
   }
+  /* ---------- v73 : menu « Tout Cadence », Aujourd’hui « l’essentiel + Voir plus », Profil rangé ---------- */
+  // [icône, titre, explication, action, valeur]
+  var ALLF = [
+    ['Ma journée', [['sun', 'Planifier ma journée', 'Choisir mes 3 priorités du jour', 'plan'], ['sparkle', 'Organiser automatiquement', 'L’IA place mes tâches dans la journée', 'autoplan'], ['clock', 'J’ai 15 minutes', 'Une tâche courte à faire tout de suite', 'q15'], ['alert', 'Je suis débordé', 'Trier, reporter, souffler', 'panic'], ['moon', 'Bilan du soir', '30 secondes pour finir la journée', 'soir'], ['mic', 'Écouter ma journée', 'Cadence te lit ton programme', 'speak']]],
+    ['Ajouter vite', [['plus', 'Nouvelle tâche', 'Écris ou dicte « dentiste jeudi 15h »', 'quick'], ['camera', 'Lire une photo', 'Agenda papier, ordonnance, ticket, affiche', 'quick'], ['mic', 'Note vocale', 'Parle, Cadence écrit, l’IA range', 'vnote']]],
+    ['Agenda', [['cal', 'Mon agenda', 'Jour, semaine, mois, année', 'go', 'agenda'], ['list', 'Ma semaine en un coup d’œil', 'Rendez-vous, tâches, dépenses, anniversaires', 'wkov'], ['cake', 'Dates, rendez-vous, documents', 'Anniversaires, comptes à rebours, rendez-vous à reprendre, papiers', 'dates'], ['repeat', 'Routines', 'Plusieurs tâches ajoutées d’un coup', 'rtman'], ['cloud', 'Google Agenda, Outlook, iCloud', 'Voir tes autres agendas dans Cadence', 'go', 'profile:Connexions']]],
+    ['Notes et listes', [['note', 'Notes', 'Idées, numéros, choses à ne pas oublier', 'go', 'notes:notes'], ['cart', 'Listes et courses', 'Listes à cocher, partageables', 'go', 'notes:lists'], ['pen', 'Journal du jour', 'Quelques lignes chaque jour, résumé du mois', 'go', 'notes:journal'], ['folder', 'Projets', 'Un grand projet découpé en étapes', 'go', 'notes:proj'], ['food', 'Cuisine', 'Recettes, menus de la semaine, idées repas', 'go', 'notes:menus']]],
+    ['Famille et partage', [['users', 'Ensemble', 'Agenda, tâches et courses partagés en famille', 'go', 'space'], ['user', 'Mes enfants', 'Leurs tâches, leurs points et récompenses', 'go', 'profile:Agenda'], ['arrow', 'Envoyer l’appli à quelqu’un', 'Faire découvrir Cadence', 'shareapp']]],
+    ['Argent', [['wallet', 'Budget du mois', 'Dépenses, revenus, plafonds', 'go', 'budget:mois'], ['repeat', 'Chaque mois', 'Loyer, abonnements, graphique', 'go', 'budget:suivi'], ['target', 'Épargne', 'Mes objectifs d’épargne', 'go', 'budget:epargne']]],
+    ['Santé et objectifs', [['target', 'Objectifs et habitudes', 'Ce que je veux atteindre, ce que je fais chaque jour', 'go', 'goals'], ['pill', 'Médicaments', 'Rappels et suivi des prises', 'medman'], ['hourglass', 'Pomodoro', 'Minuteurs pour se concentrer', 'go', 'pomo']]],
+    ['Coach IA', [['sparkle', 'Parler au coach', 'Pose une question, il peut agir sur ton agenda', 'coach'], ['food', 'Que cuisiner ce soir ?', 'Des idées avec ce que tu as', 'cook']]],
+    ['Réglages', [['user', 'Profil et réglages', 'Apparence, notifications, verrouillage, compte', 'go', 'profile'], ['bell', 'Notifications', 'Rappels, résumé du matin, heures calmes', 'go', 'profile:Notifications'], ['play', 'Revoir la démo', 'Le tour de Cadence en 1 minute', 'demostart'], ['minus', 'Corbeille', 'Ce que tu as supprimé (30 jours)', 'trash']]]
+  ];
+  function allBtn() { return '<button class="icb hall" data-act="allf" aria-label="Tout Cadence">' + ic('grid') + '</button>'; }
+  function allSheet() {
+    var q = nrm(ALLQ.q || '');
+    var h = '<h2>Tout Cadence</h2><input type="search" id="all-q" data-keep data-nomic placeholder="Chercher une fonction (ex. budget, médicament)" aria-label="Chercher une fonction" value="' + esc(ALLQ.q || '') + '">';
+    var any = false;
+    ALLF.forEach(function (g, gi) {
+      var it = g[1].map(function (x, i) { return [x, i]; }).filter(function (p) { return !q || nrm(p[0][1] + ' ' + p[0][2] + ' ' + g[0]).indexOf(q) >= 0; });
+      if (!it.length) return; any = true;
+      h += '<p class="allh">' + esc(g[0]) + '</p><div class="allg">' + it.map(function (p) { var x = p[0]; return '<button class="allb" data-act="allgo" data-g="' + gi + '" data-i="' + p[1] + '"><span class="alli">' + ic(x[0]) + '</span><span class="allt"><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></span>' + ic('next', 'chev') + '</button>'; }).join('') + '</div>';
+    });
+    if (!any) h += '<p class="sub">Rien trouvé. Essaie un autre mot.</p>';
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  var ALLQ = { q: '' };
+  function allGo(x) {
+    var act = x[3], v = x[4] || '';
+    sheet = null;
+    if (act !== 'go') { if (['plan', 'autoplan', 'q15', 'panic', 'soir', 'speak', 'quick', 'wkov'].indexOf(act) >= 0) tab = 'today'; render(); var bt = document.createElement('button'); bt.type = 'button'; bt.hidden = true; bt.dataset.act = act; document.body.appendChild(bt); bt.click(); bt.remove(); return; }
+    var p = v.split(':'); tab = p[0];
+    if (p[0] === 'notes' && p[1]) notesView = p[1];
+    if (p[0] === 'budget' && p[1]) moneyView = p[1];
+    if (p[0] === 'profile' && p[1]) { FOLD[p[1]] = true; }
+    anim = 'fade'; render(); window.scrollTo(0, 0);
+    if (p[0] === 'profile' && p[1]) setTimeout(function () { var d = document.querySelector('details.fold[data-k="' + p[1] + '"]'); if (d) { d.open = true; d.scrollIntoView({ block: 'start' }); window.scrollBy(0, -12); } }, 30);
+  }
+  // Aujourd’hui : ce qui est replié sous « Voir plus »
+  function moreOpen() { try { return localStorage.getItem('cadence.tmore') === '1'; } catch (e) { return false; } }
+  function todayMore(inner) {
+    if (!inner) return '';
+    return '<details class="tmore"' + (moreOpen() ? ' open' : '') + '><summary><span><b>Voir plus</b><small>Ta semaine, tes objectifs du jour, ce qui arrive bientôt</small></span>' + ic('next', 'chev') + '</summary><div class="tmb">' + inner + '</div></details>';
+  }
+  // Profil : thèmes et explications
+  var PGRP = [['Mon appli', ['Apparence', 'Sons et vibrations', 'Notifications', 'Verrouillage de l’appli']], ['Mon organisation', ['Agenda', 'Catégories', 'Assistant', 'Connexions']], ['Mon compte', ['Mon compte', 'Mes données', 'Abonnement', 'Informations']]];
+  var FOLDD = { 'Apparence': 'Couleur, mode clair ou sombre', 'Sons et vibrations': 'Sons, vibrations, écran allumé', 'Notifications': 'Rappels, résumé du matin, heures calmes', 'Verrouillage de l’appli': 'Code ou empreinte pour ouvrir Cadence', 'Agenda': 'Vue, horaires de travail, vacances, enfants', 'Catégories': 'Couleurs et noms des catégories', 'Assistant': 'Suggestions et aide automatique', 'Connexions': 'Google Agenda, Outlook, iCloud', 'Mon compte': 'E-mail, mot de passe, déconnexion', 'Mes données': 'Copie de sécurité, export, corbeille', 'Abonnement': 'Tout est gratuit pour l’instant', 'Informations': 'Conditions, confidentialité, contact' };
+  function v73Click(a, b) {
+    if (a === 'allf') { ALLQ.q = ''; sheet = { k: 'allf' }; render(); return true; }
+    if (a === 'allgo') { var g = ALLF[+b.dataset.g], x = g && g[1][+b.dataset.i]; if (x) allGo(x); return true; }
+    return false;
+  }
+  document.addEventListener('input', function (e) { if (e.target && e.target.id === 'all-q') { ALLQ.q = e.target.value; var pos = e.target.selectionStart; render(); var el = document.getElementById('all-q'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (er) {} } } });
+  document.addEventListener('toggle', function (e) { var d = e.target; if (d && d.classList && d.classList.contains('tmore')) { try { localStorage.setItem('cadence.tmore', d.open ? '1' : '0'); } catch (er) {} } }, true);
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
