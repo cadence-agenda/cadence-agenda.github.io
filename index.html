@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lZPVDvLZ3O/kY0rjG+zQEUtaccaCawquz+bkoE1ujxk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KY1ILCbaFnlpUPM6RXf03k+QHvWUYEUaDvkQTaKdkrk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1020,6 +1020,15 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .vacb span { flex: 1; }
 .lettc .lett { white-space: normal; line-height: 1.5; font-style: italic; }
 .rp.guess { opacity: .75; }
+/* v47 : budget */
+.recnew { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.recnew input, .recnew select { flex: 1 1 120px; min-width: 0; }
+.mchart { display: flex; align-items: flex-end; gap: 8px; height: 150px; padding-top: 6px; }
+.mcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; }
+.mcol i { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
+.mcol.now i { background: var(--accent); }
+.mcol small { font-size: 10px; color: var(--muted); white-space: nowrap; }
+.mcol span { font-size: 12px; color: var(--muted); }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1028,7 +1037,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 46;
+  var APP_VER = 47;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1107,6 +1116,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     o.money.tx = Array.isArray(o.money.tx) ? o.money.tx.filter(function (t) { return t && t.id && /^\d{4}-\d\d-\d\d$/.test(t.d || '') && +t.amt > 0; }).map(function (t) { t.amt = +t.amt; return t; }) : [];
     o.money.caps = (o.money.caps && typeof o.money.caps === 'object') ? o.money.caps : {};
     o.money.save = Array.isArray(o.money.save) ? o.money.save.filter(function (z) { return z && z.id; }) : [];
+    o.money.rec = Array.isArray(o.money.rec) ? o.money.rec.filter(function (z) { return z && z.id && +z.amt > 0; }) : [];
     o.items.forEach(function (x) { if (!Array.isArray(x.subs)) x.subs = []; });
     o.habits.forEach(function (h) { if (!Array.isArray(h.days)) h.days = []; if (!/^\d\d:\d\d$/.test(h.rem || '')) h.rem = ''; });
     o.goals.forEach(function (g) { if (!Array.isArray(g.steps)) g.steps = []; g.target = Math.max(0, +g.target || 0); g.cur = Math.max(0, +g.cur || 0); });
@@ -1589,6 +1599,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v47Click(a, b)) return;
     if (v46Click(a, b)) return;
     if (v45Click(a, b)) return;
     if (v43Click(a, b)) return;
@@ -3085,7 +3096,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return '<div class="mbar' + (over ? ' over' : warn ? ' warn' : '') + '"><div class="mbl"><span>' + eico(c[1]) + esc(c[2]) + '</span><b>' + eur(v) + (cp ? ' <small>/ ' + eur(cp) + '</small>' : '') + '</b></div><span class="bar"><i style="width:' + Math.min(100, Math.round(v / (cp || mx) * 100)) + '%"></i></span>' + (over ? '<small class="mw">Plafond dépassé de ' + eur(v - cp) + '</small>' : warn ? '<small class="mw">' + Math.round(v / cp * 100) + ' % du plafond</small>' : '') + '</div>';
     }).join('') + '</div></div>';
     else h += '<button class="btn sm" data-act="mcaps">Fixer des plafonds par catégorie</button>';
-    h += savesCard();
+    h += chartCard() + recCard() + savesCard();
     if (tx.length) {
       var sorted = tx.slice().sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : (b.at || '') < (a.at || '') ? -1 : 1; }), lastD = '';
       h += '<div class="sh"><h3>Mouvements</h3><span class="cnt">' + tx.length + '</span></div><div class="list">' + sorted.map(function (t) {
@@ -4175,6 +4186,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     });
     // heures calmes : les rappels automatiques ne sont pas envoyés (ceux mis sur une tâche, si)
     out = out.filter(function (r) { return !(inQuiet(r.at) && r.ref && ['morn', 'veille', 'eve', 'bd', 'hab'].indexOf(r.ref.k) >= 0 || inQuiet(r.at) && /^ins-/.test(r.p.tag || '')); });
+    recPushRows(now).forEach(function (r) { out.push(r); });
     out = out.filter(function (r) { return !inVac(isoOf(new Date(r.at))); });
     (S.letters || []).forEach(function (l) { if (!l.read && l.at > t) add(atOf(l.at, '10:00').getTime(), { title: 'Une lettre de toi t’attend', body: 'Écrite le ' + dayLong(l.w) + '. Ouvre Cadence pour la lire.', tag: 'lett-' + l.id, url: './?tab=today' }, { k: 'lett', d: l.at }); });
     try { nlogPut(out); } catch (e) {}
@@ -4598,6 +4610,62 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     }
     if (a === 'lettopen') { (S.letters || []).forEach(function (l) { if (l.id === b.dataset.id) l.open = true; }); save(); render(); return true; }
     if (a === 'lettdone') { (S.letters || []).forEach(function (l) { if (l.id === b.dataset.id) l.read = true; }); save(); render(); return true; }
+    return false;
+  }
+  /* ---------- v47 : budget — chaque mois (récurrent), rappels de factures, graphique ---------- */
+  function recApply() {
+    if (!S.money || !Array.isArray(S.money.rec)) return false;
+    var t = todayISO(), mk = t.slice(0, 7), dd = +t.slice(8, 10), ch = false;
+    S.money.rec.forEach(function (r) {
+      if (r.last === mk || dd < r.day) return;
+      S.money.tx.push({ id: uid(), d: mk + '-' + p2(r.day), amt: r.amt, type: r.type, cat: r.cat, lab: r.lab, at: new Date().toISOString(), rec: r.id });
+      r.last = mk; ch = true;
+    });
+    if (ch) save();
+    return ch;
+  }
+  setTimeout(function () { try { if (recApply() && tab === 'budget') render(); } catch (e) {} }, 1500);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) try { recApply(); } catch (e) {} });
+  function recNext(r) { var t = todayISO(), mk = t.slice(0, 7), d = mk + '-' + p2(r.day); if (r.last === mk || d < t) { var n = new Date(+t.slice(0, 4), +t.slice(5, 7), r.day); d = n.getFullYear() + '-' + p2(n.getMonth() + 1) + '-' + p2(r.day); } return d; }
+  function recCard() {
+    var rs = S.money.rec || [], h = '<div class="card recc"><div class="sh"><h3>Chaque mois</h3>' + (rs.length ? '<span class="cnt">' + eur(rs.filter(function (r) { return r.type !== 'in'; }).reduce(function (a, r) { return a + r.amt; }, 0)) + ' / mois</span>' : '') + '</div>';
+    if (!rs.length) h += '<p class="sub">Loyer, abonnements, salaire… ajoutés tout seuls chaque mois, avec un rappel 2 jours avant pour les factures.</p>';
+    h += '<div class="list">' + rs.map(function (r) { var c = mcat(r.cat); return '<div class="row mrow"><span class="he">' + eico(c[1]) + '</span><div class="txt"><span>' + esc(r.lab || c[2]) + '</span><small>le ' + r.day + ' du mois · prochain : ' + esc(dayShort(recNext(r))) + (r.type !== 'in' && r.rem !== false ? ' · rappel' : '') + '</small></div><b class="' + (r.type === 'in' ? 'pos' : '') + '">' + (r.type === 'in' ? '+' : '−') + eur(r.amt) + '</b><button class="x' + (armKey === 'rec:' + r.id ? ' armed' : '') + '" data-act="recdel" data-id="' + r.id + '" aria-label="Supprimer ' + esc(r.lab) + '">' + (armKey === 'rec:' + r.id ? 'OK ?' : '×') + '</button></div>'; }).join('') + '</div>';
+    h += '<div class="recnew"><input type="text" id="rec-lab" data-keep maxlength="40" placeholder="Ex. Loyer, Netflix, Salaire" aria-label="Nom"><input type="text" id="rec-amt" data-keep inputmode="decimal" maxlength="10" placeholder="Montant" aria-label="Montant">' +
+      '<select id="rec-day" data-keep aria-label="Jour du mois">' + Array.apply(null, Array(28)).map(function (_, i) { return '<option value="' + (i + 1) + '">le ' + (i + 1) + '</option>'; }).join('') + '</select>' +
+      '<select id="rec-cat" data-keep aria-label="Catégorie">' + MCATS_OUT.concat(MCATS_IN).map(function (c) { return '<option value="' + c[0] + '"' + (c[0] === 'logement' ? ' selected' : '') + '>' + esc(c[2]) + '</option>'; }).join('') + '</select>' +
+      '<button class="btn sm primary" data-act="recadd">Ajouter</button></div>';
+    return h + '</div>';
+  }
+  function chartCard() {
+    var t = todayISO(), y = +t.slice(0, 4), m = +t.slice(5, 7) - 1, ms = [];
+    for (var i = 5; i >= 0; i--) { var d = new Date(y, m - i, 1), k = d.getFullYear() + '-' + p2(d.getMonth() + 1); ms.push({ k: k, l: MOIS[d.getMonth()].slice(0, 3), v: monthOut(k) }); }
+    var mx = Math.max.apply(null, ms.map(function (z) { return z.v; }).concat([1]));
+    if (!ms.some(function (z) { return z.v; })) return '';
+    var avg = ms.slice(0, 5).filter(function (z) { return z.v; }), av = avg.length ? avg.reduce(function (a, z) { return a + z.v; }, 0) / avg.length : 0, cur0 = ms[5].v;
+    return '<div class="card chartc"><div class="sh"><h3>Dépenses des 6 derniers mois</h3></div><div class="mchart" role="img" aria-label="Dépenses par mois">' + ms.map(function (z, i) { return '<div class="mcol' + (i === 5 ? ' now' : '') + '"><small>' + (z.v ? Math.round(z.v) + ' €' : '') + '</small><i style="height:' + Math.max(2, Math.round(z.v / mx * 100)) + '%"></i><span>' + esc(z.l) + '</span></div>'; }).join('') + '</div>' +
+      (av ? '<p class="hint">Ce mois-ci : ' + eur(cur0) + ' · moyenne des mois précédents : ' + eur(Math.round(av)) + '.</p>' : '') + '</div>';
+  }
+  function recPushRows(now) {
+    var rows = [];
+    (S.money.rec || []).forEach(function (r) {
+      if (r.type === 'in' || r.rem === false) return;
+      var d = recNext(r), at = atOf(addDays(d, -2), '10:00').getTime();
+      if (at > now) rows.push({ at: new Date(at).toISOString(), p: { title: 'Facture dans 2 jours : ' + (r.lab || mcat(r.cat)[2]), body: eur(r.amt) + ' le ' + dayLong(d), tag: 'rec-' + r.id + '-' + d, url: './?tab=budget' }, ref: { k: 'rec', d: d } });
+    });
+    return rows;
+  }
+  function v47Click(a, b) {
+    if (a === 'recadd') {
+      var lab = ((document.getElementById('rec-lab') || {}).value || '').trim(), amt = parseAmt((document.getElementById('rec-amt') || {}).value), day = +((document.getElementById('rec-day') || {}).value || 1), cat = (document.getElementById('rec-cat') || {}).value || 'autre';
+      if (!lab || !amt) { showToast('Écris un nom et un montant.'); return true; }
+      var type = MCATS_IN.some(function (c) { return c[0] === cat; }) ? 'in' : 'out';
+      var r = { id: uid(), lab: lab.slice(0, 40), amt: amt, day: Math.min(28, Math.max(1, day)), cat: cat, type: type, rem: true, last: '' };
+      S.money.rec = (S.money.rec || []).concat([r]);
+      ['rec-lab', 'rec-amt'].forEach(function (i) { var e = document.getElementById(i); if (e) e.value = ''; });
+      recApply(); save(); showToast('Ajouté chaque mois le ' + r.day + '.'); render(); return true;
+    }
+    if (a === 'recdel') { if (!arm('rec:' + b.dataset.id)) return true; S.money.rec = (S.money.rec || []).filter(function (r) { return r.id !== b.dataset.id; }); save(); render(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
