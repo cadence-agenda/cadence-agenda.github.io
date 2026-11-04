@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KUjPD7FGLnEcPXpW8sYb4A/nYujGLZbnkymHlZZeYzo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tvkxmH+OmTOsgyAj3T/qZ5Oo6B1PAm3AClK+0rlSVyc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1077,6 +1077,10 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .mnuh { margin: 18px 0 4px; }
 .bsug { margin: 8px 0; }
 .cookans { max-width: 100%; margin-top: 10px; }
+/* v53 */
+.mmsg h3 { display: flex; gap: 6px; align-items: center; } .mmsg h3 .ic { color: var(--accent); width: 18px; height: 18px; }
+.mmsg p { margin: 6px 0 0; line-height: 1.5; }
+.cvoice { margin: 6px 0; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1085,7 +1089,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 52;
+  var APP_VER = 53;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1570,7 +1574,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         '<button type="submit" class="btn primary big">' + (isAdd ? 'Ajouter' : 'Enregistrer') + '</button>';
       if (!isAdd) h += '<button type="button" class="btn" data-act="postpone" data-id="' + x.id + '" data-d="' + (sheet.d || x.d) + '">Reporter à demain</button>';
       if (!isAdd) h += gcalHtml(x, sheet.d || x.d);
-      if (!isAdd) h += '<div class="btns">' + shareBtn(x) + '<button type="button" class="btn sm ghost" data-act="ifocus" data-id="' + x.id + '" data-d="' + sheet.d + '">' + ic('target') + '<span>Mode Focus</span></button></div>';
+      if (!isAdd) h += '<div class="btns">' + shareBtn(x) + '<button type="button" class="btn sm ghost" data-act="ifocus" data-id="' + x.id + '" data-d="' + sheet.d + '">' + ic('target') + '<span>Mode Focus</span></button>' + writeBtn(x) + '</div>';
       if (!isAdd) h += x.rep ? '<div class="btns"><button type="button" class="btn danger" data-act="idelone" data-id="' + x.id + '" data-d="' + sheet.d + '">Supprimer ce jour</button><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer la série</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>' :
         '<div class="btns"><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>';
       h += '</form>';
@@ -1580,8 +1584,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { write: writeSheet, recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { write: 'Rédiger avec l’IA', recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1648,6 +1652,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v53Click(a, b)) return;
     if (v52Click(a, b)) return;
     if (v50Click(a, b)) return;
     if (v49Click(a, b)) return;
@@ -2390,7 +2395,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quoteLine() { return '<p class="qline">' + esc(quoteOfDay()) + '</p>'; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
-    h += netBadge() + vacBanner(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
+    h += netBadge() + vacBanner(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
     h += habitsDay(t) + medsDay(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
@@ -4299,6 +4304,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)');
     h += '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
     if (S.cats.length) h += '<div class="f"><p class="sub">Rappels par catégorie</p><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></div>';
+    h += sw2('mmsgtog', S.settings.mmsg !== false, 'Le mot du coach chaque matin (dans Aujourd’hui)');
     h += sw2('spall', !!s.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)');
     h += '<button class="btn sm" data-act="nhist">Historique des rappels</button>';
     return h;
@@ -4448,7 +4454,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (COACH.err) h += '<p class="err" role="alert">' + esc(COACH.err) + '</p>';
     h += '</div><div class="chips csug">' + COACH_SUG.map(function (q) { return '<button type="button" class="chip" data-act="coachq" data-v="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div>';
     h += '<form id="coachf" class="coachf" autocomplete="off"><textarea id="coach-in" data-keep rows="2" maxlength="1000" placeholder="Écris ta question…" aria-label="Question au coach"></textarea><button type="submit" class="btn primary"' + (COACH.busy ? ' disabled' : '') + '>Envoyer</button></form>';
-    return h + (COACH.hist.length ? '<button class="btn ghost sm" data-act="coachclr">Effacer la discussion</button>' : '');
+    return h + coachVoiceRow() + (COACH.hist.length ? '<button class="btn ghost sm" data-act="coachclr">Effacer la discussion</button>' : '');
   }
   function coachFmt(t) { return esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/^\s*[-*•]\s+/gm, '• ').replace(/\n/g, '<br>'); }
   function coachAsk(q) {
@@ -4458,7 +4464,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     COACH.hist.push({ r: 'u', t: q.slice(0, 1000) }); COACH.busy = true; COACH.err = ''; coachSave(); render(); coachScroll();
     authed('POST', '/functions/v1/cadence-coach', { msg: q, ctx: coachCtx().slice(0, 5200) + ACT_HELP.replace('{T}', todayISO()), hist: hist.map(function (m) { return { r: m.r, t: m.t }; }), name: callName() || '' }).then(function (r) {
       var sp = coachSplitActs(String((r && r.text) || '…'));
-      COACH.busy = false; COACH.hist.push({ r: 'a', t: sp.t || '…', acts: sp.acts }); coachSave(); render(); coachScroll();
+      COACH.busy = false; COACH.hist.push({ r: 'a', t: sp.t || '…', acts: sp.acts }); coachSpeak(sp.t || ''); coachSave(); render(); coachScroll();
     }).catch(function (er) {
       COACH.busy = false; COACH.hist.pop(); coachSave();
       COACH.err = er && er.net ? 'Pas de connexion internet.' : er && er.status === 429 ? 'Limite gratuite atteinte pour aujourd’hui. Réessaie demain.' : er && er.status === 404 ? 'Le coach n’est pas encore activé sur le serveur.' : 'Le coach n’a pas pu répondre. Réessaie dans un instant.';
@@ -5139,6 +5145,57 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function v52Change(el) {
     if (el.id === 'rec-file') { var f = el.files && el.files[0]; el.value = ''; if (f) shrinkImg(f, 1600, 0.82, function (url) { recRun({ image: url.split(',')[1], mime: 'image/jpeg' }); }); return true; }
+    return false;
+  }
+  /* ---------- v53 : mot du coach le matin, coach à voix haute, IA qui rédige ---------- */
+  var MM = { busy: false };
+  function morningMsg(t) {
+    if (S.settings.mmsg === false || !cloudOn || !auth) return '';
+    var m = S.mmsg;
+    if (m && m.d === t) return m.hide ? '' : '<section class="card mmsg"><div class="sh"><h3>' + ic('sparkle') + ' Le mot du coach</h3><button class="lnk" data-act="mmhide">Masquer</button></div><p>' + coachFmt(m.t) + '</p></section>';
+    if (!MM.busy && new Date().getHours() >= 5) {
+      MM.busy = true;
+      authed('POST', '/functions/v1/cadence-coach', { msg: 'Écris-moi 2 phrases courtes et chaleureuses pour bien commencer ma journée, en t’appuyant sur ce que j’ai de prévu aujourd’hui (cite une tâche importante s’il y en a). Pas de liste, pas de titre.', ctx: coachCtx().slice(0, 4000), name: callName() || '' }).then(function (r) {
+        MM.busy = false; var tx = String((r && r.text) || '').trim(); if (!tx) return;
+        S.mmsg = { d: todayISO(), t: tx.slice(0, 600) }; save(); if (tab === 'today' && !editing()) render();
+      }).catch(function () { MM.busy = false; S.mmsg = { d: todayISO(), t: '', hide: true }; });
+    }
+    return '';
+  }
+  // coach à voix haute
+  function coachSpeak(t) {
+    if (!S.settings.coachVoice || !('speechSynthesis' in window)) return;
+    try { var SS = window.speechSynthesis, u = new window.SpeechSynthesisUtterance(String(t).replace(/\*\*/g, '').replace(/^\s*[-•*]\s*/gm, '')); u.lang = 'fr-FR'; var v = (SS.getVoices() || []).filter(function (z) { return /^fr/i.test(z.lang); })[0]; if (v) u.voice = v; SS.cancel(); SS.speak(u); } catch (e) {}
+  }
+  function coachVoiceRow() { return 'speechSynthesis' in window ? '<div class="tg cvoice"><span>Réponses lues à voix haute</span><button class="switch" aria-pressed="' + !!S.settings.coachVoice + '" aria-label="Réponses lues à voix haute" data-act="coachvoice"></button></div>' : ''; }
+  // l’IA rédige pour toi
+  var WKIND = [['msg', 'Message (SMS, WhatsApp)'], ['mail', 'E-mail'], ['call', 'Script d’appel']];
+  function writeSheet() {
+    var x = byId(sheet.id); if (!x) { sheet = null; return ''; }
+    var h = '<h2>Rédiger avec l’IA</h2><p class="sub">Pour : « ' + esc(x.text) + ' »</p><div class="seg" role="group" aria-label="Type">' + WKIND.map(function (k) { return '<button aria-pressed="' + ((sheet.kind || 'msg') === k[0]) + '" data-act="wkind" data-v="' + k[0] + '">' + k[1] + '</button>'; }).join('') + '</div>' +
+      '<label class="f">Précisions (facultatif)<textarea id="w-more" data-keep rows="2" maxlength="600" placeholder="Ex. ton poli, numéro de client 1234, je veux résilier au 30 novembre"></textarea></label><button class="btn primary" data-act="wgo"' + (sheet.busy ? ' disabled' : '') + '>' + ic('sparkle') + '<span>' + (sheet.busy ? 'Rédaction…' : 'Rédiger') + '</span></button>';
+    if (sheet.out) h += '<label class="f">Texte proposé (modifiable)<textarea id="w-out" data-keep rows="9" maxlength="4000">' + esc(sheet.out) + '</textarea></label><div class="btns"><button class="btn sm primary" data-act="wcopy">Copier</button>' + (navigator.share ? '<button class="btn sm" data-act="wshare">Envoyer…</button>' : '') + '</div>';
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  function writeBtn(x) { return x ? '<button type="button" class="btn sm ghost" data-act="iwrite" data-id="' + x.id + '">' + ic('pen') + '<span>Rédiger avec l’IA</span></button>' : ''; }
+  function v53Click(a, b) {
+    if (a === 'mmhide') { if (S.mmsg) S.mmsg.hide = true; save(); render(); return true; }
+    if (a === 'mmsgtog') { S.settings.mmsg = S.settings.mmsg === false; save(); render(); return true; }
+    if (a === 'coachvoice') { S.settings.coachVoice = !S.settings.coachVoice; save(); render(); return true; }
+    if (a === 'iwrite') { sheet = { k: 'write', id: b.dataset.id, kind: 'msg' }; render(); return true; }
+    if (a === 'wkind') { sheet.kind = b.dataset.v; render(); return true; }
+    if (a === 'wgo') {
+      var x = byId(sheet.id); if (!x) return true; if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return true; }
+      var more = ((document.getElementById('w-more') || {}).value || '').trim(), kd = sheet.kind || 'msg';
+      var ask = kd === 'mail' ? 'Rédige un e-mail clair et poli (avec une ligne « Objet : » en premier)' : kd === 'call' ? 'Rédige un script d’appel téléphonique court : ce que je dis pour me présenter, ma demande, les questions à poser, et comment conclure' : 'Rédige un message court et naturel (SMS ou WhatsApp)';
+      sheet.busy = true; render();
+      authed('POST', '/functions/v1/cadence-coach', { msg: ask + ' pour cette tâche : « ' + x.text + ' »' + (x.loc ? ' (lieu : ' + x.loc + ')' : '') + (x.time ? ', à ' + x.time + ' le ' + dayLong(x.d) : '') + '.' + (more ? ' Précisions : ' + more : '') + ' Signe avec mon prénom' + (callName() ? ' (' + callName() + ')' : '') + '. Réponds uniquement avec le texte, sans commentaire.', ctx: 'Tâche : ' + x.text }).then(function (r) {
+        if (!sheet || sheet.k !== 'write') return; sheet.busy = false; sheet.out = String((r && r.text) || '').trim(); render();
+      }).catch(function () { if (sheet && sheet.k === 'write') { sheet.busy = false; showToast('L’IA n’a pas pu rédiger. Réessaie.'); render(); } });
+      return true;
+    }
+    if (a === 'wcopy') { var t = ((document.getElementById('w-out') || {}).value || ''); try { navigator.clipboard.writeText(t).then(function () { showToast('Texte copié'); render(); }); } catch (e) {} return true; }
+    if (a === 'wshare') { var t2 = ((document.getElementById('w-out') || {}).value || ''); navigator.share({ text: t2 }).catch(function () {}); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
