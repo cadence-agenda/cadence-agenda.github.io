@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-TT7t/HRT8lbyr90kpDRMUDMvsSsFBeldf0uGYxC6/Dw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Nr5PUXuJyAoNdR1sDzuGAxoUPqFeazG3ypdYmIdQ0+k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -14,18 +14,18 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cadence">
 <meta property="og:url" content="https://cadence-agenda.github.io/">
-<meta property="og:title" content="Cadence : une vie organisée">
+<meta property="og:title" content="Cadence : organise toute ta vie">
 <meta property="og:description" content="Agenda, rappels, listes en famille, budget et un coach qui organise ta journée. Gratuite, en français.">
-<meta property="og:image" content="https://cadence-agenda.github.io/og2.jpg">
+<meta property="og:image" content="https://cadence-agenda.github.io/og3.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Cadence, une vie organisée : aperçu de l’appli">
+<meta property="og:image:alt" content="Cadence, organise toute ta vie : aperçu de l’appli">
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cadence : une vie organisée">
+<meta name="twitter:title" content="Cadence : organise toute ta vie">
 <meta name="twitter:description" content="Agenda, rappels, listes en famille, budget et un coach qui organise ta journée. Gratuite, en français.">
-<meta name="twitter:image" content="https://cadence-agenda.github.io/og2.jpg">
+<meta name="twitter:image" content="https://cadence-agenda.github.io/og3.jpg">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px)}body{margin:0}[hidden]{display:none!important}</style>
@@ -1164,6 +1164,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
 .insth { font-size: 19px; margin: 4px 0 2px; }
 .jpaste { margin-top: 12px; } .jpaste form { margin-top: 8px; }
 .inst h1 { font-size: 23px; margin-bottom: 4px; } .why { gap: 6px; margin-top: 8px; } .why li { padding: 7px 10px; } .why .whyi { width: 32px; height: 32px; border-radius: 9px; } .why small { display: block; line-height: 1.3; } .whyf { margin-bottom: 12px; }
+.invb .ic { flex: none; width: 20px; height: 20px; color: var(--accent); margin-top: 1px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1172,7 +1173,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
 <script>
 (function () {
   'use strict';
-  var APP_VER = 69;
+  var APP_VER = 70;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -5819,7 +5820,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
   function inviteBanner() {
     var de = inviterName(), jn = joinPending();
     if (!de && !jn) return '';
-    return '<div class="invb">' + eico(jn ? '📝' : '👋') + '<span>' + (de ? '<b>' + esc(de) + '</b> t’invite sur Cadence.' : 'On t’a partagé une liste.') + (jn ? ' Ta liste partagée t’attend juste après l’inscription.' : '') + '</span></div>';
+    return '<div class="invb">' + ic(jn ? 'list' : 'users') + '<span>' + (de ? '<b>' + esc(de) + '</b> t’invite sur Cadence.' : 'On t’a partagé une liste.') + (jn ? ' Ta liste partagée t’attend juste après l’inscription.' : '') + '</span></div>';
   }
   var WHY = [['cal', 'Ton agenda et tes rappels', 'Même appli fermée, tu n’oublies plus rien.'], ['sparkle', 'Un coach qui organise ta journée', 'Dis ce que tu as à faire, il range tout pour toi.'], ['users', 'En famille ou à plusieurs', 'Listes de courses et agenda partagés, en direct.'], ['wallet', 'Ton budget et tes objectifs', 'Dépenses, épargne, habitudes : tout au même endroit.']];
   function whyBlock() { return '<ul class="why">' + WHY.map(function (w) { return '<li><span class="whyi">' + ic(w[0]) + '</span><span><b>' + w[1] + '</b><small>' + w[2] + '</small></span></li>'; }).join('') + '</ul><p class="whyf">Gratuit · en français · sur iPhone et Android</p>'; }
@@ -5853,7 +5854,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     if (!/~/.test(j)) return;
     try { navigator.clipboard.writeText(location.origin + location.pathname + '?join=' + j).then(function () { try { localStorage.setItem('cadence.joincp', '1'); } catch (e) {} render(); }, function () {}); } catch (e) {}
   }
-  function iosJoinNote() { var c = ''; try { c = localStorage.getItem('cadence.joincp') || ''; } catch (e) {} return c && instPlat() === 'ios' ? '<p class="invb">' + eico('📋') + '<span>Ton lien d’invitation est copié. Une fois Cadence installée et ton compte créé : <b>Notes → Listes → J’ai reçu un lien d’invitation</b>, puis colle-le.</span></p>' : ''; }
+  function iosJoinNote() { var c = ''; try { c = localStorage.getItem('cadence.joincp') || ''; } catch (e) {} return c && instPlat() === 'ios' ? '<p class="invb">' + ic('clip') + '<span>Ton lien d’invitation est copié. Une fois Cadence installée et ton compte créé : <b>Notes → Listes → J’ai reçu un lien d’invitation</b>, puis colle-le.</span></p>' : ''; }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
