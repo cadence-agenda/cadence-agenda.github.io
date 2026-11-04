@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0jlGInc4pGjujkQxQk3dThPLF9DkI7KnDq4cnTSzjtQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-U6+QTqXyJbjWpBXnOAfQp/c9bHZixUljoPe3/TB+n48='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1034,6 +1034,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .medc .ic { width: 16px; height: 16px; }
 .bdg { width: 100%; margin-top: 4px; font-size: 13px; padding: 6px 8px; }
 .grat { display: grid; gap: 6px; margin: 10px 0; }
+/* v49 */
+.ibrow { gap: 6px; } .ibrow .txt { flex: 1; }
+.ibadd { width: 100%; margin-top: 8px; gap: 6px; }
+.ptpl { margin: 8px 0; }
+.wday.dc-work { box-shadow: inset 3px 0 0 #0066CC; } .wday.dc-rest { box-shadow: inset 3px 0 0 #1F7A3A; } .wday.dc-vac { box-shadow: inset 3px 0 0 #FF9F0A; }
+.netb { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); background: var(--soft); border-radius: 12px; padding: 8px 12px; margin: 0 0 10px; }
+.stars { display: flex; gap: 6px; justify-content: center; margin: 10px 0; }
+.star2 { border: 0; background: none; color: var(--line); cursor: pointer; padding: 4px; } .star2 .ic { width: 32px; height: 32px; } .star2.on { color: #F5A400; }
+.tour { text-align: center; display: grid; gap: 12px; padding: 10px 0; }
+.tourh { justify-self: center; width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 15%, var(--surface)); color: var(--accent); }
+.tourh .ic { width: 32px; height: 32px; }
+.tour .steps { justify-self: center; }
+.wday.dropov { outline: 2px dashed var(--accent); outline-offset: -2px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1042,7 +1055,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 48;
+  var APP_VER = 49;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1323,7 +1336,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function viewDay() {
     var its = itemsOn(cur);
-    var h = goalsBlock('d', cur) + habitsDay(cur);
+    var h = dayColSeg(cur) + goalsBlock('d', cur) + habitsDay(cur);
     h += '<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(cur).map(function (b) { return '<p class="bdl">' + bdLabel(b, cur) + '</p>'; }).join('') + dayList(cur, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous.' }) + '</section>' + gcalBlock(cur) + sharedBlock(cur);
     return h;
   }
@@ -1331,7 +1344,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var a = weekStart(cur), t = todayISO(), h = printBtn() + goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its;
-      h += '<div class="wday' + (d === t ? ' today' : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
+      h += '<div class="wday' + (d === t ? ' today' : '') + (dayCol(d) ? ' dc-' + dayCol(d) : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
         '<div class="list">' + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter' + (its.length ? '' : ' une tâche') + '</button></div></div>';
     }
     return h + '</section>';
@@ -1476,8 +1489,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += accountCard();
     h += '<section class="card"><h3>Mes données</h3><p class="sub">Garde une copie de tes données dans un fichier, ou recharge une copie. Importer remplace tout ce qui est sur cet appareil.</p>' +
       '<div class="btns"><button class="btn" data-act="export">Exporter (sauvegarde)</button><button class="btn" data-act="csv">Exporter mes tâches (tableur)</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
-      copyBtn() + '<button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
-    h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
+      copyBtn() + '<button class="btn" data-act="trash">Corbeille</button><button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
+    h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><button data-act="review">Donner mon avis</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
     return foldify(h);
   }
@@ -1536,8 +1549,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1604,6 +1617,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v49Click(a, b)) return;
     if (v48Click(a, b)) return;
     if (v47Click(a, b)) return;
     if (v46Click(a, b)) return;
@@ -1657,8 +1671,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       x = byId(id); if (!x) return;
       sheet = null; render(); uiSound('del');
       collapse(document.querySelectorAll('[data-rid^="' + x.id + '|"]'), function () {
-        var ix = S.items.indexOf(x); if (ix < 0) return; S.items.splice(ix, 1); save();
-        showToast('Tâche supprimée', function () { S.items.splice(Math.min(ix, S.items.length), 0, x); save(); });
+        var ix = S.items.indexOf(x); if (ix < 0) return; S.items.splice(ix, 1); trashPut(x); save();
+        showToast('Tâche supprimée', function () { S.items.splice(Math.min(ix, S.items.length), 0, x); S.trash = (S.trash || []).filter(function (z) { return z.x !== x; }); save(); });
         render();
       }); return;
     }
@@ -2078,7 +2092,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quickSheet() {
     return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><span class="pw"><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done" value="' + esc(sheet.pre || '') + '">' + micBtn('#q-text') + '</span></label>' +
       '<div id="q-prev">' + nlPreview(parseNL(sheet.pre || '', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
-      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + scanBtn() + routChips() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
+      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + inboxBtn() + scanBtn() + routChips() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
   }
   function quickSubmit() {
     var raw = (document.getElementById('q-text') || {}).value || '', p = parseNL(raw, quickBase());
@@ -2338,8 +2352,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quoteLine() { return '<p class="qline">' + esc(quoteOfDay()) + '</p>'; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
-    h += vacBanner(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
-    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t);
+    h += netBadge() + vacBanner(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
+    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
     h += habitsDay(t) + medsDay(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + quoteLine();
@@ -2627,6 +2641,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function projStats(p) { var its = S.items.filter(function (x) { return x.proj === p.id && !x.rep; }); return { n: its.length, d: its.filter(function (x) { return x.done; }).length }; }
   function projPane() {
     var h = '<form class="add card" data-kind="proj" autocomplete="off"><input type="text" name="t" placeholder="Nouveau projet (ex. Déménagement)" maxlength="60" aria-label="Nouveau projet"><button type="submit" class="addplus" aria-label="Créer le projet">+</button></form>';
+    h += projTpl();
     var ps = S.projects || [];
     if (!ps.length) return h + '<p class="empty card">Un projet regroupe plusieurs tâches (un déménagement, un voyage, un dossier…) et montre ta progression.</p>';
     return h + '<div class="list">' + ps.map(function (p) { var st = projStats(p), pc = st.n ? Math.round(st.d / st.n * 100) : 0; return '<button class="row prow" data-act="openproj" data-id="' + p.id + '" style="--c:' + p.color + '"><span class="he">' + eico(p.emoji || '📁') + '</span><span class="txt"><span>' + esc(p.name) + '</span><small>' + (st.n ? st.d + '/' + st.n + ' tâches · ' + pc + ' %' : 'Aucune tâche') + '</small><span class="bar"><i style="width:' + pc + '%;background:' + p.color + '"></i></span></span></button>'; }).join('') + '</div>';
@@ -3908,7 +3923,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var p = row.dataset.rid.split('|');
     GS = { row: row, x: e.clientX, y: e.clientY, dx: 0, mode: '', id: p[0], d: p[1] };
     GS.lp = setTimeout(function () {
-      if (!GS || GS.mode || row.querySelector('.tm')) return;
+      if (!GS || GS.mode || (row.querySelector('.tm') && !row.closest('.wday'))) return;
+      GS.wd0 = row.closest('.wday');
       GS.mode = 'drag'; row.classList.add('dragging');
       try { if (navigator.vibrate) navigator.vibrate(15); } catch (er) {}
     }, 450);
@@ -3926,6 +3942,10 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       GS.dx = dx; r.style.transform = 'translateX(' + dx + 'px)';
       r.classList.toggle('sw-r', dx > 40); r.classList.toggle('sw-l', dx < -40);
     } else if (GS.mode === 'drag') {
+      if (GS.wd0) {
+        var el = document.elementFromPoint(e.clientX, e.clientY), wd = el && el.closest && el.closest('.wday');
+        if (wd && wd !== r.closest('.wday')) { var tl = wd.querySelector('.list'), al = tl && tl.querySelector('.addline'); if (tl) tl.insertBefore(r, al || null); wd.classList.add('dropov'); Array.prototype.forEach.call(document.querySelectorAll('.wday.dropov'), function (z) { if (z !== wd) z.classList.remove('dropov'); }); return; }
+      }
       var list = r.parentNode, rows = Array.prototype.filter.call(list.children, function (z) { return z !== r && z.matches('.row[data-rid]') && !z.querySelector('.tm'); });
       rows.forEach(function (z) {
         var b = z.getBoundingClientRect();
@@ -3941,6 +3961,16 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       if (g.dx > 0) { var ck = r.querySelector('.ck'); if (ck) ck.click(); }
       else { var x = byId(g.id), t = document.createElement('button'); t.dataset.act = x && x.rep ? 'idelone' : 'idel'; t.dataset.id = g.id; t.dataset.d = g.d; t.hidden = true; document.body.appendChild(t); t.click(); t.remove(); }
       gsBlock = Date.now(); return;
+    }
+    if (g.mode === 'drag' && g.wd0 && r.closest('.wday') !== g.wd0) {
+      var wd2 = r.closest('.wday'), nb = wd2 && wd2.querySelector('.wnum'), nd = nb && nb.dataset.v, xx = byId(g.id);
+      Array.prototype.forEach.call(document.querySelectorAll('.wday.dropov'), function (z) { z.classList.remove('dropov'); });
+      gsReset(); gsBlock = Date.now();
+      if (xx && nd && /^\d{4}-\d\d-\d\d$/.test(nd)) {
+        if (xx.rep) { showToast('Une tâche qui se répète ne se déplace pas : modifie-la dans sa fiche.'); }
+        else { var od = xx.d; xx.d = nd; save(); showToast('Déplacée au ' + dayShort(nd), function () { xx.d = od; save(); }); }
+      }
+      render(); return;
     }
     if (g.mode === 'drag') {
       var ids = Array.prototype.filter.call(r.parentNode.children, function (z) { return z.matches('.row[data-rid]') && !z.querySelector('.tm'); }).map(function (z) { return z.dataset.rid.split('|')[0]; });
@@ -4737,6 +4767,73 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var d = el.dataset || {};
     if (d.grat !== undefined) { var t = todayISO(); S.grat = S.grat || {}; var g = S.grat[t] = S.grat[t] || ['', '', '']; g[+d.grat] = el.value.trim().slice(0, 120); save(); return true; }
     if (d.bdg) { (S.bdays || []).forEach(function (b) { if (b.id === d.bdg) b.gifts = el.value.trim().slice(0, 200); }); save(); return true; }
+    return false;
+  }
+  /* ---------- v49 : boîte à idées, modèles de projets, couleur des jours, hors ligne, corbeille, avis, visite guidée ---------- */
+  // boîte à idées (choses sans date)
+  function inboxBlock(t) {
+    var ib = S.inbox || []; if (!ib.length) return '';
+    return '<section class="blk"><div class="sh"><h3>Boîte à idées</h3><span class="cnt">' + ib.length + '</span></div><div class="list">' + ib.map(function (z) {
+      return '<div class="row ibrow"><span class="txt"><span>' + esc(z.text) + '</span></span><button class="btn sm" data-act="ibplan" data-id="' + z.id + '" data-v="' + t + '">Aujourd’hui</button><button class="btn sm ghost" data-act="ibplan" data-id="' + z.id + '" data-v="' + addDays(t, 1) + '">Demain</button><button class="x" data-act="ibdel" data-id="' + z.id + '" aria-label="Retirer ' + esc(z.text) + '">×</button></div>';
+    }).join('') + '</div></section>';
+  }
+  function inboxBtn() { return '<button type="button" class="btn ghost sm ibadd" data-act="ibadd">' + ic('box') + '<span>Mettre dans la boîte à idées (sans date)</span></button>'; }
+  // modèles de projets
+  var PTPL = [['Déménagement', '📦', ['Trier et donner', 'Réserver le camion', 'Faire les cartons', 'Changer d’adresse (poste, banque, CAF)', 'Résilier / transférer internet et énergie', 'État des lieux']], ['Voyage', '✈️', ['Réserver le transport', 'Réserver le logement', 'Vérifier passeport et papiers', 'Assurance voyage', 'Faire la valise', 'Préparer l’itinéraire']], ['Rentrée', '📚', ['Liste des fournitures', 'Acheter les fournitures', 'Inscriptions activités', 'Assurance scolaire', 'Préparer les vêtements']], ['Fête / anniversaire', '🎉', ['Choisir la date', 'Liste des invités', 'Envoyer les invitations', 'Commander le gâteau', 'Courses', 'Décoration']]];
+  function projTpl() { return '<div class="chips ptpl"><span class="sub">Modèles :</span>' + PTPL.map(function (p, i) { return '<button type="button" class="chip" data-act="ptpl" data-v="' + i + '">' + eico(p[1]) + esc(p[0]) + '</button>'; }).join('') + '</div>'; }
+  // couleur des jours
+  var DAYC = [['', 'Normal'], ['work', 'Travail'], ['rest', 'Repos'], ['vac', 'Vacances']];
+  function dayColSeg(d) { var v = (S.dayc || {})[d] || ''; return '<div class="f dcol"><p class="sub">Type de jour</p>' + '<div class="seg" role="group" aria-label="Type de jour">' + DAYC.map(function (o) { return '<button aria-pressed="' + (v === o[0]) + '" data-act="daycol" data-v="' + o[0] + '" data-d="' + d + '">' + o[1] + '</button>'; }).join('') + '</div></div>'; }
+  function dayCol(d) { return (S.dayc || {})[d] || ''; }
+  // hors ligne / synchronisation
+  function netBadge() {
+    if (!cloudOn || !auth) return '';
+    if (!navigator.onLine) return '<p class="netb off">' + ic('cloud') + '<span>Hors ligne : tes changements sont gardés et seront envoyés au retour d’internet.</span></p>';
+    if (sync && sync.st === 'err') return '<p class="netb off">' + ic('alert') + '<span>Synchronisation en attente, nouvel essai automatique.</span></p>';
+    return '';
+  }
+  window.addEventListener('online', function () { render(); }); window.addEventListener('offline', function () { render(); });
+  // corbeille 30 jours
+  function trashPut(x) { var lim = new Date(Date.now() - 30 * 864e5).toISOString(); S.trash = (S.trash || []).filter(function (z) { return z.at > lim; }); S.trash.unshift({ at: new Date().toISOString(), x: x }); S.trash = S.trash.slice(0, 100); }
+  function trashSheet() {
+    var tr = S.trash || [], h = '<h2>Corbeille</h2><p class="sub">Les tâches supprimées restent ici 30 jours.</p>';
+    if (!tr.length) return h + '<p class="empty card">La corbeille est vide.</p><button class="btn ghost" data-act="sclose">Fermer</button>';
+    return h + '<div class="list">' + tr.map(function (z, i) { return '<div class="row"><span class="txt"><span>' + esc(z.x.text) + '</span><small>Supprimée ' + esc(relDay(z.at.slice(0, 10)) || dayShort(z.at.slice(0, 10))) + '</small></span><button class="btn sm" data-act="trrest" data-v="' + i + '">Restaurer</button></div>'; }).join('') + '</div><button class="btn sm ghost" data-act="trempty">Vider la corbeille</button><button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  // avis
+  function reviewSheet() {
+    var r = sheet.r || 0;
+    return '<h2>Ton avis sur Cadence</h2><p class="sub">Ça m’aide énormément à améliorer l’appli.</p><div class="stars" role="group" aria-label="Note">' + [1, 2, 3, 4, 5].map(function (n) { return '<button class="star2' + (n <= r ? ' on' : '') + '" data-act="rvstar" data-v="' + n + '" aria-label="' + n + ' sur 5">' + ic('star') + '</button>'; }).join('') + '</div><textarea id="rv-txt" data-keep rows="4" maxlength="1500" placeholder="Ce que tu aimes, ce qui manque, ce qui ne marche pas…"></textarea><button class="btn primary big" data-act="rvsend">Envoyer mon avis</button><button class="btn ghost" data-act="sclose">Plus tard</button><p class="hint">Ton application d’e-mail s’ouvre avec le message prêt.</p>';
+  }
+  // visite guidée (une fois par appareil)
+  var TOUR = [['plus', 'Ajoute en un geste', 'Le bouton + : écris ou dicte « dentiste jeudi 15h ». Plusieurs choses d’un coup ? « Ranger avec l’IA ».'], ['camera', 'Prends en photo', 'Un agenda papier, un ticket, une convocation : Cadence en fait des tâches ou des dépenses.'], ['arrow', 'Glisse avec le doigt', 'Vers la droite : fait. Vers la gauche : supprimé. Appui long : déplacer.'], ['sparkle', 'Ton coach', 'Il fait le bilan de ta semaine et t’aide à organiser tes journées.'], ['users', 'À plusieurs', 'Ensemble : courses, tâches et défis partagés avec ta famille ou un ami.']];
+  function tourSheet() {
+    var i = sheet.i || 0, s = TOUR[i];
+    return '<div class="tour"><span class="tourh">' + ic(s[0]) + '</span><h2>' + esc(s[1]) + '</h2><p>' + esc(s[2]) + '</p><div class="steps" aria-hidden="true">' + TOUR.map(function (_, k) { return '<i' + (k === i ? ' class="on"' : '') + '></i>'; }).join('') + '</div><button class="btn primary big" data-act="tournext">' + (i < TOUR.length - 1 ? 'Suivant' : 'C’est parti') + '</button>' + (i < TOUR.length - 1 ? '<button class="btn ghost" data-act="tourend">Passer</button>' : '') + '</div>';
+  }
+  function tourMaybe() { try { if (localStorage.getItem('cadence.tour') === '1') return; } catch (e) { return; } if (S.profile.done && (!cloudOn || auth) && !sheet && tab === 'today' && !isLocked()) { sheet = { k: 'tour', i: 0 }; render(); } }
+  setTimeout(tourMaybe, 1800);
+  function tourEnd() { try { localStorage.setItem('cadence.tour', '1'); } catch (e) {} sheet = null; render(); }
+  function v49Click(a, b) {
+    var t = todayISO();
+    if (a === 'ibadd') { var q = ((document.getElementById('q-text') || {}).value || '').trim(); if (!q) { sheet.err = 'Écris ton idée d’abord.'; render(); return true; } S.inbox = (S.inbox || []).concat([{ id: uid(), text: q.slice(0, 200) }]); sheet = null; save(); showToast('Ajouté à la boîte à idées'); render(); return true; }
+    if (a === 'ibplan') { var z = (S.inbox || []).filter(function (y) { return y.id === b.dataset.id; })[0]; if (!z) return true; S.inbox = S.inbox.filter(function (y) { return y !== z; }); S.items.push({ id: uid(), d: b.dataset.v, text: z.text, time: '', done: false, cat: '', rep: '', rem: '' }); save(); showToast(b.dataset.v === t ? 'Planifiée aujourd’hui' : 'Planifiée demain'); render(); return true; }
+    if (a === 'ibdel') { S.inbox = (S.inbox || []).filter(function (y) { return y.id !== b.dataset.id; }); save(); render(); return true; }
+    if (a === 'ptpl') {
+      var p = PTPL[+b.dataset.v]; if (!p) return true; var pid = uid(), used = (S.projects || []).map(function (z2) { return z2.color; }), col = CATCOL.filter(function (c) { return used.indexOf(c) < 0; })[0] || CATCOL[0];
+      S.projects.push({ id: pid, name: p[0], emoji: p[1], color: col });
+      p[2].forEach(function (tx, k) { S.items.push({ id: uid(), d: addDays(t, k * 2), text: tx, time: '', done: false, cat: '', rep: '', rem: '', proj: pid }); });
+      save(); showToast('Projet « ' + p[0] + ' » créé avec ' + p[2].length + ' tâches (à adapter)'); sheet = { k: 'proj', id: pid }; render(); return true;
+    }
+    if (a === 'daycol') { S.dayc = S.dayc || {}; if (b.dataset.v) S.dayc[b.dataset.d] = b.dataset.v; else delete S.dayc[b.dataset.d]; Object.keys(S.dayc).forEach(function (d) { if (d < addDays(t, -120)) delete S.dayc[d]; }); save(); render(); return true; }
+    if (a === 'trash') { sheet = { k: 'trash' }; render(); return true; }
+    if (a === 'trrest') { var e = (S.trash || [])[+b.dataset.v]; if (!e) return true; S.trash.splice(+b.dataset.v, 1); if (!byId(e.x.id)) S.items.push(e.x); save(); showToast('Tâche restaurée'); render(); return true; }
+    if (a === 'trempty') { S.trash = []; save(); render(); return true; }
+    if (a === 'review') { sheet = { k: 'review', r: 0 }; render(); return true; }
+    if (a === 'rvstar') { sheet.r = +b.dataset.v; render(); return true; }
+    if (a === 'rvsend') { var tx2 = ((document.getElementById('rv-txt') || {}).value || '').trim(); location.href = 'mailto:' + CONTACT + '?subject=' + encodeURIComponent('Avis sur Cadence (' + (sheet.r || '?') + '/5)') + '&body=' + encodeURIComponent(tx2 + '\n\n— Cadence version ' + APP_VER); sheet = null; showToast('Merci pour ton avis !'); render(); return true; }
+    if (a === 'tournext') { if ((sheet.i || 0) < TOUR.length - 1) { sheet.i = (sheet.i || 0) + 1; render(); } else tourEnd(); return true; }
+    if (a === 'tourend') { tourEnd(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
