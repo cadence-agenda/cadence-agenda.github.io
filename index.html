@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Nr5PUXuJyAoNdR1sDzuGAxoUPqFeazG3ypdYmIdQ0+k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HKK0Pvl/PI1+wGM2QE5VFRNi5gRtYVaDaFQ7B90tYJ0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1125,10 +1125,10 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .wknav { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 10px; }
 .wknav span { font-weight: 600; }
 .wksum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-.wksum div { background: var(--card2, var(--card)); border-radius: 14px; padding: 10px; text-align: center; }
+.wksum div { background: var(--soft); border-radius: 14px; padding: 10px; text-align: center; }
 .wksum b { display: block; font-size: 18px; } .wksum small { color: var(--muted); }
 .wkl { display: grid; gap: 8px; margin-bottom: 12px; }
-.wkd { display: block; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; color: inherit; font: inherit; cursor: pointer; }
+.wkd { display: block; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; color: inherit; font: inherit; cursor: pointer; }
 .wkd.now { border-color: var(--accent); } .wkd.past { opacity: .75; }
 .wkdh { display: flex; justify-content: space-between; align-items: baseline; } .wkdh small { color: var(--accent); font-weight: 600; }
 .wkd ul { list-style: none; margin: 6px 0 0; padding: 0; } .wkd li { padding: 2px 0; } .wkd li.d { text-decoration: line-through; color: var(--muted); }
@@ -1154,10 +1154,10 @@ label.pulse { animation: pulse 1.2s ease 3; } @keyframes pulse { 50% { box-shado
 body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0px)); }
 .toast span { pointer-events: none; }
 /* v69 */
-.invb { display: flex; gap: 10px; align-items: flex-start; background: color-mix(in srgb, var(--accent) 10%, var(--card)); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius: 14px; padding: 10px 12px; margin: 0 0 14px; font-size: 15px; line-height: 1.4; }
+.invb { display: flex; gap: 10px; align-items: flex-start; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius: 14px; padding: 10px 12px; margin: 0 0 14px; font-size: 15px; line-height: 1.4; }
 .inst h1 { font-size: 26px; line-height: 1.15; }
 .why { list-style: none; margin: 12px 0 6px; padding: 0; display: grid; gap: 8px; }
-.why li { display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 14px; padding: 10px 12px; }
+.why li { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: 14px; padding: 10px 12px; }
 .why .whyi { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
 .why .whyi .ic { width: 20px; height: 20px; } .why b { display: block; font-size: 15px; } .why small { color: var(--muted); font-size: 13.5px; }
 .whyf { text-align: center; color: var(--muted); font-size: 13px; margin: 4px 0 18px; }
@@ -1165,6 +1165,16 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
 .jpaste { margin-top: 12px; } .jpaste form { margin-top: 8px; }
 .inst h1 { font-size: 23px; margin-bottom: 4px; } .why { gap: 6px; margin-top: 8px; } .why li { padding: 7px 10px; } .why .whyi { width: 32px; height: 32px; border-radius: 9px; } .why small { display: block; line-height: 1.3; } .whyf { margin-bottom: 12px; }
 .invb .ic { flex: none; width: 20px; height: 20px; color: var(--accent); margin-top: 1px; }
+/* v71 : démo guidée */
+#demo { position: fixed; inset: 0; z-index: 90; }
+#demo .dveil { position: absolute; inset: 0; background: rgba(10, 10, 25, .62); }
+#demo .dspot { position: fixed; border-radius: 16px; box-shadow: 0 0 0 200vmax rgba(10, 10, 25, .62); outline: 3px solid #fff; outline-offset: 0; transition: all .25s ease; pointer-events: none; }
+#demo .dbub { position: fixed; left: 50%; transform: translateX(-50%); width: min(calc(100% - 32px), 420px); background: var(--surface); color: var(--ink); border-radius: 18px; padding: 14px 16px 12px; box-shadow: 0 18px 40px rgba(0, 0, 0, .35); }
+#demo .dbub.dmid { top: 50%; transform: translate(-50%, -50%); text-align: center; }
+#demo .dtop { display: flex; justify-content: space-between; align-items: center; } #demo .dtop small { color: var(--muted); font-weight: 600; }
+#demo h3 { margin: 4px 0 6px; font-size: 19px; } #demo p { margin: 0 0 12px; line-height: 1.4; color: var(--muted); }
+#demo .btns { display: flex; gap: 8px; justify-content: flex-end; } #demo .dmid .btns { flex-direction: column; }
+#demo .dbig { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--accent); color: #fff; margin-bottom: 4px; } #demo .dbig .ic { width: 28px; height: 28px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1173,7 +1183,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
 <script>
 (function () {
   'use strict';
-  var APP_VER = 70;
+  var APP_VER = 71;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1589,9 +1599,9 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
   function viewProfile() {
     var p = S.profile, st = S.settings, h = '';
     h += '<section class="card">' + photoBlock() +
-      '<div class="cols"><label class="f">Prénom<input type="text" data-pf="first" value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label><label class="f">Nom<input type="text" data-pf="last" value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
-      '<label class="f">Surnom (utilisé pour t’accueillir)<input type="text" data-pf="nick" value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Facultatif"></label>' +
-      '<label class="f">Ta devise (affichée sur l’agenda)<input type="text" data-pf="motto" value="' + esc(p.motto || '') + '" maxlength="120" placeholder="Ex. Un pas après l’autre"></label></section>';
+      '<div class="cols"><label class="f">Prénom<input type="text" data-nomic data-pf="first" value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label><label class="f">Nom<input type="text" data-nomic data-pf="last" value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
+      '<label class="f">Surnom (utilisé pour t’accueillir)<input type="text" data-nomic data-pf="nick" value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Facultatif"></label>' +
+      '<label class="f">Ta devise (affichée sur l’agenda)<input type="text" data-nomic data-pf="motto" value="' + esc(p.motto || '') + '" maxlength="120" placeholder="Ex. Un pas après l’autre"></label></section>';
     h += notifCard() + assistCard() + lockCard() + connCard();
     h += '<section class="card"><h3>Apparence</h3><div class="f"><p class="sub">Couleur</p>' + swatches() + '</div>' +
       '<div class="f"><p class="sub">Thème</p>' + segOpt('theme', st.theme, [['auto', 'Automatique'], ['light', 'Clair'], ['dark', 'Sombre']], 'Thème') + '</div>' +
@@ -1720,6 +1730,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     document.body.classList.toggle('gate', !!(cloudOn && !auth) || isLocked());
     if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
     try { afterRender(); timerLoop(); } catch (err) { logErr('après affichage', err); }
+    if (DEMO.on || document.getElementById('demo')) requestAnimationFrame(function () { try { demoPlace(); } catch (err) { logErr('demo', err); } });
   }
 
   /* ---------- actions ---------- */
@@ -1746,6 +1757,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v71Click(a)) return;
     if (v69Click(a)) return;
     if (v68Click(a, b)) return;
     if (v67Click(a, b)) return;
@@ -2592,6 +2604,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     obHabs = []; applyUses(); S.settings.news20 = '1'; S.settings.planSeen = t;
     S.profile.done = true; save(); tab = 'today'; view = (['d', 'w', 'm', 'y'].indexOf(S.settings.defView) >= 0 ? S.settings.defView : 'w'); cur = t; obStep = 0; render(); window.scrollTo(0, 0);
     setTimeout(function () { slJoinPending(); pushSync(true); if (cloudOn && auth) slFetch(true); }, 50);
+    setTimeout(function () { if (!demoDone() && !sheet && !joinPending()) demoStart(); }, 700);
   }
   /* --- dictée vocale --- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null, recog = null, recogT = '';
@@ -4998,7 +5011,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     var i = sheet.i || 0, s = TOUR[i];
     return '<div class="tour"><span class="tourh">' + ic(s[0]) + '</span><h2>' + esc(s[1]) + '</h2><p>' + esc(s[2]) + '</p><div class="steps" aria-hidden="true">' + TOUR.map(function (_, k) { return '<i' + (k === i ? ' class="on"' : '') + '></i>'; }).join('') + '</div><button class="btn primary big" data-act="tournext">' + (i < TOUR.length - 1 ? 'Suivant' : 'C’est parti') + '</button>' + (i < TOUR.length - 1 ? '<button class="btn ghost" data-act="tourend">Passer</button>' : '') + '</div>';
   }
-  function tourMaybe() { try { if (localStorage.getItem('cadence.tour') === '1') return; } catch (e) { return; } if (S.profile.done && (!cloudOn || auth) && !sheet && tab === 'today' && !isLocked()) { sheet = { k: 'tour', i: 0 }; render(); } }
+  function tourMaybe() { try { if (localStorage.getItem('cadence.tour') === '1') return; } catch (e) { return; } if (S.profile.done && (!cloudOn || auth) && !sheet && tab === 'today' && !isLocked()) demoStart(); }
   setTimeout(tourMaybe, 1800);
   function tourEnd() { try { localStorage.setItem('cadence.tour', '1'); } catch (e) {} sheet = null; render(); }
   function v49Click(a, b) {
@@ -5735,7 +5748,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     if (GUEST.st === 'bad') return h + '<h1>Lien plus valable</h1><p class="sub">Cette liste a été supprimée ou le lien a changé. Demande un nouveau lien à la personne qui te l’a envoyé.</p><button class="btn" data-act="gskip">Découvrir Cadence</button></main>';
     var l = GUEST.l, its = l.items || [], left = its.filter(function (i) { return !i.done; }).length;
     h += '<h1>' + eico(l.emoji || '📝') + ' ' + esc(l.name) + '</h1><p class="sub">Liste partagée avec toi. Tu peux cocher et ajouter, sans créer de compte. ' + (its.length ? plural(left, 'chose', 'choses') + ' à faire.' : '') + '</p>';
-    h += '<label class="f">Ton prénom (pour que les autres sachent qui a coché)<input type="text" id="g-name" data-keep maxlength="30" value="' + esc(gName()) + '" placeholder="Ex. Marie"></label>';
+    h += '<label class="f">Ton prénom (pour que les autres sachent qui a coché)<input type="text" id="g-name" data-keep data-nomic maxlength="30" value="' + esc(gName()) + '" placeholder="Ex. Marie"></label>';
     h += '<div class="list">' + its.map(function (i) { return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.text) + '" data-act="gltog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.text) + '</span>' + (i.done && i.by ? '<small>par ' + esc(i.by) + '</small>' : '') + '</div></div>'; }).join('') + '</div>';
     h += '<form id="gadd" class="add" autocomplete="off"><input type="text" id="g-new" maxlength="200" placeholder="Ajouter à la liste" aria-label="Ajouter à la liste"><button type="submit" class="addplus" aria-label="Ajouter"' + (GUEST.busy ? ' disabled' : '') + '>+</button></form>';
     h += '<button class="lnk" data-act="greload">Actualiser</button>';
@@ -5832,7 +5845,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     try { navigator.clipboard.writeText(msg + ' ' + url).then(function () { showToast('Message copié : colle-le dans WhatsApp, SMS…'); render(); }, function () { window.prompt('Copie ce message :', msg + ' ' + url); }); } catch (e) { window.prompt('Copie ce message :', msg + ' ' + url); }
   }
   function inviteCard() {
-    return '<div class="card invc"><h3>Faire découvrir Cadence</h3><p class="sub">Envoie Cadence à un proche. En ouvrant ton lien, il verra que c’est toi qui l’invites, et l’appli lui expliquera comment l’installer.</p><div class="btns"><button class="btn primary" data-act="shareapp">' + ic('users') + '<span>Envoyer l’appli à quelqu’un</span></button></div></div>';
+    return '<div class="card invc"><h3>Faire découvrir Cadence</h3><p class="sub">Envoie Cadence à un proche. En ouvrant ton lien, il verra que c’est toi qui l’invites, et l’appli lui expliquera comment l’installer.</p><div class="btns"><button class="btn primary" data-act="shareapp">' + ic('users') + '<span>Envoyer l’appli à quelqu’un</span></button><button class="btn ghost" data-act="demostart">Revoir la démo</button></div></div>';
   }
   // rejoindre une liste en collant le lien (utile sur iPhone : l’appli installée ne voit pas le lien ouvert dans Safari)
   function joinPasteForm() { return auth ? '<div class="jpaste"><p class="sub">J’ai reçu un lien d’invitation</p><form id="jpform" class="add" autocomplete="off"><input type="url" id="jp-url" data-keep data-nomic placeholder="Colle le lien ici" aria-label="Lien d’invitation"><button type="submit" class="btn sm primary">Rejoindre</button></form></div>' : ''; }
@@ -5855,6 +5868,47 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     try { navigator.clipboard.writeText(location.origin + location.pathname + '?join=' + j).then(function () { try { localStorage.setItem('cadence.joincp', '1'); } catch (e) {} render(); }, function () {}); } catch (e) {}
   }
   function iosJoinNote() { var c = ''; try { c = localStorage.getItem('cadence.joincp') || ''; } catch (e) {} return c && instPlat() === 'ios' ? '<p class="invb">' + ic('clip') + '<span>Ton lien d’invitation est copié. Une fois Cadence installée et ton compte créé : <b>Notes → Listes → J’ai reçu un lien d’invitation</b>, puis colle-le.</span></p>' : ''; }
+  /* ---------- v71 : démo guidée juste après la création du compte ---------- */
+  var DEMO = { on: false, i: 0 };
+  var DSTEPS = [
+    ['today', '.startc, .hero2', 'Ta journée', 'Chaque jour, tu retrouves ici ce que tu as à faire et ta progression. Le matin, le coach te dit l’essentiel.'],
+    ['today', '.fab', 'Ajouter en un geste', 'Touche + et écris ou dicte « dentiste jeudi 15h » : Cadence comprend le jour et l’heure. Tu peux aussi prendre en photo un agenda papier.'],
+    ['today', '.daytools', 'Tes outils du jour', 'Planifie ta journée, laisse l’IA l’organiser pour toi, ou pose une question au coach.'],
+    ['agenda', 'nav [data-v="agenda"]', 'Ton agenda', 'Jour, semaine, mois ou année. Appuie longtemps sur une tâche pour la déplacer.'],
+    ['space', 'nav [data-v="space"]', 'Ensemble', 'Crée un espace avec ta famille ou tes colocs : agenda, tâches, courses et dépenses partagés, en direct.'],
+    ['notes', 'nav [data-v="notes"]', 'Notes et listes', 'Tes notes, notes vocales, listes de courses, projets et recettes, au même endroit.'],
+    ['budget', 'nav [data-v="budget"]', 'Ton budget', 'Note une dépense en 2 secondes, fixe des plafonds et suis ton épargne.'],
+    ['goals', 'nav [data-v="goals"]', 'Objectifs et habitudes', 'Fixe-toi des objectifs et coche tes habitudes : Cadence te montre tes progrès.'],
+    ['today', '.avatar', 'Ton profil', 'Tes réglages, tes rappels, Google Agenda… et le bouton pour inviter un proche.']
+  ];
+  function demoDone() { try { return localStorage.getItem('cadence.tour') === '1'; } catch (e) { return true; } }
+  function demoStart() { DEMO.on = true; DEMO.i = 0; sheet = null; tab = DSTEPS[0][0]; render(); window.scrollTo(0, 0); }
+  function demoEnd(goAdd) { DEMO.on = false; try { localStorage.setItem('cadence.tour', '1'); } catch (e) {} var o = document.getElementById('demo'); if (o) o.remove(); tab = 'today'; sheet = goAdd ? { k: 'quick', err: '' } : null; render(); window.scrollTo(0, 0); if (goAdd) focusAdd('#q-text'); }
+  function demoPlace() {
+    var o = document.getElementById('demo');
+    if (!DEMO.on || sheet || !S.profile.done) { if (o) o.remove(); return; }
+    if (!o) { o = document.createElement('div'); o.id = 'demo'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', 'Découverte de Cadence'); document.body.appendChild(o); }
+    var n = DSTEPS.length, last = DEMO.i >= n;
+    if (last) {
+      o.innerHTML = '<div class="dveil"></div><div class="dbub dmid"><span class="dbig">' + ic('check') + '</span><h3>Tu es prêt !</h3><p>Commence par vider ta tête : ajoute tout ce que tu as à faire, Cadence range pour toi.</p><div class="btns"><button class="btn primary" data-act="demoadd">Ajouter ma première tâche</button><button class="btn ghost" data-act="demoend">Plus tard</button></div></div>';
+      return;
+    }
+    var s = DSTEPS[DEMO.i], el = null; s[1].split(', ').some(function (q) { el = document.querySelector(q); return !!el; });
+    var bub = '<div class="dbub"><div class="dtop"><small>' + (DEMO.i + 1) + ' / ' + n + '</small><button class="lnk" data-act="demoend">Passer</button></div><h3>' + esc(s[2]) + '</h3><p>' + esc(s[3]) + '</p><div class="btns">' + (DEMO.i ? '<button class="btn ghost sm" data-act="demoback">Retour</button>' : '') + '<button class="btn primary sm" data-act="demonext">' + (DEMO.i === n - 1 ? 'Terminer' : 'Suivant') + '</button></div></div>';
+    if (!el) { o.innerHTML = '<div class="dveil"></div>' + bub.replace('class="dbub"', 'class="dbub dmid"'); return; }
+    if (!el.closest('nav') && !el.classList.contains('fab') && !el.classList.contains('avatar')) { var r0 = el.getBoundingClientRect(); if (r0.top < 70 || r0.bottom > window.innerHeight - 260) window.scrollTo(0, Math.max(0, window.scrollY + r0.top - 90)); }
+    var r = el.getBoundingClientRect(), pad = 6, top = r.top - pad, h = r.height + pad * 2, below = r.top + r.height / 2 < window.innerHeight / 2;
+    o.innerHTML = '<div class="dspot" style="left:' + (r.left - pad) + 'px;top:' + top + 'px;width:' + (r.width + pad * 2) + 'px;height:' + h + 'px"></div>' + bub.replace('class="dbub"', 'class="dbub" style="' + (below ? 'top:' + Math.min(top + h + 12, window.innerHeight - 250) + 'px' : 'bottom:' + Math.max(12, window.innerHeight - top + 12) + 'px') + '"');
+  }
+  window.addEventListener('resize', function () { if (DEMO.on) demoPlace(); });
+  function v71Click(a) {
+    if (a === 'demonext') { DEMO.i++; if (DEMO.i < DSTEPS.length) tab = DSTEPS[DEMO.i][0]; else tab = 'today'; render(); if (tab !== 'today' || DEMO.i < 3) window.scrollTo(0, 0); return true; }
+    if (a === 'demoback') { DEMO.i = Math.max(0, DEMO.i - 1); tab = DSTEPS[DEMO.i][0]; render(); window.scrollTo(0, 0); return true; }
+    if (a === 'demoend') { demoEnd(false); return true; }
+    if (a === 'demoadd') { demoEnd(true); return true; }
+    if (a === 'demostart') { demoStart(); return true; }
+    return false;
+  }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
