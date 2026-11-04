@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ib519daa8E4pftkN8qQISI+rtXy8tBiWpg3OC025NGk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hlQYEQy4uY8oaug504FO+st5ZOzI6TFYaNWnnUY8dpU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -906,6 +906,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .gchelp ol { margin: 8px 0 0 18px; padding: 0; display: grid; gap: 4px; }
 .gcsep { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line, rgba(127,127,127,.2)); }
 .gclink { width: 100%; font-size: 12px; margin: 6px 0; }
+.btn.magic { width: 100%; margin-top: 8px; gap: 8px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -914,7 +915,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 33;
+  var APP_VER = 34;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1930,7 +1931,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quickSheet() {
     return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><span class="pw"><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done" value="' + esc(sheet.pre || '') + '">' + micBtn('#q-text') + '</span></label>' +
       '<div id="q-prev">' + nlPreview(parseNL(sheet.pre || '', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
-      '<button type="submit" class="btn primary big">Ajouter</button></form>' + scanBtn() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement.</p>';
+      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + scanBtn() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
   }
   function quickSubmit() {
     var raw = (document.getElementById('q-text') || {}).value || '', p = parseNL(raw, quickBase());
@@ -3489,10 +3490,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function scanStart(file) {
     if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser le scan.'); render(); return; }
-    shrinkImg(file, 1400, 0.8, function (url) {
-      sheet = { k: 'scan', st: 'busy', items: [] }; render();
+    shrinkImg(file, 1400, 0.8, function (url) { scanRun({ image: url.split(',')[1], mime: 'image/jpeg' }, false); });
+  }
+  function scanRun(pl, txt) {
+      sheet = { k: 'scan', st: 'busy', items: [], txt: txt }; render();
       var t = todayISO();
-      authed('POST', '/functions/v1/cadence-scan', { image: url.split(',')[1], mime: 'image/jpeg', today: t, weekday: JOURS[dow(t) - 1], cats: S.cats.map(function (c) { return c.name; }) }).then(function (r) {
+      pl.today = t; pl.weekday = JOURS[dow(t) - 1]; pl.cats = S.cats.map(function (c) { return c.name; });
+      authed('POST', '/functions/v1/cadence-scan', pl).then(function (r) {
         if (!sheet || sheet.k !== 'scan') return;
         var its = (r && Array.isArray(r.items) ? r.items : []).map(function (x) {
           var c = S.cats.filter(function (z) { return z.name.toLowerCase() === String(x.cat || '').toLowerCase(); })[0];
@@ -3504,13 +3508,14 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         var m = String((er && er.message) || '');
         sheet.st = 'err';
         sheet.err = er && er.net ? 'Pas de connexion internet.' : /nokey/.test(m) || (er && er.status === 404) ? 'Le scan n’est pas encore activé sur le serveur.' : er && er.status === 429 ? 'Limite gratuite atteinte pour aujourd’hui. Réessaie demain.' : /busy/.test(m) ? 'Le service de lecture de Google est surchargé. Réessaie dans une minute.' : 'La photo n’a pas pu être lue. Réessaie avec une photo nette, bien éclairée et prise de face.';
+        if (txt) sheet.err = sheet.err.replace(/La photo n’a pas pu être lue\..*/, 'Le texte n’a pas pu être rangé. Réessaie.');
         render();
       });
-    });
   }
+  function magicBtn() { return '<button type="button" class="btn magic" data-act="magic">' + ic('sparkle') + '<span>Ranger avec l’IA (plusieurs choses d’un coup)</span></button>'; }
   function scanSheet() {
-    var s = sheet, h = '<h2>Scanner un agenda papier</h2>';
-    if (s.st === 'busy') return h + '<p class="scanwait">' + ic('sparkle') + '<span>Lecture de la photo en cours… Cela prend quelques secondes.</span></p>';
+    var s = sheet, h = '<h2>' + (s.txt ? 'Saisie magique' : 'Scanner un agenda papier') + '</h2>';
+    if (s.st === 'busy') return h + '<p class="scanwait">' + ic('sparkle') + '<span>' + (s.txt ? 'L’IA range ton texte…' : 'Lecture de la photo en cours…') + ' Cela prend quelques secondes.</span></p>';
     if (s.st === 'err') return h + '<p class="err" role="alert">' + esc(s.err) + '</p><div class="btns">' + scanBtn() + '<button class="btn ghost" data-act="sclose">Fermer</button></div>';
     if (!s.items.length) return h + '<p class="sub">Aucune tâche trouvée sur cette photo. Essaie avec une photo plus nette, prise de face.</p><div class="btns">' + scanBtn() + '<button class="btn ghost" data-act="sclose">Fermer</button></div>';
     var n = s.items.filter(function (x) { return x.on; }).length;
@@ -3530,12 +3535,18 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   document.addEventListener('input', function (e) { scanEdit(e.target); }, true);
   function v31Click(a, b) {
+    if (a === 'magic') {
+      var q = ((document.getElementById('q-text') || {}).value || '').trim();
+      if (!q) { sheet.err = 'Écris ou dicte d’abord ce que tu dois faire, par exemple : « dentiste jeudi 15h, appeler maman demain, courses samedi ».'; render(); return true; }
+      if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return true; }
+      scanRun({ text: q.slice(0, 2000) }, true); return true;
+    }
     if (a === 'scantog') { var x = sheet && sheet.items[+b.dataset.v]; if (x) { x.on = !x.on; render(); } return true; }
     if (a === 'scanadd') {
-      var its = (sheet.items || []).filter(function (z) { return z.on && z.text.trim(); }), first = '';
+      var wasTxt = !!sheet.txt, its = (sheet.items || []).filter(function (z) { return z.on && z.text.trim(); }), first = '';
       its.forEach(function (z) { var it = { id: uid(), d: /^\d{4}-\d\d-\d\d$/.test(z.d) ? z.d : todayISO(), text: z.text.trim().slice(0, 200), time: /^\d\d:\d\d$/.test(z.t) ? z.t : '', done: false, cat: z.cat || '', rep: '', rem: '' }; S.items.push(it); if (!first || it.d < first) first = it.d; });
       sheet = null; save(); uiSound('pop');
-      showToast(plural(its.length, 'tâche ajoutée', 'tâches ajoutées') + ' depuis la photo');
+      showToast(plural(its.length, 'tâche ajoutée', 'tâches ajoutées') + (wasTxt ? '' : ' depuis la photo'));
       if (first) { tab = 'agenda'; cur = first; }
       render(); window.scrollTo(0, 0); return true;
     }
