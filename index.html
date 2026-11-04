@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ahF3uz2cQCHtvrS74USQicF7Bus2XK9wY11Sjcb/mS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-n5JRzfH9YHfWG51mcGTkbLd/R9vRHGD6961P2Abq/J0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -959,6 +959,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   body.printwk { background: #fff !important; color: #000 !important; }
   body.printwk .wday { break-inside: avoid; }
 }
+/* v40 : notifications */
+.nmrow { display: flex; align-items: center; gap: 10px; }
+.nmrow .cdot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+.nmrow select { max-width: 50%; }
+.nhrow .txt { text-align: left; }
+.nhrow .miss { color: var(--bad); font-weight: 600; }
+.lateropts .row { width: 100%; justify-content: space-between; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -967,7 +974,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 39;
+  var APP_VER = 40;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1458,8 +1465,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { focus: 'Mode Focus', routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1525,6 +1532,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v40Click(a, b)) return;
     if (v39Click(a, b)) return;
     if (v38Click(a, b)) return;
     if (v37Click(a)) return;
@@ -1648,7 +1656,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       var x;
       if (sheet.k === 'add') { x = addItem(dt, tx, tm); showToast('Tâche ajoutée pour ' + (relDay(dt) ? relDay(dt).toLowerCase() : dayLong(dt))); }
       else { x = byId(sheet.id); if (x) { x.text = tx.trim().slice(0, 200); x.d = dt; x.time = /^\d\d:\d\d$/.test(tm) ? tm : ''; } }
-      if (x) { var gv = function (s) { return (document.getElementById(s) || {}).value || ''; }; x.dur = gv('s-dur'); x.proj = gv('s-proj'); x.loc = gv('s-loc').trim().slice(0, 160); x.rem2 = gv('s-rem2'); if (x.rem2 !== '' && !x.time) x.rem2 = ''; if (sheet.photo !== undefined) x.photo = sheet.photo; if (sheet.k === 'add' && sheet.subs) x.subs = sheet.subs; }
+      if (x) { var gv = function (s) { return (document.getElementById(s) || {}).value || ''; }; x.dur = gv('s-dur'); x.proj = gv('s-proj'); x.loc = gv('s-loc').trim().slice(0, 160); x.trav = /^\d+$/.test(gv('s-trav')) ? gv('s-trav') : ''; x.rem2 = gv('s-rem2'); if (x.rem2 !== '' && !x.time) x.rem2 = ''; if (sheet.photo !== undefined) x.photo = sheet.photo; if (sheet.k === 'add' && sheet.subs) x.subs = sheet.subs; }
       if (x) { x.cat = sheet.cat || ''; x.prio = !!sheet.prio; x.rem = rmv; if (rp !== (x.rep || '')) { x.rep = rp; if (rp) { x.doneOn = x.done ? [x.d] : []; x.skip = []; delete x.done; } else { x.done = (x.doneOn || []).indexOf(x.d) >= 0; delete x.doneOn; delete x.skip; } } save(); }
       sheet = null; render(); return;
     }
@@ -1675,6 +1683,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v40Change(el)) return;
     if (v38Change(el)) return;
     if (v33Change(el)) return;
     if (v31Change(el)) return;
@@ -2088,7 +2097,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'carryall') { var t = todayISO(); overdue().forEach(function (z) { z.d = t; }); save(); anim = 'fade'; showToast('Tâches reprises aujourd’hui'); render(); return true; }
     if (a === 'carryno') { S.settings.carryDismiss = todayISO(); save(); render(); return true; }
     if (a === 'startfocus') { startFocus(id, b.dataset.d); return true; }
-    if (a === 'htog') { h = (S.habits || []).filter(function (z) { return z.id === id; })[0]; if (!h) return true; h.log = h.log || {}; var d = b.dataset.d; if (h.log[d]) delete h.log[d]; else { h.log[d] = 1; haptic(); } uiSound(h.log[d] ? 'tick' : 'untick'); save(); render(); return true; }
+    if (a === 'htog') { h = (S.habits || []).filter(function (z) { return z.id === id; })[0]; if (!h) return true; h.log = h.log || {}; var d = b.dataset.d; h.logT = h.logT || {}; if (h.log[d]) { delete h.log[d]; delete h.logT[d]; } else { h.log[d] = 1; if (d === todayISO()) h.logT[d] = nowHM(); haptic(); } uiSound(h.log[d] ? 'tick' : 'untick'); save(); render(); return true; }
     if (a === 'hdel') { if (!arm('hab:' + id)) return true; S.habits = (S.habits || []).filter(function (z) { return z.id !== id; }); save(); render(); return true; }
     if (a === 'rvlater') { S.settings.reviewLater = todayISO(); save(); render(); return true; }
     if (a === 'postpone') { x = byId(id); if (x) { sheet = null; postpone(x, b.dataset.d || x.d); render(); } return true; }
@@ -2615,7 +2624,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return '<h2>Habitude</h2><form id="hform" autocomplete="off"><label class="f">Nom<input type="text" id="h-name" data-keep maxlength="40" value="' + esc(x.name) + '"></label>' +
       '<div class="f"><p class="sub">Icône</p><div class="chips">' + HEMO.concat(['📵', '🦷', '🌱', '💊', '🚶']).filter(function (e, i, a) { return a.indexOf(e) === i; }).map(function (e) { return '<button type="button" class="chip emo" aria-pressed="' + (sheet.emoji === e) + '" data-act="hemo" data-v="' + e + '" aria-label="Icône">' + eico(e) + '</button>'; }).join('') + '</div></div>' +
       '<div class="f"><p class="sub">Quels jours ? (aucun choisi = tous les jours)</p><div class="chips">' + [1, 2, 3, 4, 5, 6, 7].map(function (k) { return '<button type="button" class="chip" aria-pressed="' + (sheet.days.indexOf(k) >= 0) + '" data-act="hday" data-v="' + k + '">' + JC[k - 1] + '</button>'; }).join('') + '</div></div>' +
-      '<label class="f">Rappel (facultatif)<input type="time" id="h-rem" data-keep value="' + esc(x.rem || '') + '"></label><p class="hint">Le rappel arrive seulement les jours choisis, si l’habitude n’est pas encore cochée.</p>' +
+      '<label class="f">Rappel (facultatif)<input type="time" id="h-rem" data-keep value="' + esc(x.rem || '') + '"></label><label class="f">Heure du rappel<select id="h-remm" data-keep><option value=""' + (x.remMode !== 'auto' ? ' selected' : '') + '>Toujours à cette heure</option><option value="auto"' + (x.remMode === 'auto' ? ' selected' : '') + '>À l’heure où je la fais d’habitude</option></select></label><p class="hint">Le rappel arrive seulement les jours choisis, si l’habitude n’est pas encore cochée.</p>' +
       '<button type="submit" class="btn primary big">Enregistrer</button><div class="btns"><button type="button" class="btn ' + (armKey === 'hab:' + x.id ? 'armed' : 'danger') + '" data-act="hdel" data-id="' + x.id + '">' + (armKey === 'hab:' + x.id ? 'Confirmer la suppression' : 'Supprimer') + '</button><button type="button" class="btn ghost" data-act="sclose">Fermer</button></div></form>';
   }
 
@@ -2779,21 +2788,23 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       });
       rows = rows.concat(gcPushRows(day, t, now, tz));
       if (s.nHab !== false) (S.habits || []).forEach(function (h) {
-        if (!h.rem || !habOn(h, day) || (h.log || {})[day]) return;
-        var at = atOf(day, h.rem).getTime(); if (at <= now) return;
+        var hrt = habRemT(h);
+        if (!hrt || !habOn(h, day) || (h.log || {})[day]) return;
+        var at = atOf(day, hrt).getTime(); if (at <= now) return;
         var hs = habStreak(h);
         rows.push({ at: new Date(at).toISOString(), p: { title: h.name, body: 'Habitude du jour' + (hs ? ' · série de ' + hs + ' jour' + (hs > 1 ? 's' : '') : ''), tag: 'hab-' + h.id + '-' + day, url: './?tab=today', actions: true }, ref: { k: 'hab', id: h.id, d: day, tz: tz } });
       });
       if (s.nEve !== false) {
-        var left = its.filter(function (x) { return !x.done; });
+        var left = its.filter(function (x) { return !x.done; }), tomo = itemsOn(addDays(day, 1));
         var at2 = atOf(day, s.eveHour || '21:00').getTime();
-        if (left.length && at2 > now) rows.push({ at: new Date(at2).toISOString(), p: { title: plural(left.length, 'tâche pas encore faite', 'tâches pas encore faites'), body: left.slice(0, 3).map(function (x) { return x.text; }).join(', ') + (left.length > 3 ? '…' : '') + '', tag: 'eve-' + day, url: './?tab=today' }, ref: { k: 'eve', d: day } });
+        if ((left.length || tomo.length) && at2 > now) rows.push({ at: new Date(at2).toISOString(), p: { title: 'Prépare demain', body: (tomo.length ? 'Demain : ' + tomo.slice(0, 3).map(function (x) { return (x.time ? x.time + ' ' : '') + x.text; }).join(', ') + (tomo.length > 3 ? '…' : '') : 'Rien de prévu demain') + (left.length ? ' · ' + plural(left.length, 'tâche pas faite', 'tâches pas faites') + ' aujourd’hui' : ''), tag: 'eve-' + day, url: './?tab=today' }, ref: { k: 'eve', d: day } });
       }
       if (s.nBday !== false) bdOn(day).forEach(function (b) {
         var at3 = atOf(day, '09:00').getTime(); if (at3 <= now) return;
         rows.push({ at: new Date(at3).toISOString(), p: { title: 'Anniversaire de ' + b.name, body: (b.y ? b.name + ' fête ses ' + (+day.slice(0, 4) - b.y) + ' ans aujourd’hui. ' : 'Aujourd’hui. '), tag: 'bd-' + b.id + '-' + day, url: './?tab=today' }, ref: { k: 'bd', d: day } });
       });
     }
+    rows = nxExtra(rows, t, now, tz);
     rows.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
     return rows.slice(0, 250);
   }
@@ -2820,12 +2831,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (st === 'unsupported') h += '<p class="sub">Les notifications ne sont pas disponibles ici. Sur Android, installe Cadence sur l’écran d’accueil (menu ⋮ du navigateur, puis « Ajouter à l’écran d’accueil » ou « Installer l’application »), ouvre-la depuis l’icône, puis reviens ici.</p>';
     else if (st === 'denied') h += '<p class="err">Les notifications sont bloquées pour Cadence. Autorise-les dans les réglages du navigateur (Paramètres des sites, Notifications), puis reviens ici.</p>';
     else if (st === 'on') h += '<p class="okmsg">Activées sur cet appareil, même quand l’appli est fermée.</p>' + (pushSrv === 'notready' ? '<p class="err">Le serveur de notifications n’est pas encore activé : elles arriveront dès qu’il le sera.</p>' : '');
-    else h += '<p class="sub">Reçois tes rappels même quand Cadence est fermée, avec les boutons « Fait » et « Dans 10 min ».</p>';
+    else h += '<p class="sub">Reçois tes rappels même quand Cadence est fermée, avec les boutons « Fait » et « Reporter ».</p>';
     if (st === 'off') h += '<button class="btn primary" data-act="pushon"' + (pushBusy ? ' disabled' : '') + '>' + (pushBusy ? 'Un instant…' : 'Activer les notifications') + '</button>';
     if (pushMsg) h += '<p class="sub" role="status">' + esc(pushMsg) + '</p>';
-    h += sw2('ntask', s.nTask !== false, 'Rappels des tâches') + sw2('nhab', s.nHab !== false, 'Rappels des habitudes') + sw2('neve', s.nEve !== false, 'Tâches oubliées, le soir');
-    if (s.nEve !== false) h += '<label class="f">Heure du rappel du soir<select id="eve-h">' + ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30'].map(function (x) { return '<option' + ((s.eveHour || '21:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
+    h += sw2('ntask', s.nTask !== false, 'Rappels des tâches') + sw2('nhab', s.nHab !== false, 'Rappels des habitudes') + sw2('neve', s.nEve !== false, 'Prépare demain, le soir');
+    if (s.nEve !== false) h += '<label class="f">Heure de « Prépare demain »<select id="eve-h">' + ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30'].map(function (x) { return '<option' + ((s.eveHour || '21:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
     h += sw2('nbday', s.nBday !== false, 'Anniversaires (le jour même à 9 h)');
+    h += nxCard();
     h += '<div class="f"><p class="sub">Son des rappels quand l’appli est ouverte</p>' + segOpt('remtone', s.remTone || s.tone || 'cloche', TONES, 'Son des rappels') + '</div>';
     h += '<p class="hint">Appli fermée, c’est le son de notification de ton téléphone qui est utilisé (réglable dans les paramètres Android de l’appli).</p>';
     if (st === 'on') h += '<div class="btns"><button class="btn sm" data-act="pushtest">Envoyer une notification test</button><button class="btn sm ghost" data-act="pushoff">Désactiver</button></div>';
@@ -2858,6 +2870,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += '<label class="f">Projet<select id="s-proj" data-keep><option value="">Aucun</option>' + (S.projects || []).map(function (p) { return '<option value="' + p.id + '"' + (pv === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>'; }).join('') + '</select></label>';
     h += '<label class="f">Deuxième rappel<select id="s-rem2" data-keep>' + ['', '0', '5', '10', '15', '30', '60', '1440'].map(function (k) { return '<option value="' + k + '"' + (k === (x ? String(x.rem2 || '') : '') ? ' selected' : '') + '>' + REML[k] + '</option>'; }).join('') + '</select></label>';
     h += '<label class="f">Lieu ou adresse<input type="text" id="s-loc" data-keep maxlength="160" value="' + esc(loc) + '" placeholder="Ex. 12 rue de la Paix, Paris"></label>';
+    var trv = String((sheet.k === 'edit' && byId(sheet.id) && byId(sheet.id).trav) || '');
+    h += '<label class="f">Temps de trajet (rappel « Il est temps de partir »)<select id="s-trav" data-keep>' + [['', 'Pas de rappel de départ'], ['10', '10 min'], ['15', '15 min'], ['20', '20 min'], ['30', '30 min'], ['45', '45 min'], ['60', '1 h'], ['90', '1 h 30'], ['120', '2 h']].map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === trv ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
     if (loc) h += '<a class="btn sm" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(loc) + '" target="_blank" rel="noopener">Ouvrir l’itinéraire</a>';
     h += '<div class="f"><p class="sub">Photo ou document</p>' + (ph ? '<img class="sph" src="' + esc(ph) + '" alt="Photo jointe"><div class="btns"><label class="btn sm" for="s-photo">Changer<input type="file" id="s-photo" accept="image/*" hidden></label><button type="button" class="btn sm ghost" data-act="sphotodel">Retirer</button></div>' : '<label class="btn sm" for="s-photo">Joindre une photo<input type="file" id="s-photo" accept="image/*" hidden></label>') + '</div>';
     return h + '</div></details>';
@@ -2936,7 +2950,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (id === 'neform') { var n = noteById(sheet.id); if (n) { var tx = val('ne-text').trim(); if (!tx) { showToast('La note est vide : supprime-la si tu n’en veux plus.'); render(); return true; } n.text = tx.slice(0, 2000); n.color = sheet.color || ''; n.pin = !!sheet.pin; n.up = new Date().toISOString(); save(); } sheet = null; render(); return true; }
     if (id === 'gform') { var g = goalById(sheet.id); if (g) { var gt = val('g-text').trim(); if (gt) g.text = gt.slice(0, 200); var tg = Math.max(0, Math.min(100000, parseInt(val('g-target'), 10) || 0)), cu = Math.max(0, Math.min(100000, parseInt(val('g-cur'), 10) || 0)); g.target = tg || 0; g.cur = tg ? cu : 0; if (tg && cu >= tg) goalReached(g); save(); } sheet = null; render(); return true; }
     if (id === 'dform') { var d = dreamById(sheet.id); if (d) { d.text = val('d-text').trim().slice(0, 80); save(); } sheet = null; render(); return true; }
-    if (id === 'hform') { var h = habById(sheet.id); if (h) { var hn = val('h-name').trim(); if (hn) h.name = hn.slice(0, 40); h.emoji = sheet.emoji || h.emoji; h.days = sheet.days.length === 7 ? [] : sheet.days.slice().sort(); h.rem = /^\d\d:\d\d$/.test(val('h-rem')) ? val('h-rem') : ''; if (h.rem && pushState() === 'off') askNotif(); save(); } sheet = null; render(); return true; }
+    if (id === 'hform') { var h = habById(sheet.id); if (h) { var hn = val('h-name').trim(); if (hn) h.name = hn.slice(0, 40); h.emoji = sheet.emoji || h.emoji; h.days = sheet.days.length === 7 ? [] : sheet.days.slice().sort(); h.remMode = val('h-remm') === 'auto' ? 'auto' : ''; h.rem = /^\d\d:\d\d$/.test(val('h-rem')) ? val('h-rem') : ''; if (h.rem && pushState() === 'off') askNotif(); save(); } sheet = null; render(); return true; }
     if (f.classList.contains('add')) {
       var inp = f.querySelector('input[name="t"]'), v = inp ? inp.value.trim() : '', k = f.dataset.kind;
       if (['list', 'litem', 'slitem', 'proj', 'ptask'].indexOf(k) < 0) return false;
@@ -3993,6 +4007,139 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       var L = n.text.split('\n'), i = +b.dataset.v; if (L[i] !== undefined) { L[i] = /^- \[ \]/.test(L[i]) ? L[i].replace(/^- \[ \]/, '- [x]') : L[i].replace(/^- \[[xX]\]/, '- [ ]'); n.text = L.join('\n'); n.up = new Date().toISOString(); save(); render(); }
       return true;
     }
+    return false;
+  }
+  /* ---------- v40 : notifications plus complètes ---------- */
+  function hm(m) { m = ((m % 1440) + 1440) % 1440; return p2(Math.floor(m / 60)) + ':' + p2(m % 60); }
+  function inQuiet(iso) {
+    var q = S.settings.quiet; if (!q || !q.from || !q.to) return false;
+    var d = new Date(iso), m = d.getHours() * 60 + d.getMinutes(), a = hm2m(q.from), b = hm2m(q.to);
+    return a <= b ? (m >= a && m < b) : (m >= a || m < b);
+  }
+  function catMuted(catId, day) {
+    var v = (S.settings.muteCats || {})[catId]; if (!v) return false;
+    return v === 'off' || (v === 'we' && dow(day) >= 6);
+  }
+  // heure « intelligente » d’une habitude : la médiane des heures où elle a été cochée (21 derniers jours, 3 fois minimum)
+  function habRemT(h) {
+    if (h.remMode !== 'auto') return h.rem || '';
+    var t = todayISO(), ms = [];
+    Object.keys(h.logT || {}).forEach(function (d) { if (d >= addDays(t, -21) && d < t) ms.push(hm2m(h.logT[d])); });
+    if (ms.length < 3) return h.rem || '';
+    ms.sort(function (a, b) { return a - b; });
+    var md = ms[Math.floor(ms.length / 2)];
+    return hm(Math.round(md / 5) * 5);
+  }
+  // historique des rappels (gardé sur l’appareil, 7 jours)
+  var NLOG_K = 'cadence.nlog';
+  function nlogGet() { try { return JSON.parse(localStorage.getItem(NLOG_K) || '{}') || {}; } catch (e) { return {}; } }
+  function nlogPut(rows) {
+    var L = nlogGet(), lim = new Date(Date.now() - 7 * 864e5).toISOString(), now = new Date().toISOString();
+    Object.keys(L).forEach(function (k) { if (L[k].at < lim || (L[k].at > now && !rows.some(function (r) { return r.p.tag === k; }))) delete L[k]; });
+    rows.forEach(function (r) { if (r.p && r.p.tag && r.ref && r.ref.k !== 'test') L[r.p.tag] = { at: r.at, t: r.p.title, b: r.p.body, id: r.ref.id || '', d: r.ref.d || '', k: r.ref.k }; });
+    try { localStorage.setItem(NLOG_K, JSON.stringify(L)); } catch (e) {}
+  }
+  function nhistSheet() {
+    var L = nlogGet(), now = new Date().toISOString(), arr = Object.keys(L).map(function (k) { return L[k]; }).filter(function (x) { return x.at <= now; }).sort(function (a, b) { return a.at < b.at ? 1 : -1; }).slice(0, 80);
+    var h = '<h2>Historique des rappels</h2><p class="sub">Les rappels des 7 derniers jours. « Pas encore fait » : la tâche n’est toujours pas cochée.</p>';
+    if (!arr.length) return h + '<p class="empty card">Aucun rappel pour l’instant.</p><button class="btn ghost" data-act="sclose">Fermer</button>';
+    var last = '';
+    h += '<div class="list">' + arr.map(function (x) {
+      var dt = new Date(x.at), day = isoOf(dt), it = x.k === 'item' ? byId(x.id) : null, miss = it && !(it.rep ? (it.doneOn || []).indexOf(x.d) >= 0 : it.done);
+      var hd = day !== last ? '<p class="mday">' + esc(cap1(relDay(day) || dayLong(day))) + '</p>' : ''; last = day;
+      return hd + '<div class="row nhrow"><span class="tm">' + p2(dt.getHours()) + ':' + p2(dt.getMinutes()) + '</span><' + (it ? 'button class="txt" data-act="iedit" data-id="' + it.id + '" data-d="' + x.d + '"' : 'div class="txt"') + '><span>' + esc(x.t) + '</span><small>' + esc(x.b || '') + (miss ? ' · <b class="miss">Pas encore fait</b>' : '') + '</small></' + (it ? 'button' : 'div') + '></div>';
+    }).join('') + '</div>';
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  function isoOf(d) { return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); }
+  // lignes en plus pour la file des notifications
+  function nxExtra(rows, t, now, tz) {
+    var s = S.settings, out = [];
+    rows.forEach(function (r) {
+      if (r.ref && r.ref.k === 'item') {
+        var x = byId(r.ref.id);
+        if (x && catMuted(x.cat, r.ref.d)) return;
+        r.p.later = r.ref.id + '|' + r.ref.d;
+      }
+      out.push(r);
+    });
+    var add = function (at, p, ref) { if (at > now) out.push({ at: new Date(at).toISOString(), p: p, ref: ref }); };
+    for (var k = 0; k < 8; k++) {
+      var day = addDays(t, k), its = itemsOn(day).filter(function (x) { return !catMuted(x.cat, day); });
+      if (s.nTask !== false) its.forEach(function (x) {
+        if (x.done || !x.time) return;
+        var at0 = atOf(day, x.time).getTime(), ref = { k: 'item', id: x.id, d: day, tz: tz };
+        // rappel insistant : tâches prioritaires, 3 fois toutes les 30 min
+        if (x.prio && s.nIns !== false) [30, 60, 90].forEach(function (m, i) { add(at0 + m * 60000, { title: 'Pas encore fait : ' + x.text, body: 'Prévu à ' + x.time + ' · relance ' + (i + 1) + '/3', tag: 'ins-' + x.id + '-' + day + '-' + m, url: './?tab=today', actions: true, later: x.id + '|' + day }, ref); });
+        // la veille au soir : tâches prioritaires
+        if (x.prio && s.nVeille !== false && k >= 1) add(atOf(addDays(day, -1), '20:00').getTime(), { title: 'Demain à ' + x.time + ' : ' + x.text, body: x.src.loc ? x.src.loc : 'Tâche prioritaire', tag: 'vei-' + x.id + '-' + day, url: './?tab=today' }, { k: 'veille', id: x.id, d: day });
+        // rappel de départ
+        var tr = +(x.src.trav || 0);
+        if (tr > 0) add(at0 - tr * 60000, { title: 'Il est temps de partir', body: x.text + ' à ' + x.time + (x.src.loc ? ' · ' + x.src.loc : '') + ' (' + dur2(tr) + ' de trajet)', tag: 'dep-' + x.id + '-' + day, url: './?tab=today', actions: true, later: x.id + '|' + day }, ref);
+      });
+      // résumé du matin (désactivé tant que l’heure n’est pas choisie)
+      if (/^\d\d:\d\d$/.test(s.nMorn || '')) {
+        var todo = its.filter(function (x) { return !x.done; }), gc = typeof gcalOn === 'function' ? gcalOn(day) : [];
+        if (todo.length || gc.length) {
+          var bits = todo.slice(0, 3).map(function (x) { return (x.time ? x.time + ' ' : '') + x.text; });
+          add(atOf(day, s.nMorn).getTime(), { title: 'Ta journée : ' + plural(todo.length, 'tâche', 'tâches') + (gc.length ? ' · ' + plural(gc.length, 'événement', 'événements') : ''), body: bits.join(', ') + (todo.length > 3 ? '…' : ''), tag: 'morn-' + day, url: './?tab=today' }, { k: 'morn', d: day });
+        }
+      }
+    }
+    // rappels reportés (« Dans 10 min », « Dans 1 h », « Demain »)
+    (S.snz || []).forEach(function (z) {
+      var x = byId(z.id); if (!x) return; var at = new Date(z.at).getTime();
+      add(at, { title: x.text, body: 'Rappel reporté', tag: 'snz-' + z.id + '-' + z.at, url: './?tab=today', actions: true, later: z.id + '|' + z.d }, { k: 'item', id: z.id, d: z.d, tz: tz });
+    });
+    // heures calmes : les rappels automatiques ne sont pas envoyés (ceux mis sur une tâche, si)
+    out = out.filter(function (r) { return !(inQuiet(r.at) && r.ref && ['morn', 'veille', 'eve', 'bd', 'hab'].indexOf(r.ref.k) >= 0 || inQuiet(r.at) && /^ins-/.test(r.p.tag || '')); });
+    try { nlogPut(out); } catch (e) {}
+    return out;
+  }
+  // « Reporter » depuis une notification
+  function laterSheet() {
+    var p = String(sheet.v || '').split('|'), x = byId(p[0]); if (!x) { sheet = null; return ''; }
+    return '<h2>Reporter</h2><p class="sub">' + esc(x.text) + (x.time ? ' · ' + esc(x.time) : '') + '</p><div class="list lateropts">' +
+      [['10', 'Dans 10 minutes'], ['60', 'Dans 1 heure'], ['tom', 'Demain' + (x.time ? ' à ' + x.time : '')]].map(function (o) { return '<button class="row" data-act="latergo" data-v="' + o[0] + '"><span class="txt"><span>' + o[1] + '</span></span>' + ic('next', 'chev') + '</button>'; }).join('') +
+      '</div><button class="btn ghost" data-act="sclose">Annuler</button>';
+  }
+  function laterOpen(v) { if (!v) return; var go = function (n) { if (S.profile.done && (!cloudOn || auth) && !isLocked()) { sheet = { k: 'later', v: v }; render(); } else if (n < 20) setTimeout(function () { go(n + 1); }, 500); }; go(0); }
+  (function () { try { var q = new URLSearchParams(location.search), v = q.get('later'); if (v) { history.replaceState(null, '', location.pathname); setTimeout(function () { laterOpen(v); }, 500); } } catch (e) {} })();
+  try { if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', function (ev) { if (ev.data && ev.data.cadence === 'later') laterOpen(ev.data.v); }); } catch (e) {}
+  // réglages
+  var MORN = ['06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00'];
+  function nxCard() {
+    var s = S.settings, q = s.quiet || {}, h = '';
+    h += '<label class="f">Résumé de ma journée, le matin<select id="nx-morn"><option value="">Désactivé</option>' + MORN.map(function (x) { return '<option' + (s.nMorn === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
+    h += sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)');
+    h += '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
+    if (S.cats.length) h += '<div class="f"><p class="sub">Rappels par catégorie</p><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></div>';
+    h += sw2('spall', !!s.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)');
+    h += '<button class="btn sm" data-act="nhist">Historique des rappels</button>';
+    return h;
+  }
+  function v40Click(a, b) {
+    var s = S.settings;
+    if (a === 'nveille') { s.nVeille = s.nVeille === false; save(); render(); return true; }
+    if (a === 'nins') { s.nIns = s.nIns === false; save(); render(); return true; }
+    if (a === 'spall') { s.spAll = !s.spAll; save(); render(); return true; }
+    if (a === 'nhist') { sheet = { k: 'nhist' }; render(); return true; }
+    if (a === 'latergo') {
+      var p = String(sheet.v || '').split('|'), x = byId(p[0]), d = p[1] || todayISO(); if (!x) { sheet = null; render(); return true; }
+      S.snz = (S.snz || []).filter(function (z) { return new Date(z.at).getTime() > Date.now(); });
+      if (b.dataset.v === 'tom') {
+        if (!x.rep) { x.d = addDays(d, 1); showToast('Reportée à demain.'); }
+        else { S.snz.push({ id: x.id, d: addDays(d, 1), at: atOf(addDays(d, 1), x.time || '09:00').toISOString() }); showToast('Rappel demain.'); }
+      } else { S.snz.push({ id: x.id, d: d, at: new Date(Date.now() + (+b.dataset.v) * 60000).toISOString() }); showToast(b.dataset.v === '10' ? 'Rappel dans 10 minutes.' : 'Rappel dans 1 heure.'); }
+      sheet = null; save(); render(); return true;
+    }
+    return false;
+  }
+  function v40Change(el) {
+    var s = S.settings;
+    if (el.id === 'nx-morn') { s.nMorn = el.value; save(); return true; }
+    if (el.id === 'nx-qf' || el.id === 'nx-qt') { var f = (document.getElementById('nx-qf') || {}).value || '', t2 = (document.getElementById('nx-qt') || {}).value || '07:00'; s.quiet = f ? { from: f, to: t2 } : null; save(); return true; }
+    if (el.dataset && el.dataset.nmute) { s.muteCats = s.muteCats || {}; if (el.value) s.muteCats[el.dataset.nmute] = el.value; else delete s.muteCats[el.dataset.nmute]; save(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
