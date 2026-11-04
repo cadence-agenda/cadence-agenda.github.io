@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QQIQk1SoB7bFdWDZv9XuftgYdreJc4uD+5JSgI3DzTE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RGh83XA87ucOyZKgF8ZRRHLUkft5wyBWqzV9gzxBq0o='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1111,6 +1111,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .recrow .txt { flex: 1; }
 .wkprint { margin: 12px 0 0; }
 .sh h3 small.cnt { display: inline; margin-left: 6px; font-weight: 500; }
+.startc p { line-height: 1.5; } .startc .btn { gap: 8px; margin-top: 4px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1119,7 +1120,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 60;
+  var APP_VER = 62;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1418,7 +1419,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function viewMonth() {
     var m0 = cur.slice(0, 7) + '-01', start = weekStart(m0), t = todayISO(), mo = m0.slice(0, 7);
     if (sel.slice(0, 7) !== mo) sel = (t.slice(0, 7) === mo) ? t : m0;
-    var h = goalsBlock('m', cur) + '<section class="blk"><div class="mgrid" role="grid" aria-label="Jours du mois">' + [0, 1, 2, 3, 4, 5, 6].map(function (k) { return '<span class="dl" aria-hidden="true">' + JL[dow(addDays(start, k)) - 1] + '</span>'; }).join('');
+    var h = '<section class="blk"><div class="mgrid" role="grid" aria-label="Jours du mois">' + [0, 1, 2, 3, 4, 5, 6].map(function (k) { return '<span class="dl" aria-hidden="true">' + JL[dow(addDays(start, k)) - 1] + '</span>'; }).join('');
     var d = start, n = 0;
     while (n < 42) {
       var its = itemsOn(d), out = d.slice(0, 7) !== mo, dots = its.slice(0, 4).map(function (x) { var cc = catOf(x.cat); return '<i' + (x.done ? ' class="d"' : '') + (cc && !x.done ? ' style="background:' + cc.color + '"' : '') + '></i>'; }).join('');
@@ -1428,7 +1429,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     }
     h += '</div></section>';
     var sits = itemsOn(sel);
-    h += '<section class="blk"><div class="sh"><h3>' + esc(cap1(dayLong(sel))) + '</h3><span class="cnt">' + countLine(sits) + '</span></div>' + dayList(sel, { empty: 'Rien de prévu ce jour-là.' }) + '</section>';
+    h += '<section class="blk"><div class="sh"><h3>' + esc(cap1(dayLong(sel))) + '</h3><span class="cnt">' + countLine(sits) + '</span></div>' + dayList(sel, { empty: 'Rien de prévu ce jour-là.' }) + holLine(sel) + '</section>' + goalsBlock('m', cur);
     return h;
   }
   function monthOcc(key) {
@@ -1437,13 +1438,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return out;
   }
   function viewYear() {
-    var y = cur.slice(0, 4), t = todayISO(), h = goalsBlock('y', cur) + '<section class="yr" aria-label="Mois de l’année">';
+    var y = cur.slice(0, 4), t = todayISO(), h = '<section class="yr" aria-label="Mois de l’année">';
     for (var m = 0; m < 12; m++) {
       var key = y + '-' + p2(m + 1), its = monthOcc(key), dn = its.filter(function (x) { return x.done; }).length, gs = goalsOf('m', key);
       h += '<button class="yt' + (t.slice(0, 7) === key ? ' now' : '') + '" data-act="openmonth" data-v="' + key + '-01"><b>' + MOIS[m] + '</b><small>' + (its.length ? dn + '/' + its.length + ' faites' : 'Aucune tâche') + '</small>' +
         (gs.length ? '<small>' + plural(gs.length, 'objectif', 'objectifs') + '</small>' : '') + (its.length ? '<span class="bar"><i style="width:' + Math.round(dn / its.length * 100) + '%"></i></span>' : '') + '</button>';
     }
-    return h + '</section>';
+    return h + '</section>' + goalsBlock('y', cur);
   }
   function viewAgenda() {
     var h = '<div class="seg" role="group" aria-label="Affichage">' + [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']].map(function (v) { return '<button aria-pressed="' + (view === v[0]) + '" data-act="view" data-v="' + v[0] + '">' + v[1] + '</button>'; }).join('') + '</div>';
@@ -2412,6 +2413,11 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return h + '</section>';
   }
   function intentLine(t) { var it = S.intent || {}; return it.d === t && it.text ? '<button class="intent" data-act="plan">' + ic('target') + '<span>' + esc(it.text) + '</span></button>' : ''; }
+  // v61 : premier pas, quand l’agenda est encore vide
+  function startCard(t, its) {
+    if ((S.items || []).length >= 3 || its.length) return '';
+    return '<section class="card startc"><h3>Bien démarrer</h3><p>Vide ta tête : écris ou dicte tout ce que tu as à faire, comme ça vient. Par exemple « dentiste jeudi 15h, appeler maman, courses samedi ». Cadence range tout pour toi.</p><button class="btn primary" data-act="quick">' + ic('plus') + '<span>Ajouter mes premières tâches</span></button><p class="hint">Tu peux aussi prendre en photo ton agenda papier depuis ce même bouton.</p></section>';
+  }
   // v59 : tous les outils du jour au même endroit, en tuiles
   function dayTools(t, its) {
     var left = its.filter(function (x) { return !x.done; }), sun = dow(t) === 7 && new Date().getHours() >= 10, tl = function (act, icn, lbl, extra) { return '<button class="autob' + (extra || '') + '" data-act="' + act + '">' + ic(icn) + '<span>' + lbl + '</span></button>'; };
@@ -2450,7 +2456,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
     // v59 : ordre clair — infos du jour, ma journée, mes tâches, mon quotidien, à venir, bilans
-    h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + heroToday(its) + dayTools(t, its) + energyBlock(t, its) + dayTimeline(t, its) + freeLeft(t, its);
+    h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + startCard(t, its) + heroToday(its) + dayTools(t, its) + (its.length ? energyBlock(t, its) : '') + (its.some(function (x) { return x.time; }) || (typeof gcalOn === 'function' && gcalOn(t).some(function (e) { return e.t; })) ? dayTimeline(t, its) : '') + (its.length ? freeLeft(t, its) : '');
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t) + inboxBlock(t);
     h += habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
@@ -3820,7 +3826,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (s.st === 'err') return h + '<p class="err" role="alert">' + esc(s.err) + '</p><div class="btns">' + scanBtn() + '<button class="btn ghost" data-act="sclose">Fermer</button></div>';
     if (!s.items.length) return h + '<p class="sub">Aucune tâche trouvée sur cette photo. Essaie avec une photo plus nette, prise de face.</p><div class="btns">' + scanBtn() + '<button class="btn ghost" data-act="sclose">Fermer</button></div>';
     var n = s.items.filter(function (x) { return x.on; }).length;
-    h += '<p class="sub">' + plural(s.items.length, 'élément trouvé', 'éléments trouvés') + '. Vérifie et corrige avant d’ajouter : l’écriture à la main n’est pas toujours bien lue.</p><div class="list">';
+    h += '<p class="sub">' + plural(s.items.length, 'élément trouvé', 'éléments trouvés') + (s.txt ? '. Vérifie et corrige si besoin, puis ajoute.' : '. Vérifie et corrige avant d’ajouter : l’écriture à la main n’est pas toujours bien lue.') + '</p><div class="list">';
     s.items.forEach(function (x, i) {
       h += '<div class="scr2' + (x.on ? '' : ' off') + '"><button type="button" class="ck" aria-pressed="' + x.on + '" aria-label="' + (x.on ? 'Ne pas ajouter' : 'Ajouter') + '" data-act="scantog" data-v="' + i + '">' + CHECK + '</button><div class="scf">' +
         '<input type="text" data-scn="' + i + '|text" value="' + esc(x.text) + '" maxlength="200" aria-label="Tâche">' +
