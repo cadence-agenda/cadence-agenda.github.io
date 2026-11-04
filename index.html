@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QSoxcuyINsMExsGb+dHrd/Pxi8oOzRgZJvra6if2F5A='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-KUjPD7FGLnEcPXpW8sYb4A/nYujGLZbnkymHlZZeYzo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1070,6 +1070,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   body.printall { background: #fff !important; color: #000 !important; }
 }
 .spseg { overflow-x: auto; scrollbar-width: none; } .spseg::-webkit-scrollbar { display: none; } .spseg button { flex: 0 0 auto; padding-left: 12px; padding-right: 12px; }
+/* v52 : cuisine */
+.recb .btns { flex-wrap: wrap; }
+.recl { margin: 4px 0 12px 18px; padding: 0; line-height: 1.5; }
+.recl li { margin: 2px 0; }
+.mnuh { margin: 18px 0 4px; }
+.bsug { margin: 8px 0; }
+.cookans { max-width: 100%; margin-top: 10px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1078,7 +1085,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 51;
+  var APP_VER = 52;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1573,8 +1580,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { recipe: recSheet, recin: recInSheet, cook: cookSheet, printall: printAllSheet, tour: tourSheet, review: reviewSheet, trash: trashSheet, meds: medSheet, panic: panicSheet, coach: coachSheet, auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { recipe: 'Recette', recin: 'Nouvelle recette', cook: 'Que cuisiner ce soir ?', printall: 'Tout exporter', tour: 'Bienvenue', review: 'Ton avis', trash: 'Corbeille', meds: 'Médicaments', panic: 'Je suis débordé', coach: 'Coach', auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Lire une photo', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1641,6 +1648,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v52Click(a, b)) return;
     if (v50Click(a, b)) return;
     if (v49Click(a, b)) return;
     if (v48Click(a, b)) return;
@@ -1801,6 +1809,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v52Change(el)) return;
     if (v50Change(el)) return;
     if (v48Change(el)) return;
     if (v40Change(el)) return;
@@ -2555,7 +2564,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var l = listById(sheet.id); if (!l) { sheet = null; return ''; }
     var h = '<div class="lhead"><span class="le">' + eico(l.emoji || '📝') + '</span><input type="text" class="lname" data-lname="' + l.id + '" value="' + esc(l.name) + '" maxlength="60" aria-label="Nom de la liste"></div><div class="list">' +
       lItems(l).map(function (i) { return (i.aisleH ? '<p class="aisleh">' + eico(aisleEmo(i.aisleH)) + '<span>' + esc(i.aisleH) + '</span></p>' : '') + '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.t) + '" data-act="litog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.t) + '</span></div><button class="x" data-act="lidel" data-id="' + i.id + '" aria-label="Retirer ' + esc(i.t) + '">×</button></div>'; }).join('') +
-      '<form class="add" data-kind="litem" data-id="' + l.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un élément" maxlength="200" aria-label="Nouvel élément"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>';
+      (listEmoji(l.name) === '🛒' ? buySugHtml(l.items.filter(function (i) { return !i.done; }).map(function (i) { return i.t; }), l.id) : '') + '<form class="add" data-kind="litem" data-id="' + l.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un élément" maxlength="200" aria-label="Nouvel élément"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>';
     var dn = l.items.filter(function (i) { return i.done; }).length;
     h += '<div class="btns">' + (dn ? '<button class="btn sm" data-act="liclear" data-id="' + l.id + '">Retirer les cochés (' + dn + ')</button>' : '') + (cloudOn && auth ? '<button class="btn sm primary" data-act="lshare" data-id="' + l.id + '"' + (SL.busy ? ' disabled' : '') + '>Partager cette liste</button>' : '') + '</div>';
     h += '<div class="btns"><button class="btn ' + (armKey === 'ldel:' + l.id ? 'armed' : 'danger') + '" data-act="ldel" data-id="' + l.id + '">' + (armKey === 'ldel:' + l.id ? 'Confirmer la suppression' : 'Supprimer la liste') + '</button><button class="btn ghost" data-act="sclose">Fermer</button></div>';
@@ -2688,7 +2697,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function viewNotes() {
     var h = '<div class="srch"><input type="search" id="srch" data-keep placeholder=" Rechercher partout (tâches, notes, listes…)" aria-label="Rechercher" autocomplete="off" value="' + esc(srchQ) + '"></div><div id="srch-res">' + searchHtml(srchQ) + '</div>';
     if (srchQ.trim().length >= 2) return h;
-    h += '<div class="seg" role="group" aria-label="Section">' + [['notes', 'Notes'], ['lists', 'Listes'], ['proj', 'Projets'], ['menus', 'Menus']].map(function (v) { return '<button aria-pressed="' + (notesView === v[0]) + '" data-act="nview" data-v="' + v[0] + '">' + v[1] + '</button>'; }).join('') + '</div>';
+    h += '<div class="seg" role="group" aria-label="Section">' + [['notes', 'Notes'], ['lists', 'Listes'], ['proj', 'Projets'], ['menus', 'Cuisine']].map(function (v) { return '<button aria-pressed="' + (notesView === v[0]) + '" data-act="nview" data-v="' + v[0] + '">' + v[1] + '</button>'; }).join('') + '</div>';
     return h + (notesView === 'menus' ? menusPane() : notesView === 'lists' ? listsPane() : notesView === 'proj' ? projPane() : notesPane());
   }
   /* --- objectifs : chiffrés et étapes --- */
@@ -3337,6 +3346,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function spShop(s) {
     var its = spItemsOf('shop'), todo = its.filter(function (i) { return !i.done; }), done = its.filter(function (i) { return i.done; });
     var h = '<form class="add card spadd" data-kind="spshop" autocomplete="off"><input type="text" name="t" placeholder="Ajouter aux courses (ex. Lait, Pommes…)" maxlength="120" aria-label="Ajouter aux courses"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form>';
+    h += buySugHtml(todo.map(function (i) { return i.text; }), 'sp');
     if (!its.length) return h + '<p class="empty card">La liste de courses est vide. Ce que tu ajoutes est rangé tout seul par rayon.</p>';
     var order = AISLES.map(function (a) { return a[0]; }).concat(['Autre']), by = {};
     todo.forEach(function (i) { var a = i.aisle || guessAisle(i.text); (by[a] = by[a] || []).push(i); });
@@ -3722,7 +3732,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         var its = (r && Array.isArray(r.items) ? r.items : []).map(function (x) {
           var c = S.cats.filter(function (z) { return z.name.toLowerCase() === String(x.cat || '').toLowerCase(); })[0];
           var mc = MCATS_OUT.filter(function (z) { return z[2] === x.mcat; })[0];
-          return { on: true, kind: x.kind === 'expense' && +x.amount > 0 ? 'exp' : 'task', amt: +x.amount > 0 ? String(x.amount).replace('.', ',') : '', mc: mc ? mc[0] : 'autre', text: String(x.text || '').slice(0, 200), d: /^\d{4}-\d\d-\d\d$/.test(x.date || '') ? x.date : t, t: /^\d\d:\d\d$/.test(x.time || '') ? x.time : '', cat: c ? c.id : '' };
+          return { on: true, kind: x.kind === 'expense' && +x.amount > 0 ? 'exp' : ['med', 'bill', 'warranty', 'bday'].indexOf(x.kind) >= 0 ? x.kind : 'task', times: String(x.times || ''), months: +x.months || 24, loc: String(x.loc || '').slice(0, 160), amt: +x.amount > 0 ? String(x.amount).replace('.', ',') : '', mc: mc ? mc[0] : 'autre', text: String(x.text || '').slice(0, 200), d: /^\d{4}-\d\d-\d\d$/.test(x.date || '') ? x.date : t, t: /^\d\d:\d\d$/.test(x.time || '') ? x.time : '', cat: c ? c.id : '' };
         }).filter(function (x) { return x.text; });
         sheet.st = 'done'; sheet.items = its; render();
       }).catch(function (er) {
@@ -3745,10 +3755,14 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     s.items.forEach(function (x, i) {
       h += '<div class="scr2' + (x.on ? '' : ' off') + '"><button type="button" class="ck" aria-pressed="' + x.on + '" aria-label="' + (x.on ? 'Ne pas ajouter' : 'Ajouter') + '" data-act="scantog" data-v="' + i + '">' + CHECK + '</button><div class="scf">' +
         '<input type="text" data-scn="' + i + '|text" value="' + esc(x.text) + '" maxlength="200" aria-label="Tâche">' +
-        (x.kind === 'exp' ? '<div class="scl"><span class="scexp">Dépense</span><input type="text" inputmode="decimal" data-scn="' + i + '|amt" value="' + esc(x.amt) + '" aria-label="Montant en euros" placeholder="€"><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Jour">' +
+        (x.kind === 'med' ? '<div class="scl"><span class="scexp">Médicament</span><input type="text" data-scn="' + i + '|times" value="' + esc(x.times) + '" placeholder="08:00,20:00" aria-label="Heures de prise"></div></div></div>' :
+        x.kind === 'bill' ? '<div class="scl"><span class="scexp">Facture</span><input type="text" inputmode="decimal" data-scn="' + i + '|amt" value="' + esc(x.amt) + '" aria-label="Montant" placeholder="€"><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Date limite"></div></div></div>' :
+        x.kind === 'warranty' ? '<div class="scl"><span class="scexp">Garantie</span><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Date d’achat"><select data-scn="' + i + '|months" aria-label="Durée">' + [6, 12, 24, 36, 60].map(function (m) { return '<option value="' + m + '"' + (+x.months === m ? ' selected' : '') + '>' + (m < 12 ? m + ' mois' : (m / 12) + ' an' + (m > 12 ? 's' : '')) + '</option>'; }).join('') + '</select></div></div></div>' :
+        x.kind === 'bday' ? '<div class="scl"><span class="scexp">Anniversaire</span><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Date de naissance"></div></div></div>' :
+                (x.kind === 'exp' ? '<div class="scl"><span class="scexp">Dépense</span><input type="text" inputmode="decimal" data-scn="' + i + '|amt" value="' + esc(x.amt) + '" aria-label="Montant en euros" placeholder="€"><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Jour">' +
           '<select data-scn="' + i + '|mc" aria-label="Catégorie du budget">' + MCATS_OUT.map(function (c) { return '<option value="' + c[0] + '"' + (x.mc === c[0] ? ' selected' : '') + '>' + esc(c[2]) + '</option>'; }).join('') + '</select></div></div></div>' :
         '<div class="scl"><input type="date" data-scn="' + i + '|d" value="' + x.d + '" aria-label="Jour"><input type="time" data-scn="' + i + '|t" value="' + x.t + '" aria-label="Heure">' +
-        '<select data-scn="' + i + '|cat" aria-label="Catégorie"><option value="">Sans catégorie</option>' + S.cats.map(function (c) { return '<option value="' + c.id + '"' + (x.cat === c.id ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('') + '</select></div></div></div>');
+        '<select data-scn="' + i + '|cat" aria-label="Catégorie"><option value="">Sans catégorie</option>' + S.cats.map(function (c) { return '<option value="' + c.id + '"' + (x.cat === c.id ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('') + '</select></div></div></div>'));
     });
     return h + '</div><button class="btn primary big" data-act="scanadd"' + (n ? '' : ' disabled') + '>' + (n ? 'Ajouter ' + plural(n, 'élément', 'éléments') : 'Rien de coché') + '</button><button class="btn ghost" data-act="sclose">Annuler</button>';
   }
@@ -3768,11 +3782,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'scantog') { var x = sheet && sheet.items[+b.dataset.v]; if (x) { x.on = !x.on; render(); } return true; }
     if (a === 'scanadd') {
       var its = (sheet.items || []).filter(function (z) { return z.on && z.text.trim(); }), first = '';
-      var nexp = 0;
+      var nexp = 0, nmore = 0;
+      its = its.filter(function (z) {
+        var dd = /^\d{4}-\d\d-\d\d$/.test(z.d) ? z.d : todayISO();
+        if (z.kind === 'med') { var ts = String(z.times || '').split(/[,;\s]+/).filter(function (h) { return /^\d\d:\d\d$/.test(h); }); S.meds = (S.meds || []).concat([{ id: uid(), name: z.text.trim().slice(0, 60), times: ts.length ? ts : ['08:00'] }]); nmore++; return false; }
+        if (z.kind === 'bill') { var am2 = parseAmt(z.amt); S.items.push({ id: uid(), d: dd, text: (z.text.trim() + (am2 ? ' (' + eur(am2) + ')' : '')).slice(0, 200), time: '10:00', done: false, cat: '', rep: '', rem: '1440', prio: true }); nmore++; return false; }
+        if (z.kind === 'warranty') { var ex = new Date(+dd.slice(0, 4), +dd.slice(5, 7) - 1 + (+z.months || 24), +dd.slice(8, 10)); S.docs = (S.docs || []).concat([{ id: uid(), name: ('Garantie ' + z.text.trim()).slice(0, 40), exp: ex.getFullYear() + '-' + p2(ex.getMonth() + 1) + '-' + p2(ex.getDate()) }]); nmore++; return false; }
+        if (z.kind === 'bday') { S.bdays.push({ id: uid(), name: z.text.trim().slice(0, 40), md: dd.slice(5), y: +dd.slice(0, 4) > 1900 ? +dd.slice(0, 4) : 0 }); nmore++; return false; }
+        return true;
+      });
       its = its.filter(function (z) { if (z.kind !== 'exp') return true; var am = parseAmt(z.amt); if (am) { S.money.tx.push({ id: uid(), d: /^\d{4}-\d\d-\d\d$/.test(z.d) ? z.d : todayISO(), amt: am, type: 'out', cat: z.mc || 'autre', lab: z.text.trim().slice(0, 60), at: new Date().toISOString() }); nexp++; } return false; });
-      its.forEach(function (z) { var it = { id: uid(), d: /^\d{4}-\d\d-\d\d$/.test(z.d) ? z.d : todayISO(), text: z.text.trim().slice(0, 200), time: /^\d\d:\d\d$/.test(z.t) ? z.t : '', done: false, cat: z.cat || '', rep: '', rem: '' }; S.items.push(it); if (!first || it.d < first) first = it.d; });
+      its.forEach(function (z) { var it = { loc: z.loc || '', id: uid(), d: /^\d{4}-\d\d-\d\d$/.test(z.d) ? z.d : todayISO(), text: z.text.trim().slice(0, 200), time: /^\d\d:\d\d$/.test(z.t) ? z.t : '', done: false, cat: z.cat || '', rep: '', rem: '' }; S.items.push(it); if (!first || it.d < first) first = it.d; });
       sheet = null; save(); uiSound('pop');
-      showToast([its.length ? plural(its.length, 'tâche ajoutée', 'tâches ajoutées') : '', nexp ? plural(nexp, 'dépense ajoutée', 'dépenses ajoutées') + ' au budget' : ''].filter(Boolean).join(' et ') || 'Rien ajouté');
+      showToast([its.length ? plural(its.length, 'tâche ajoutée', 'tâches ajoutées') : '', nexp ? plural(nexp, 'dépense ajoutée', 'dépenses ajoutées') + ' au budget' : '', nmore ? plural(nmore, 'rappel créé', 'rappels créés') : ''].filter(Boolean).join(', ') || 'Rien ajouté');
       if (first) { tab = 'agenda'; cur = first; } else if (nexp) tab = 'budget';
       render(); window.scrollTo(0, 0); return true;
     }
@@ -4907,7 +4929,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   // menus de la semaine → courses
   function menusPane() {
-    var a = weekStart(todayISO()), wk = a, mn = (S.menus || {})[wk] || {}, h = '<p class="sub">Les repas de la semaine, puis les ingrédients envoyés à ta liste de courses en un geste.</p><div class="card mnu">';
+    var a = weekStart(todayISO()), wk = a, mn = (S.menus || {})[wk] || {}, h = recipesBlock() + '<h3 class="mnuh">Menus de la semaine</h3><p class="sub">Les repas de la semaine, puis les ingrédients envoyés à ta liste de courses en un geste.</p><div class="card mnu">';
     for (var i = 0; i < 7; i++) { var d = addDays(a, i), v = mn[d] || {}; h += '<div class="mnd"><b>' + esc(cap1(JOURS[dow(d) - 1])) + '</b><input type="text" data-mnu="' + d + '|m" value="' + esc(v.m || '') + '" maxlength="80" placeholder="Midi" aria-label="Midi ' + esc(dayShort(d)) + '"><input type="text" data-mnu="' + d + '|s" value="' + esc(v.s || '') + '" maxlength="80" placeholder="Soir" aria-label="Soir ' + esc(dayShort(d)) + '"></div>'; }
     h += '</div><div class="card"><h3>Ingrédients</h3><textarea id="mnu-ing" rows="5" maxlength="2000" placeholder="Un ingrédient par ligne">' + esc(((S.menuIng || {})[wk]) || '') + '</textarea><div class="btns"><button class="btn sm" data-act="mnuai"' + (MNU.busy ? ' disabled' : '') + '>' + ic('sparkle') + '<span>' + (MNU.busy ? 'Recherche…' : 'Trouver les ingrédients avec l’IA') + '</span></button></div>' +
       '<div class="btns"><button class="btn primary sm" data-act="mnushop" data-v="me">Vers ma liste Courses</button>' + (cloudOn && auth && SP.spaces.length ? SP.spaces.map(function (z) { return '<button class="btn sm" data-act="mnushop" data-v="' + z.id + '">Vers les courses de « ' + esc(z.name) + ' »</button>'; }).join('') : '') + '</div></div>';
@@ -4965,6 +4987,17 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (!auth) raw('GET', '/auth/v1/settings').then(function (s) { GOOG = !!(s && s.external && s.external.google); if (GOOG && !auth) render(); }).catch(function () {});
   }, 0);
   function googleBtn() { return GOOG ? '<button type="button" class="btn big gbtn" data-act="glogin"><svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.7 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.1a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.6 2.8C6.6 7.3 9.1 5.4 12 5.4z"/></svg><span>Continuer avec Google</span></button><p class="hint orl">ou avec ton e-mail</p>' : ''; }
+  function shopAdd(ing, target) {
+    if (target === 'me') {
+      var l = (S.lists || []).filter(function (z) { return listEmoji(z.name) === '🛒'; })[0];
+      if (!l) { l = { id: uid(), name: 'Courses', emoji: '🛒', items: [] }; S.lists.push(l); }
+      ing.forEach(function (x) { if (!l.items.some(function (i) { return !i.done && nrm(i.t) === nrm(x); })) l.items.push({ id: uid(), t: x.slice(0, 200), done: false }); });
+      save(); showToast(plural(ing.length, 'ingrédient ajouté', 'ingrédients ajoutés') + ' à « ' + l.name + ' »'); render(); return;
+    }
+    var sp2 = SP.spaces.filter(function (z) { return z.id === target; })[0]; if (!sp2) return;
+    SP.cur = sp2.id; ing.forEach(function (x) { spPost({ kind: 'shop', text: x.slice(0, 200), aisle: guessAisle(x) || null }); });
+    showToast(plural(ing.length, 'ingrédient envoyé', 'ingrédients envoyés') + ' aux courses de « ' + sp2.name + ' »');
+  }
   function v50Click(a, b) {
     var s = spCur();
     if (a === 'exadd') {
@@ -4993,15 +5026,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'mnushop') {
       var ing = ((document.getElementById('mnu-ing') || {}).value || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean).slice(0, 60);
       if (!ing.length) { showToast('Ajoute des ingrédients d’abord.'); return true; }
-      if (b.dataset.v === 'me') {
-        var l = (S.lists || []).filter(function (z) { return listEmoji(z.name) === '🛒'; })[0];
-        if (!l) { l = { id: uid(), name: 'Courses', emoji: '🛒', items: [] }; S.lists.push(l); }
-        ing.forEach(function (x) { if (!l.items.some(function (i) { return !i.done && nrm(i.t) === nrm(x); })) l.items.push({ id: uid(), t: x.slice(0, 200), done: false }); });
-        save(); showToast(plural(ing.length, 'ingrédient ajouté', 'ingrédients ajoutés') + ' à « ' + l.name + ' »'); render(); return true;
-      }
-      var sp2 = SP.spaces.filter(function (z) { return z.id === b.dataset.v; })[0]; if (!sp2) return true;
-      SP.cur = sp2.id; ing.forEach(function (x) { spPost({ kind: 'shop', text: x.slice(0, 200), aisle: guessAisle(x) || null }); });
-      showToast(plural(ing.length, 'ingrédient envoyé', 'ingrédients envoyés') + ' aux courses de « ' + sp2.name + ' »'); return true;
+      shopAdd(ing, b.dataset.v); return true;
     }
     if (a === 'kidadd') { var kn = ((document.getElementById('kid-name') || {}).value || '').trim(); if (!kn) return true; var ks = S.kids || []; S.kids = ks.concat([{ id: uid(), name: kn.slice(0, 30), color: KIDC[ks.length % KIDC.length] }]); var e2 = document.getElementById('kid-name'); if (e2) e2.value = ''; save(); render(); return true; }
     if (a === 'kiddel') { S.kids = (S.kids || []).filter(function (k) { return k.id !== b.dataset.id; }); S.items.forEach(function (x) { if (x.kid === b.dataset.id) delete x.kid; }); save(); render(); return true; }
@@ -5023,6 +5048,97 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var d = el.dataset || {};
     if (d.mnu) { var p = d.mnu.split('|'), wk = weekStart(p[0]); S.menus = S.menus || {}; var w = S.menus[wk] = S.menus[wk] || {}; w[p[0]] = w[p[0]] || {}; w[p[0]][p[1]] = el.value.trim().slice(0, 80); Object.keys(S.menus).forEach(function (k) { if (k < addDays(todayISO(), -60)) delete S.menus[k]; }); save(); return true; }
     if (el.id === 'mnu-ing') { var wk2 = weekStart(todayISO()); S.menuIng = S.menuIng || {}; S.menuIng[wk2] = el.value.slice(0, 2000); save(); return true; }
+    return false;
+  }
+  /* ---------- v52 : recettes, « Que cuisiner ce soir ? », courses qui apprennent ---------- */
+  var REC = { busy: false, err: '' };
+  function recById(id) { return (S.recipes || []).filter(function (r) { return r.id === id; })[0] || null; }
+  function recipesBlock() {
+    var rs = (S.recipes || []).slice().sort(function (a, b) { return (b.at || '') < (a.at || '') ? -1 : 1; });
+    var h = '<section class="card recb"><h3>Mes recettes</h3><p class="sub">Ajoute une recette depuis une photo (livre, capture d’écran), un lien de site ou un texte : l’IA la range pour toi.</p>' +
+      '<div class="btns"><label class="btn sm" for="rec-file">' + ic('camera') + '<span>Photo</span><input type="file" id="rec-file" accept="image/*" hidden></label><button class="btn sm" data-act="recnew" data-v="url">' + ic('arrow') + '<span>Lien</span></button><button class="btn sm" data-act="recnew" data-v="txt">' + ic('pen') + '<span>Texte</span></button><button class="btn sm primary" data-act="cook">' + ic('sparkle') + '<span>Que cuisiner ce soir ?</span></button></div>';
+    if (REC.busy) h += '<p class="scanwait">' + ic('sparkle') + '<span>L’IA lit la recette…</span></p>';
+    if (REC.err) h += '<p class="err" role="alert">' + esc(REC.err) + '</p>';
+    h += rs.length ? '<div class="list">' + rs.map(function (r) { return '<button class="row recrow" data-act="recopen" data-id="' + r.id + '"><span class="he">' + ic('food') + '</span><span class="txt"><span>' + esc(r.title) + '</span><small>' + plural(r.ingredients.length, 'ingrédient', 'ingrédients') + (r.minutes ? ' · ' + dur2(r.minutes) : '') + (r.servings ? ' · ' + r.servings + ' pers.' : '') + '</small></span>' + ic('next', 'chev') + '</button>'; }).join('') + '</div>' : '';
+    return h + '</section>';
+  }
+  function recSheet() {
+    var r = sheet.r || recById(sheet.id); if (!r) { sheet = null; return ''; }
+    var isNew = !!sheet.r, h = '<h2>' + esc(r.title || 'Recette') + '</h2>' + (r.minutes || r.servings ? '<p class="sub">' + [r.minutes ? dur2(r.minutes) : '', r.servings ? r.servings + ' personnes' : ''].filter(Boolean).join(' · ') + '</p>' : '');
+    h += '<h3>Ingrédients</h3><ul class="recl">' + r.ingredients.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul><h3>Étapes</h3><ol class="recl">' + r.steps.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
+    if (isNew) return h + '<button class="btn primary big" data-act="recsave">Enregistrer la recette</button><button class="btn ghost" data-act="sclose">Annuler</button>';
+    h += '<div class="btns"><button class="btn sm primary" data-act="recshop" data-id="' + r.id + '" data-v="me">Ingrédients → ma liste Courses</button>' + (cloudOn && auth && SP.spaces.length ? SP.spaces.map(function (z) { return '<button class="btn sm" data-act="recshop" data-id="' + r.id + '" data-v="' + z.id + '">→ courses « ' + esc(z.name) + ' »</button>'; }).join('') : '') + '</div>';
+    h += '<div class="f"><p class="sub">Ajouter au menu de la semaine</p><div class="cols"><select id="rec-day">' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { var d = addDays(weekStart(todayISO()), i); return '<option value="' + d + '"' + (d === todayISO() ? ' selected' : '') + '>' + esc(cap1(JOURS[dow(d) - 1])) + '</option>'; }).join('') + '</select><select id="rec-meal"><option value="s">Soir</option><option value="m">Midi</option></select></div><button class="btn sm" data-act="recmenu" data-id="' + r.id + '">Ajouter au menu</button></div>';
+    if (cloudOn && auth && SP.spaces.length) h += '<div class="btns">' + SP.spaces.map(function (z) { return '<button class="btn sm ghost" data-act="recspace" data-id="' + r.id + '" data-v="' + z.id + '">Partager dans « ' + esc(z.name) + ' »</button>'; }).join('') + '</div>';
+    return h + '<div class="btns"><button class="btn ' + (armKey === 'rec:' + r.id ? 'armed' : 'danger') + ' sm" data-act="recdel" data-id="' + r.id + '">' + (armKey === 'rec:' + r.id ? 'Confirmer la suppression' : 'Supprimer') + '</button><button class="btn ghost" data-act="sclose">Fermer</button></div>';
+  }
+  function recInSheet() {
+    var u = sheet.v === 'url';
+    return '<h2>' + (u ? 'Recette depuis un lien' : 'Recette depuis un texte') + '</h2>' + (u ? '<label class="f">Lien de la recette<input type="url" id="rec-in" data-keep placeholder="https://…" autocomplete="off"></label><p class="hint">Marche avec la plupart des sites de recettes. Pour une vidéo (TikTok, Instagram), fais plutôt une capture d’écran de la recette.</p>' : '<label class="f">Colle ou écris la recette<textarea id="rec-in" data-keep rows="8" maxlength="6000" placeholder="Ingrédients, étapes…"></textarea></label>') +
+      '<button class="btn primary big" data-act="recgo" data-v="' + sheet.v + '">Lire la recette</button><button class="btn ghost" data-act="sclose">Annuler</button>';
+  }
+  function recRun(pl) {
+    if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return; }
+    REC.busy = true; REC.err = ''; sheet = null; tab = 'notes'; notesView = 'menus'; render();
+    pl.mode = 'recipe'; pl.today = todayISO();
+    authed('POST', '/functions/v1/cadence-scan', pl).then(function (r) {
+      REC.busy = false; var rc = r && r.recipe;
+      if (!rc || !rc.title || !rc.ingredients || !rc.ingredients.length) { REC.err = 'Aucune recette trouvée. Essaie une photo plus nette ou un autre lien.'; render(); return; }
+      sheet = { k: 'recipe', r: { id: uid(), title: rc.title, servings: rc.servings || 0, minutes: rc.minutes || 0, ingredients: rc.ingredients, steps: rc.steps || [], at: new Date().toISOString() } }; render();
+    }).catch(function (er) { REC.busy = false; REC.err = er && er.status === 422 ? 'Ce site n’a pas pu être lu. Fais une capture d’écran de la recette et utilise « Photo ».' : er && er.status === 429 ? 'Limite gratuite de l’IA atteinte pour aujourd’hui.' : 'La recette n’a pas pu être lue. Réessaie.'; render(); });
+  }
+  function cookSheet() {
+    var h = '<h2>Que cuisiner ce soir ?</h2><label class="f">Ce que tu as (frigo, placard)<textarea id="cook-in" data-keep rows="3" maxlength="600" placeholder="Ex. œufs, courgettes, riz, fromage"></textarea></label><button class="btn primary" data-act="cookgo"' + (sheet.busy ? ' disabled' : '') + '>' + (sheet.busy ? 'Je cherche…' : 'Trouver des idées') + '</button>';
+    if (sheet.ans) h += '<div class="cmsg ca cookans">' + coachFmt(sheet.ans) + '</div>';
+    return h + '<button class="btn ghost" data-act="sclose">Fermer</button>';
+  }
+  // courses qui apprennent
+  function buyLog(t) {
+    var k = nrm(t).trim(); if (!k || k.length > 60) return;
+    S.buyf = S.buyf || {}; var o = S.buyf[k] = S.buyf[k] || { n: 0, t: t.trim().slice(0, 60), d: '' };
+    if (o.d === todayISO()) return; o.n++; o.d = todayISO(); o.t = t.trim().slice(0, 60);
+    var ks = Object.keys(S.buyf); if (ks.length > 300) ks.sort(function (a, b) { return S.buyf[a].d < S.buyf[b].d ? -1 : 1; }).slice(0, ks.length - 300).forEach(function (x) { delete S.buyf[x]; });
+  }
+  function buySug(have) {
+    var hv = have.map(function (x) { return nrm(x).trim(); }), t = todayISO();
+    return Object.keys(S.buyf || {}).filter(function (k) { var o = S.buyf[k]; return o.n >= 2 && hv.indexOf(k) < 0 && o.d < t; }).sort(function (a, b) { return S.buyf[b].n - S.buyf[a].n; }).slice(0, 8).map(function (k) { return S.buyf[k].t; });
+  }
+  function buySugHtml(have, target) {
+    var sg = buySug(have); if (!sg.length) return '';
+    return '<div class="chips bsug"><span class="sub">Tu prends souvent :</span>' + sg.map(function (x) { return '<button type="button" class="chip" data-act="bsug" data-v="' + esc(x) + '" data-t="' + esc(target) + '">' + ic('plus') + esc(x) + '</button>'; }).join('') + '</div>';
+  }
+  document.addEventListener('submit', function (e) {
+    var f = e.target; if (!f || !f.dataset) return;
+    if (f.dataset.kind === 'spshop' || (f.dataset.kind === 'litem' && listById(f.dataset.id) && listEmoji(listById(f.dataset.id).name) === '🛒')) { var inp = f.querySelector('input[name="t"]'); if (inp && inp.value.trim()) buyLog(inp.value); }
+  }, true);
+  function v52Click(a, b) {
+    if (a === 'recnew') { sheet = { k: 'recin', v: b.dataset.v }; render(); return true; }
+    if (a === 'recgo') { var v = ((document.getElementById('rec-in') || {}).value || '').trim(); if (!v) { showToast(b.dataset.v === 'url' ? 'Colle le lien de la recette.' : 'Écris ou colle la recette.'); return true; } if (b.dataset.v === 'url' && !/^https:\/\//i.test(v)) { showToast('Le lien doit commencer par https://'); return true; } recRun(b.dataset.v === 'url' ? { url: v } : { text: v.slice(0, 6000) }); return true; }
+    if (a === 'recsave') { var r = sheet.r; S.recipes = (S.recipes || []).concat([r]); sheet = { k: 'recipe', id: r.id }; save(); showToast('Recette enregistrée'); render(); return true; }
+    if (a === 'recopen') { sheet = { k: 'recipe', id: b.dataset.id }; render(); return true; }
+    if (a === 'recdel') { if (!arm('rec:' + b.dataset.id)) return true; S.recipes = (S.recipes || []).filter(function (z) { return z.id !== b.dataset.id; }); sheet = null; save(); render(); return true; }
+    if (a === 'recshop') {
+      var rc = recById(b.dataset.id); if (rc) shopAdd(rc.ingredients.slice(0, 60), b.dataset.v); return true;
+    }
+    if (a === 'recmenu') { var rc2 = recById(b.dataset.id), d = (document.getElementById('rec-day') || {}).value, ml = (document.getElementById('rec-meal') || {}).value || 's'; if (!rc2 || !d) return true; var wk = weekStart(d); S.menus = S.menus || {}; var w = S.menus[wk] = S.menus[wk] || {}; w[d] = w[d] || {}; w[d][ml] = rc2.title.slice(0, 80); save(); showToast('Ajouté au menu de ' + JOURS[dow(d) - 1]); render(); return true; }
+    if (a === 'recspace') { var rc3 = recById(b.dataset.id), sp = SP.spaces.filter(function (z) { return z.id === b.dataset.v; })[0]; if (!rc3 || !sp) return true; SP.cur = sp.id; spPost({ kind: 'note', text: ('Recette : ' + rc3.title + '\n\nIngrédients :\n- ' + rc3.ingredients.join('\n- ') + '\n\nÉtapes :\n' + rc3.steps.map(function (x, i) { return (i + 1) + '. ' + x; }).join('\n')).slice(0, 2000) }); showToast('Recette partagée dans « ' + sp.name + ' »'); return true; }
+    if (a === 'cook') { sheet = { k: 'cook' }; render(); return true; }
+    if (a === 'cookgo') {
+      var fr = ((document.getElementById('cook-in') || {}).value || '').trim(); if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return true; }
+      sheet.busy = true; sheet.ans = ''; render();
+      authed('POST', '/functions/v1/cadence-coach', { msg: 'Propose 3 idées de repas simples pour ce soir' + (fr ? ' avec : ' + fr : '') + '. Pour chacune : le nom en gras, le temps, et les ingrédients qui manquent. Si une de mes recettes convient, propose-la en premier.', ctx: 'Mes recettes enregistrées : ' + (S.recipes || []).map(function (z) { return z.title; }).join(' ; ').slice(0, 2000) }).then(function (r2) { if (sheet && sheet.k === 'cook') { sheet.busy = false; sheet.ans = String((r2 && r2.text) || ''); render(); } }).catch(function () { if (sheet && sheet.k === 'cook') { sheet.busy = false; sheet.ans = 'Le coach n’a pas pu répondre. Réessaie.'; render(); } });
+      return true;
+    }
+    if (a === 'bsug') {
+      var tx = b.dataset.v, tg = b.dataset.t;
+      if (tg === 'sp') spPost({ kind: 'shop', text: tx.slice(0, 120), aisle: guessAisle(tx) });
+      else { var l = listById(tg); if (l) { l.items.push({ id: uid(), t: tx.slice(0, 200), done: false }); buyLog(tx); save(); render(); } }
+      return true;
+    }
+    return false;
+  }
+  function v52Change(el) {
+    if (el.id === 'rec-file') { var f = el.files && el.files[0]; el.value = ''; if (f) shrinkImg(f, 1600, 0.82, function (url) { recRun({ image: url.split(',')[1], mime: 'image/jpeg' }); }); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
