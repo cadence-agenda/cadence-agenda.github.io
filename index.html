@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-n5JRzfH9YHfWG51mcGTkbLd/R9vRHGD6961P2Abq/J0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-cWN3t/6KuJUPtxWpeNipowvjOmt6+UG0gaq3eiZF3cU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -966,6 +966,18 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .nhrow .txt { text-align: left; }
 .nhrow .miss { color: var(--bad); font-weight: 600; }
 .lateropts .row { width: 100%; justify-content: space-between; }
+/* v41 */
+.autob { margin-top: 10px; }
+.softc .softl { display: grid; gap: 4px; margin: 10px 0; }
+.softc .softl small { color: var(--muted); }
+.bar.soft i { background: color-mix(in srgb, var(--accent) 70%, var(--surface)); }
+.savg { display: grid; gap: 6px; margin: 10px 0 14px; }
+.savrow, .savnew { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.savrow input, .savnew input { flex: 1; min-width: 90px; }
+.bar.full i { background: var(--ok, #34C759); }
+.autob { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 54px; padding: 0 16px; border: 0; border-radius: var(--r); background: var(--surface); color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
+.autob span { flex: 1; }
+.autob .ic { color: var(--accent); } .autob .ic.go { color: var(--muted); width: 18px; height: 18px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -974,7 +986,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 40;
+  var APP_VER = 41;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1052,6 +1064,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     o.money = (o.money && typeof o.money === 'object') ? o.money : {};
     o.money.tx = Array.isArray(o.money.tx) ? o.money.tx.filter(function (t) { return t && t.id && /^\d{4}-\d\d-\d\d$/.test(t.d || '') && +t.amt > 0; }).map(function (t) { t.amt = +t.amt; return t; }) : [];
     o.money.caps = (o.money.caps && typeof o.money.caps === 'object') ? o.money.caps : {};
+    o.money.save = Array.isArray(o.money.save) ? o.money.save.filter(function (z) { return z && z.id; }) : [];
     o.items.forEach(function (x) { if (!Array.isArray(x.subs)) x.subs = []; });
     o.habits.forEach(function (h) { if (!Array.isArray(h.days)) h.days = []; if (!/^\d\d:\d\d$/.test(h.rem || '')) h.rem = ''; });
     o.goals.forEach(function (g) { if (!Array.isArray(g.steps)) g.steps = []; g.target = Math.max(0, +g.target || 0); g.cur = Math.max(0, +g.cur || 0); });
@@ -1305,7 +1318,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   /* ---------- Objectifs ---------- */
   function viewGoals() {
     var t = todayISO();
-    return '<p class="sub">Fixe-toi quelques objectifs pour chaque période. Touche un objectif pour lui donner un nombre à atteindre ou des étapes.</p>' +
+    return weekSoftCard() + '<p class="sub">Fixe-toi quelques objectifs pour chaque période. Touche un objectif pour lui donner un nombre à atteindre ou des étapes.</p>' +
       goalsBlock('d', t, true) + goalsBlock('w', t, true) + goalsBlock('m', t, true) + goalsBlock('y', t, true) + habitsManage() + dreamsHtml() + statsHtml();
   }
 
@@ -1465,8 +1478,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { auto: autoSheet, later: laterSheet, nhist: nhistSheet, focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { auto: 'Organiser ma journée', later: 'Reporter', nhist: 'Historique des rappels', focus: 'Mode Focus', routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
@@ -1532,6 +1545,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v41Click(a, b)) return;
     if (v40Click(a, b)) return;
     if (v39Click(a, b)) return;
     if (v38Click(a, b)) return;
@@ -2260,7 +2274,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var t = todayISO(), its = itemsOn(t), h = '';
     h += carryCard() + intentLine(t) + heroToday(its) + dayTimeline(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t);
-    h += habitsDay(t) + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    h += habitsDay(t) + autoBtn(t) + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + quoteLine();
   }
@@ -3009,6 +3023,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return '<div class="mbar' + (over ? ' over' : warn ? ' warn' : '') + '"><div class="mbl"><span>' + eico(c[1]) + esc(c[2]) + '</span><b>' + eur(v) + (cp ? ' <small>/ ' + eur(cp) + '</small>' : '') + '</b></div><span class="bar"><i style="width:' + Math.min(100, Math.round(v / (cp || mx) * 100)) + '%"></i></span>' + (over ? '<small class="mw">Plafond dépassé de ' + eur(v - cp) + '</small>' : warn ? '<small class="mw">' + Math.round(v / cp * 100) + ' % du plafond</small>' : '') + '</div>';
     }).join('') + '</div></div>';
     else h += '<button class="btn sm" data-act="mcaps">Fixer des plafonds par catégorie</button>';
+    h += savesCard();
     if (tx.length) {
       var sorted = tx.slice().sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : (b.at || '') < (a.at || '') ? -1 : 1; }), lastD = '';
       h += '<div class="sh"><h3>Mouvements</h3><span class="cnt">' + tx.length + '</span></div><div class="list">' + sorted.map(function (t) {
@@ -4140,6 +4155,96 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.id === 'nx-morn') { s.nMorn = el.value; save(); return true; }
     if (el.id === 'nx-qf' || el.id === 'nx-qt') { var f = (document.getElementById('nx-qf') || {}).value || '', t2 = (document.getElementById('nx-qt') || {}).value || '07:00'; s.quiet = f ? { from: f, to: t2 } : null; save(); return true; }
     if (el.dataset && el.dataset.nmute) { s.muteCats = s.muteCats || {}; if (el.value) s.muteCats[el.dataset.nmute] = el.value; else delete s.muteCats[el.dataset.nmute]; save(); return true; }
+    return false;
+  }
+  /* ---------- v41 : organiser ma journée, ma semaine en douceur, épargne ---------- */
+  // Organiser ma journée : place les tâches sans heure dans les créneaux libres (sans IA, gratuit, instantané)
+  function autoPlan(t) {
+    var nowM = new Date().getHours() * 60 + new Date().getMinutes(), start = Math.max(8 * 60, Math.ceil((nowM + 5) / 15) * 15), end = 21 * 60 + 30;
+    var its = itemsOn(t), busy = [];
+    its.forEach(function (x) { if (x.time && !x.done) { var a = hm2m(x.time); busy.push([a, a + (+(x.src.dur || 0) || 30)]); } });
+    if (typeof gcalOn === 'function') gcalOn(t).forEach(function (e) { if (!e.allDay && e.t) { var a = hm2m(e.t); busy.push([a, e.end ? hm2m(e.end) : a + 60]); } });
+    busy.sort(function (p, q) { return p[0] - q[0]; });
+    var todo = its.filter(function (x) { return !x.time && !x.done && !x.src.rep; }).sort(function (p, q) { return (q.prio ? 1 : 0) - (p.prio ? 1 : 0); });
+    var plan = [], left = [];
+    todo.forEach(function (x) {
+      var len = +(x.src.dur || 0) || 30, at = start, ok = false;
+      while (at + len <= end) {
+        var clash = busy.filter(function (b) { return at < b[1] + 10 && at + len + 10 > b[0]; })[0];
+        if (!clash) { ok = true; break; }
+        at = Math.ceil((clash[1] + 10) / 5) * 5;
+      }
+      if (ok) { busy.push([at, at + len]); busy.sort(function (p, q) { return p[0] - q[0]; }); plan.push({ x: x, t: hm(at), len: len }); } else left.push(x);
+    });
+    return { plan: plan.sort(function (p, q) { return p.t < q.t ? -1 : 1; }), left: left };
+  }
+  function autoBtn(t) {
+    if (!itemsOn(t).some(function (x) { return !x.time && !x.done && !x.src.rep; })) return '';
+    return '<button class="autob" data-act="autoplan">' + ic('sparkle') + '<span>Organiser ma journée</span>' + ic('arrow', 'go') + '</button>';
+  }
+  function autoSheet() {
+    var t = todayISO(), r = sheet.r || (sheet.r = autoPlan(t)), h = '<h2>Organiser ma journée</h2>';
+    if (!r.plan.length) return h + '<p class="sub">Plus de créneau libre aujourd’hui avant 21 h 30. Reporte des tâches à demain ou raccourcis-en.</p><button class="btn ghost" data-act="sclose">Fermer</button>';
+    h += '<p class="sub">Voici une proposition : tes tâches sans heure sont placées dans tes moments libres, les prioritaires d’abord, avec 10 minutes de marge. Tu pourras tout modifier ensuite.</p><div class="tl">' +
+      r.plan.map(function (o) { return '<div class="tli"><b>' + o.t + '</b><span>' + esc(o.x.text) + ' <small>(' + dur2(o.len) + ')</small></span></div>'; }).join('') + '</div>';
+    if (r.left.length) h += '<p class="hint">Pas de place pour : ' + r.left.map(function (x) { return esc(x.text); }).join(', ') + '.</p>';
+    return h + '<button class="btn primary big" data-act="autogo">Valider ce planning</button><button class="btn ghost" data-act="sclose">Annuler</button>';
+  }
+  // Ma semaine, en douceur (sans chiffres)
+  function weekRate(a, b) {
+    var t = todayISO(), tot = 0, dn = 0, ht = 0, hd = 0;
+    for (var d = a; d <= b && d <= t; d = addDays(d, 1)) {
+      itemsOn(d).forEach(function (x) { tot++; if (x.done) dn++; });
+      (S.habits || []).forEach(function (h) { if (habOn(h, d)) { ht++; if ((h.log || {})[d]) hd++; } });
+    }
+    return { tasks: tot ? dn / tot : -1, habs: ht ? hd / ht : -1 };
+  }
+  function softWord(r) { return r >= 0.8 ? 'Excellent' : r >= 0.6 ? 'Bien' : r >= 0.4 ? 'En progrès' : 'Tout doux'; }
+  function weekSoftCard() {
+    var t = todayISO(), a = weekStart(t), cur0 = weekRate(a, addDays(a, 6)), prev = weekRate(addDays(a, -7), addDays(a, -1));
+    var key = t.slice(0, 7), caps = S.money.caps || {}, ck = Object.keys(caps).filter(function (k) { return caps[k] > 0; });
+    var bud = ck.length ? ck.filter(function (k) { return monthOut(key, k) <= caps[k]; }).length / ck.length : -1;
+    var line = function (lbl, r, p) {
+      if (r < 0) return '';
+      var trend = p < 0 ? '' : r > p + 0.05 ? 'mieux que la semaine dernière' : r < p - 0.05 ? 'un peu moins que la semaine dernière' : 'comme la semaine dernière';
+      return '<div class="softl"><div class="mbl"><span>' + lbl + '</span><b>' + softWord(r) + '</b></div><span class="bar soft"><i style="width:' + Math.max(6, Math.round(r * 100)) + '%"></i></span>' + (trend ? '<small>' + trend + '</small>' : '') + '</div>';
+    };
+    var body = line('Organisation', cur0.tasks, prev.tasks) + line('Habitudes', cur0.habs, prev.habs) + line('Budget du mois', bud, -1);
+    return body ? '<section class="card softc"><h3>Ma semaine, en douceur</h3>' + body + '<p class="hint">Pas de note, pas de pression : juste une tendance pour t’aider.</p></section>' : '';
+  }
+  // Épargne : objectifs avec barre de progression
+  function savesCard() {
+    var g = S.money.save || [], h = '<div class="card savec"><div class="sh"><h3>Épargne</h3></div>';
+    h += g.map(function (s) {
+      var p = s.target ? Math.min(100, Math.round(s.saved / s.target * 100)) : 0;
+      return '<div class="savg"><div class="mbl"><span>' + esc(s.name) + '</span><b>' + eur(s.saved) + ' <small>/ ' + eur(s.target) + '</small></b></div><span class="bar' + (p >= 100 ? ' full' : '') + '"><i style="width:' + p + '%"></i></span>' +
+        (p >= 100 ? '<small class="okmsg">Objectif atteint, bravo !</small>' : '') +
+        '<div class="savrow"><input type="text" inputmode="decimal" data-savamt="' + s.id + '" placeholder="Montant" maxlength="10" aria-label="Montant à ajouter à ' + esc(s.name) + '"><button class="btn sm" data-act="savadd" data-id="' + s.id + '">Ajouter</button><button class="btn sm ghost" data-act="savsub" data-id="' + s.id + '">Retirer</button><button class="x' + (armKey === 'sav:' + s.id ? ' armed' : '') + '" data-act="savdel" data-id="' + s.id + '" aria-label="Supprimer ' + esc(s.name) + '">' + (armKey === 'sav:' + s.id ? 'OK ?' : '×') + '</button></div></div>';
+    }).join('');
+    h += '<div class="savnew"><input type="text" id="sav-name" data-keep maxlength="40" placeholder="Nouvel objectif (ex. Vacances)" aria-label="Nom de l’objectif d’épargne"><input type="text" id="sav-target" data-keep inputmode="decimal" maxlength="10" placeholder="Montant visé" aria-label="Montant visé"><button class="btn sm primary" data-act="savnew">Créer</button></div>';
+    return h + '</div>';
+  }
+  function v41Click(a, b) {
+    if (a === 'autoplan') { sheet = { k: 'auto' }; render(); return true; }
+    if (a === 'autogo') {
+      var r = sheet && sheet.r; if (!r) return true;
+      r.plan.forEach(function (o) { var x = byId(o.x.id); if (x && !x.time) { x.time = o.t; if (!x.dur) x.dur = ''; } });
+      sheet = null; save(); showToast(plural(r.plan.length, 'tâche placée', 'tâches placées') + ' dans ta journée'); render(); return true;
+    }
+    if (a === 'savnew') {
+      var n = ((document.getElementById('sav-name') || {}).value || '').trim(), tg = parseAmt((document.getElementById('sav-target') || {}).value);
+      if (!n || !tg) { showToast('Écris un nom et un montant visé.'); render(); return true; }
+      S.money.save = (S.money.save || []).concat([{ id: uid(), name: n.slice(0, 40), target: tg, saved: 0 }]);
+      ['sav-name', 'sav-target'].forEach(function (i) { var e = document.getElementById(i); if (e) e.value = ''; });
+      save(); render(); return true;
+    }
+    if (a === 'savadd' || a === 'savsub') {
+      var s = (S.money.save || []).filter(function (z) { return z.id === b.dataset.id; })[0], inp = document.querySelector('[data-savamt="' + b.dataset.id + '"]'), v = parseAmt(inp && inp.value);
+      if (!s || !v) { showToast('Écris un montant.'); return true; }
+      s.saved = Math.max(0, Math.round((s.saved + (a === 'savadd' ? v : -v)) * 100) / 100); save();
+      showToast(a === 'savadd' ? eur(v) + ' mis de côté pour ' + s.name : eur(v) + ' retiré de ' + s.name); render(); return true;
+    }
+    if (a === 'savdel') { if (!arm('sav:' + b.dataset.id)) return true; S.money.save = (S.money.save || []).filter(function (z) { return z.id !== b.dataset.id; }); save(); render(); return true; }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
