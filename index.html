@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WQ/HsRuzve3CJQnqwgoUvUo1d4ErwyA21cFCC7xoA3I='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qcpe3ojCFTg1QRUOeFvUxJDnmHpIfWnGmxleojj9jHs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -74,7 +74,7 @@ h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 button { font: inherit; color: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-input[type="text"], input[type="email"], input[type="password"], input[type="time"], input[type="date"], input[type="search"], select, textarea {
+input[type="text"], input[type="email"], input[type="password"], input[type="time"], input[type="date"], input[type="search"], input[type="url"], select, textarea {
   font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-height: 48px; padding: 0 14px; width: 100%; min-width: 0;
 }
 textarea { padding: 12px 14px; min-height: 90px; resize: vertical; }
@@ -698,7 +698,7 @@ h3 { font-weight: 600; font-size: 17px; letter-spacing: -0.015em; }
 .list { border-radius: var(--r); }
 .row { border-top-color: var(--line); }
 .mc { border-radius: 10px; }
-input[type="text"], input[type="email"], input[type="password"], input[type="time"], input[type="date"], input[type="search"], input[type="number"], select, textarea { border-radius: 12px; border-color: var(--line); background: var(--surface); }
+input[type="text"], input[type="email"], input[type="password"], input[type="time"], input[type="date"], input[type="search"], input[type="number"], input[type="url"], select, textarea { border-radius: 12px; border-color: var(--line); background: var(--surface); }
 .btn { border-radius: 12px; font-weight: 600; }
 .btn.big { border-radius: 14px; }
 .btn.sm { border-radius: 10px; }
@@ -1097,6 +1097,20 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .daytools .autob { margin: 0; min-height: 76px; flex-direction: column; justify-content: center; gap: 6px; padding: 10px 8px; text-align: center; font-size: 13px; line-height: 1.25; }
 .daytools .autob span { flex: none; }
 .daytools .autob .ic.go { display: none; }
+/* v59 : ergonomie */
+.daytools { grid-template-columns: repeat(3, 1fr); }
+.daytools .planbtn { width: auto; min-height: 76px; padding: 10px 8px; }
+.daytools .autob .ic { width: 20px; height: 20px; color: var(--accent); }
+.qtools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 4px; }
+.qtools .autob { margin: 0; min-height: 72px; flex-direction: column; justify-content: center; gap: 6px; padding: 10px 6px; text-align: center; font-size: 13px; line-height: 1.25; cursor: pointer; }
+.qtools .autob .ic { width: 20px; height: 20px; color: var(--accent); }
+.qtools .autob { background: var(--soft); }
+.subh { margin: 18px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--muted); }
+.card > .subh:first-of-type, .fb > .subh:first-child { margin-top: 6px; }
+.recrow { width: 100%; border: 0; background: var(--soft); border-radius: 12px; text-align: left; color: var(--ink); font: inherit; margin: 4px 0; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.recrow .txt { flex: 1; }
+.wkprint { margin: 12px 0 0; }
+.sh h3 small.cnt { display: inline; margin-left: 6px; font-weight: 500; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1105,7 +1119,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 58;
+  var APP_VER = 59;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1392,13 +1406,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return h;
   }
   function viewWeek() {
-    var a = weekStart(cur), t = todayISO(), h = printBtn() + goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
+    var a = weekStart(cur), t = todayISO(), h = goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = (S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its).filter(kidOk);
       h += '<div class="wday' + (d === t ? ' today' : '') + (dayCol(d) ? ' dc-' + dayCol(d) : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
         '<div class="list">' + holLine(d) + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter' + (its.length ? '' : ' une tâche') + '</button></div></div>';
     }
-    return h + '</section>';
+    return h + '</section>' + printBtn();
   }
   function viewMonth() {
     var m0 = cur.slice(0, 7) + '-01', start = weekStart(m0), t = todayISO(), mo = m0.slice(0, 7);
@@ -1440,8 +1454,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   /* ---------- Objectifs ---------- */
   function viewGoals() {
     var t = todayISO();
-    return weekSoftCard() + shareWeekBtn() + letterForm() + '<p class="sub">Fixe-toi quelques objectifs pour chaque période. Touche un objectif pour lui donner un nombre à atteindre ou des étapes.</p>' +
-      goalsBlock('d', t, true) + goalsBlock('w', t, true) + goalsBlock('m', t, true) + goalsBlock('y', t, true) + habitsManage() + dreamsHtml() + statsHtml();
+    return weekSoftCard() + shareWeekBtn() + '<p class="sub">Fixe-toi quelques objectifs pour chaque période. Touche un objectif pour lui donner un nombre à atteindre ou des étapes.</p>' +
+      goalsBlock('d', t, true) + goalsBlock('w', t, true) + goalsBlock('m', t, true) + goalsBlock('y', t, true) + habitsManage() + dreamsHtml() + letterForm() + statsHtml();
   }
 
   /* ---------- Pomodoro ---------- */
@@ -1523,13 +1537,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<div class="cols"><label class="f">Prénom<input type="text" data-pf="first" value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label><label class="f">Nom<input type="text" data-pf="last" value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
       '<label class="f">Surnom (utilisé pour t’accueillir)<input type="text" data-pf="nick" value="' + esc(p.nick || '') + '" maxlength="30" placeholder="Facultatif"></label>' +
       '<label class="f">Ta devise (affichée sur l’agenda)<input type="text" data-pf="motto" value="' + esc(p.motto || '') + '" maxlength="120" placeholder="Ex. Un pas après l’autre"></label></section>';
-    h += notifCard() + lockCard() + connCard();
+    h += notifCard() + assistCard() + lockCard() + connCard();
     h += '<section class="card"><h3>Apparence</h3><div class="f"><p class="sub">Couleur</p>' + swatches() + '</div>' +
       '<div class="f"><p class="sub">Thème</p>' + segOpt('theme', st.theme, [['auto', 'Automatique'], ['light', 'Clair'], ['dark', 'Sombre']], 'Thème') + '</div>' +
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
-    h += '<section class="card"><h3>Agenda</h3><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'w', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
+    h += '<section class="card"><h3>Agenda</h3><p class="subh">Affichage</p><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'w', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
       '<div class="f"><p class="sub">La semaine commence le</p>' + segOpt('wstart', st.weekStart === 7 ? 7 : 1, [[1, 'Lundi'], [7, 'Dimanche']], 'Premier jour de la semaine') + '</div>' +
-      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + holCard() + vacCard() + kidsCard() + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Dates, documents, animaux</button> <button class="btn sm" data-act="medman">Médicaments</button></div></section>';
+      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '<p class="subh">Fériés et vacances</p>' + holCard() + vacCard() + '<p class="subh">Famille</p>' + kidsCard() + '<p class="subh">À ne pas oublier</p><div class="btns"><button class="btn sm" data-act="dates">Dates, documents, animaux</button><button class="btn sm" data-act="medman">Médicaments</button></div></section>';
     h += '<section class="card"><h3>Sons et vibrations</h3>' + sw2('sound', st.sound, 'Son à la fin d’un Pomodoro') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
       sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + wakeRow() + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
@@ -1538,11 +1552,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       S.cats.map(function (c) { return '<div class="row catrow"><label class="cc2" style="background:' + c.color + '"><span class="vh">Couleur de ' + esc(c.name) + '</span><input type="color" data-catc="' + c.id + '" value="' + c.color + '"></label><input type="text" class="catn" data-catn="' + c.id + '" value="' + esc(c.name) + '" maxlength="30" aria-label="Nom de la catégorie"><button class="x' + (armKey === 'cat:' + c.id ? ' armed' : '') + '" data-act="catdel" data-id="' + c.id + '" aria-label="Supprimer la catégorie ' + esc(c.name) + '">' + (armKey === 'cat:' + c.id ? 'OK ?' : '×') + '</button></div>'; }).join('') +
       '<form class="add" data-kind="cat" autocomplete="off"><input type="text" name="t" placeholder="Nouvelle catégorie" maxlength="30" aria-label="Nouvelle catégorie"><button type="submit" class="addplus" aria-label="Ajouter la catégorie">+</button></form></div></section>';
     h += accountCard();
-    h += '<section class="card"><h3>Mes données</h3><p class="sub">Garde une copie de tes données dans un fichier, ou recharge une copie. Importer remplace tout ce qui est sur cet appareil.</p>' +
-      '<div class="btns"><button class="btn" data-act="export">Exporter (sauvegarde)</button><button class="btn" data-act="csv">Exporter mes tâches (tableur)</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
-      copyBtn() + '<label class="btn" for="imp-csv">Importer depuis Todoist ou TickTick<input type="file" id="imp-csv" accept=".csv,text/csv" hidden></label><button class="btn" data-act="printall">Tout exporter en PDF</button><button class="btn" data-act="trash">Corbeille</button><button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
+    h += '<section class="card"><h3>Mes données</h3><p class="sub">Tes données sont sauvegardées en ligne et copiées chaque semaine sur le serveur.</p>' +
+      '<p class="subh">Copie de sécurité</p><div class="btns"><button class="btn sm" data-act="export">Enregistrer une copie</button><label class="btn sm" for="imp">Recharger une copie<input type="file" id="imp" accept="application/json,.json" hidden></label>' + copyBtn() + '</div><p class="hint">Recharger une copie remplace tout ce qui est sur cet appareil.</p>' +
+      '<p class="subh">Exporter</p><div class="btns"><button class="btn sm" data-act="printall">Tout en PDF</button><button class="btn sm" data-act="csv">Mes tâches (tableur)</button></div>' +
+      '<p class="subh">Venir d’une autre appli</p><div class="btns"><label class="btn sm" for="imp-csv">Importer depuis Todoist ou TickTick<input type="file" id="imp-csv" accept=".csv,text/csv" hidden></label></div>' +
+      '<p class="subh">Supprimés</p><div class="btns"><button class="btn sm" data-act="trash">Corbeille (30 jours)</button><button class="btn sm ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
     h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><button data-act="review">Donner mon avis</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
+    // v59 : sections du profil rangées par thème (de l’usage quotidien vers le compte)
+    var ORD = ['Apparence', 'Agenda', 'Catégories', 'Notifications', 'Assistant', 'Sons et vibrations', 'Connexions', 'Verrouillage de l’appli', 'Mon compte', 'Mes données', 'Abonnement', 'Informations'];
+    var ver = h.slice(h.lastIndexOf('<p class="ver">')), body = h.slice(0, h.lastIndexOf('<p class="ver">')), parts = body.split(/(?=<section class="card)/), head = parts[0].indexOf('<section') === 0 ? '' : parts.shift(), first = parts.shift();
+    var key = function (p) { var m = /<h3>([^<]+)<\/h3>/.exec(p); var i = m ? ORD.indexOf(m[1]) : -1; return i < 0 ? 99 : i; };
+    parts.sort(function (a, b) { return key(a) - key(b); });
+    h = head + first + parts.join('') + ver;
     return foldify(h);
   }
   /* v26 : Profil en sections repliables (l’état ouvert/fermé survit aux mises à jour de l’écran) */
@@ -2156,7 +2178,9 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quickSheet() {
     return '<h2>Nouvelle tâche</h2><form id="qform" autocomplete="off"><label class="f"><span class="vh">Tâche</span><span class="pw"><input type="text" id="q-text" data-keep maxlength="200" placeholder="Ex. Dentiste demain 15h" enterkeyhint="done" value="' + esc(sheet.pre || '') + '">' + micBtn('#q-text') + '</span></label>' +
       '<div id="q-prev">' + nlPreview(parseNL(sheet.pre || '', quickBase())) + '</div>' + (sheet.err ? '<p class="err" role="alert">' + esc(sheet.err) + '</p>' : '') +
-      '<button type="submit" class="btn primary big">Ajouter</button></form>' + magicBtn() + inboxBtn() + scanBtn() + routChips() + '<p class="hint">Écris naturellement : le jour, l’heure, la répétition, « ! » pour une priorité et « #catégorie » sont reconnus automatiquement. Plusieurs choses d’un coup ? Écris-les ou dicte-les, puis touche « Ranger avec l’IA ».</p>';
+      '<button type="submit" class="btn primary big">Ajouter</button></form>' +
+      '<div class="qtools"><button type="button" class="autob" data-act="magic">' + ic('sparkle') + '<span>Plusieurs choses (IA)</span></button><label class="autob" for="scan-file">' + ic('camera') + '<span>Depuis une photo</span><input type="file" id="scan-file" accept="image/*" hidden></label><button type="button" class="autob" data-act="ibadd">' + ic('box') + '<span>Sans date (idées)</span></button></div>' +
+      routChips();
   }
   function quickSubmit() {
     var raw = (document.getElementById('q-text') || {}).value || '', p = parseNL(raw, quickBase());
@@ -2387,9 +2411,17 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return h + '</section>';
   }
   function intentLine(t) { var it = S.intent || {}; return it.d === t && it.text ? '<button class="intent" data-act="plan">' + ic('target') + '<span>' + esc(it.text) + '</span></button>' : ''; }
-  function planCta(t) {
-    if (S.settings.planDone === t) return '';
-    return '<button class="planbtn" data-act="plan">' + ic('sun') + '<span>Planifier ma journée</span>' + ic('arrow', 'go') + '</button>';
+  // v59 : tous les outils du jour au même endroit, en tuiles
+  function dayTools(t, its) {
+    var left = its.filter(function (x) { return !x.done; }), sun = dow(t) === 7 && new Date().getHours() >= 10, tl = function (act, icn, lbl, extra) { return '<button class="autob' + (extra || '') + '" data-act="' + act + '">' + ic(icn) + '<span>' + lbl + '</span></button>'; };
+    var h = '';
+    if (S.settings.planDone !== t) h += '<button class="autob planbtn" data-act="plan">' + ic('sun') + '<span>Planifier</span></button>';
+    if (left.some(function (x) { return !x.time && !x.src.rep; })) h += tl('autoplan', 'sparkle', 'Organiser');
+    if (left.length) h += tl('q15', 'clock', 'J’ai 15 min');
+    if (left.length > 3) h += tl('panic', 'alert', 'Débordé ?');
+    h += '<button class="autob coachb" data-act="coach"' + (sun ? ' data-v="Fais le bilan de ma semaine"' : '') + '>' + ic('sparkle') + '<span>' + (sun ? 'Bilan de la semaine' : 'Coach') + '</span></button>';
+    if ('speechSynthesis' in window) h += '<button class="autob speakb" data-act="speak">' + ic(SPEAK ? 'minus' : 'mic') + '<span>' + (SPEAK ? 'Arrêter la lecture' : 'Écouter ma journée') + '</span></button>';
+    return '<div class="daytools">' + h + '</div>';
   }
   /* --- v30 : la journée sur une ligne de temps --- */
   function hm2m(s) { var p = String(s || '').split(':'); return (+p[0] || 0) * 60 + (+p[1] || 0); }
@@ -2416,9 +2448,10 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quoteLine() { return '<p class="qline">' + esc(quoteOfDay()) + '</p>'; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
-    h += netBadge() + vacBanner(t) + holLine(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
-    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
-    h += habitsDay(t) + kidsPtsBlock() + medsDay(t) + petsDue(t) + '<div class="daytools">' + autoBtn(t) + coachCta(t) + speakBtn() + '</div>' + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
+    // v59 : ordre clair — infos du jour, ma journée, mes tâches, mon quotidien, à venir, bilans
+    h += netBadge() + vacBanner(t) + holLine(t) + letterCard(t) + carryCard() + morningMsg(t) + intentLine(t) + heroToday(its) + dayTools(t, its) + energyBlock(t, its) + dayTimeline(t, its) + freeLeft(t, its);
+    h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + gcalBlock(t) + inboxBlock(t);
+    h += habitsDay(t) + medsDay(t) + petsDue(t) + kidsPtsBlock() + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
     return h + tipCard(t) + quoteLine();
   }
@@ -2889,6 +2922,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function monthReviewCard() {
     var t = todayISO(), key = addMonths(t, -1).slice(0, 7);
     if (+t.slice(8) > 5 || S.settings.mrSeen === key) return '';
+    var ms0 = monthStats(key); if (!ms0.tasks && !ms0.mins) return '';
     return '<section class="card review"><h3>Ton bilan ' + esc(deM(+key.slice(5) - 1)) + '</h3>' + monthBody(key) + '<div class="btns"><button class="btn primary sm" data-act="mshare" data-v="' + key + '">Partager</button><button class="btn sm ghost" data-act="mrok" data-v="' + key + '">OK</button></div></section>';
   }
   function monthSheet() { var key = sheet.v || addMonths(todayISO(), -1).slice(0, 7); return '<h2>Bilan ' + esc(deM(+key.slice(5) - 1)) + ' ' + key.slice(0, 4) + '</h2>' + monthBody(key) + '<button class="btn primary big" data-act="mshare" data-v="' + key + '">Partager</button><button class="btn" data-act="sclose">Fermer</button>'; }
@@ -3007,13 +3041,17 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     else h += '<p class="sub">Reçois tes rappels même quand Cadence est fermée, avec les boutons « Fait » et « Reporter ».</p>';
     if (st === 'off') h += '<button class="btn primary" data-act="pushon"' + (pushBusy ? ' disabled' : '') + '>' + (pushBusy ? 'Un instant…' : 'Activer les notifications') + '</button>';
     if (pushMsg) h += '<p class="sub" role="status">' + esc(pushMsg) + '</p>';
-    h += sw2('ntask', s.nTask !== false, 'Rappels des tâches') + sw2('nhab', s.nHab !== false, 'Rappels des habitudes') + sw2('neve', s.nEve !== false, 'Prépare demain, le soir');
+    h += '<p class="subh">Rappels</p>' + sw2('ntask', s.nTask !== false, 'Rappels des tâches') + sw2('nhab', s.nHab !== false, 'Rappels des habitudes') + sw2('nbday', s.nBday !== false, 'Anniversaires (le jour même à 9 h)') + nxRem();
+    h += '<p class="subh">Résumés</p>' + nxMorn() + sw2('neve', s.nEve !== false, 'Prépare demain, le soir');
     if (s.nEve !== false) h += '<label class="f">Heure de « Prépare demain »<select id="eve-h">' + ['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30'].map(function (x) { return '<option' + ((s.eveHour || '21:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
-    h += sw2('nbday', s.nBday !== false, 'Anniversaires (le jour même à 9 h)');
-    h += nxCard();
-    h += '<div class="f"><p class="sub">Son des rappels quand l’appli est ouverte</p>' + segOpt('remtone', s.remTone || s.tone || 'cloche', TONES, 'Son des rappels') + '</div>';
+    h += nxWeek();
+    h += '<p class="subh">Tranquillité</p>' + nxQuiet();
+    h += '<p class="subh">Espaces communs</p>' + nxSp();
+    h += '<p class="subh">Son</p>';
+    h += '<div class="f"><p class="sub">Quand l’appli est ouverte</p>' + segOpt('remtone', s.remTone || s.tone || 'cloche', TONES, 'Son des rappels') + '</div>';
     h += '<p class="hint">Appli fermée, c’est le son de notification de ton téléphone qui est utilisé (réglable dans les paramètres Android de l’appli).</p>';
     if (st === 'on') h += '<div class="btns"><button class="btn sm" data-act="pushtest">Envoyer une notification test</button><button class="btn sm ghost" data-act="pushoff">Désactiver</button></div>';
+    h += '<button class="btn sm ghost" data-act="nhist">Historique des rappels</button>';
     return h + '</section>';
   }
 
@@ -3157,7 +3195,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   /* ========== v21 : thèmes, budget, agenda partagé ========== */
   var MCATS_OUT = [['courses', '🛒', 'Courses'], ['resto', '🍔', 'Restos et cafés'], ['transport', '🚇', 'Transport'], ['logement', '🏠', 'Logement et factures'], ['loisirs', '🎉', 'Loisirs'], ['shopping', '🛍️', 'Shopping'], ['sante', '💊', 'Santé'], ['abos', '📱', 'Abonnements'], ['autre', '📦', 'Autre dépense']];
   var MCATS_IN = [['salaire', '💼', 'Salaire'], ['ventes', '💸', 'Ventes'], ['aides', '🤝', 'Aides'], ['autrein', '💰', 'Autre revenu']];
-  var moneyMonth = '', moneyType = 'out', moneyCat = 'courses';
+  var moneyMonth = '', moneyType = 'out', moneyCat = 'courses', moneyView = 'mois';
   function mcat(id) { return MCATS_OUT.concat(MCATS_IN).filter(function (c) { return c[0] === id; })[0] || ['autre', '📦', 'Autre']; }
   function eur(n) { try { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n); } catch (e) { return (Math.round(n * 100) / 100) + ' €'; } }
   function monthTx(key) { return (S.money.tx || []).filter(function (t) { return t.d.slice(0, 7) === key; }); }
@@ -3167,8 +3205,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     tx.forEach(function (t) { if (t.type === 'in') inn += t.amt; else { out += t.amt; by[t.cat] = (by[t.cat] || 0) + t.amt; } });
     var isNow = key === todayISO().slice(0, 7), m = parseISO(key + '-01');
     var h = '<div class="pnav"><button class="icb" data-act="mmon" data-v="-1" aria-label="Mois précédent">' + svg('prev') + '</button><div class="pl"><h2>' + esc(cap1(MOIS[m.getMonth()]) + ' ' + m.getFullYear()) + '</h2></div><button class="icb" data-act="mmon" data-v="1" aria-label="Mois suivant">' + svg('next') + '</button></div>';
+    // v59 : budget en 3 parties
+    h = segOpt('mview', moneyView, [['mois', 'Ce mois'], ['suivi', 'Chaque mois'], ['epargne', 'Épargne']], 'Partie du budget') + (moneyView === 'mois' ? h : '');
+    if (moneyView === 'suivi') return h + chartCard() + recCard();
+    if (moneyView === 'epargne') return h + savesCard() + debtsCard();
     var rest = inn - out;
     h += '<div class="tiles mtiles"><div class="tile"><b class="pos">' + eur(inn) + '</b><span>revenus</span></div><div class="tile"><b>' + eur(out) + '</b><span>dépenses</span></div><div class="tile"><b class="' + (rest < 0 ? 'neg' : 'pos') + '">' + eur(rest) + '</b><span>reste</span></div></div>';
+    h += isNow ? forecastTile() : '';
     var cats = moneyType === 'in' ? MCATS_IN : MCATS_OUT;
     if (cats.every(function (c) { return c[0] !== moneyCat; })) moneyCat = cats[0][0];
     h += '<form id="mform" class="card" autocomplete="off">' + segOpt('mtype', moneyType, [['out', 'Dépense'], ['in', 'Revenu']], 'Type') +
@@ -3183,7 +3226,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return '<div class="mbar' + (over ? ' over' : warn ? ' warn' : '') + '"><div class="mbl"><span>' + eico(c[1]) + esc(c[2]) + '</span><b>' + eur(v) + (cp ? ' <small>/ ' + eur(cp) + '</small>' : '') + '</b></div><span class="bar"><i style="width:' + Math.min(100, Math.round(v / (cp || mx) * 100)) + '%"></i></span>' + (over ? '<small class="mw">Plafond dépassé de ' + eur(v - cp) + '</small>' : warn ? '<small class="mw">' + Math.round(v / cp * 100) + ' % du plafond</small>' : '') + '</div>';
     }).join('') + '</div></div>';
     else h += '<button class="btn sm" data-act="mcaps">Fixer des plafonds par catégorie</button>';
-    h += forecastTile() + chartCard() + recCard() + debtsCard() + savesCard();
     if (tx.length) {
       var sorted = tx.slice().sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : (b.at || '') < (a.at || '') ? -1 : 1; }), lastD = '';
       h += '<div class="sh"><h3>Mouvements</h3><span class="cnt">' + tx.length + '</span></div><div class="list">' + sorted.map(function (t) {
@@ -3723,7 +3765,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function copyClear() { try { localStorage.removeItem(COPYK); localStorage.removeItem(COPYD); } catch (e) {} }
   function copyBtn() {
     var c = copyInfo(); if (!c) return '';
-    return '<button class="btn ' + (armKey === 'restore' ? 'armed' : '') + '" data-act="restorecopy">' + (armKey === 'restore' ? 'Confirmer : revenir à la copie' : 'Revenir à la copie du ' + esc(c.label)) + '</button>';
+    return '<button class="btn sm ' + (armKey === 'restore' ? 'armed' : '') + '" data-act="restorecopy">' + (armKey === 'restore' ? 'Confirmer : revenir à la copie' : 'Revenir à la copie du ' + esc(c.label)) + '</button>';
   }
   function copyRestore() {
     var c = copyInfo(); if (!c) { showToast('Aucune copie disponible.'); render(); return; }
@@ -3771,7 +3813,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         render();
       });
   }
-  function magicBtn() { return '<button type="button" class="btn magic" data-act="magic">' + ic('sparkle') + '<span>Ranger avec l’IA (plusieurs choses d’un coup)</span></button>'; }
   function scanSheet() {
     var s = sheet, h = '<h2>' + (s.txt ? 'Saisie magique' : 'Lire une photo') + '</h2>';
     if (s.st === 'busy') return h + '<p class="scanwait">' + ic('sparkle') + '<span>' + (s.txt ? 'L’IA range ton texte…' : 'Lecture de la photo en cours…') + ' Cela prend quelques secondes.</span></p>';
@@ -4320,18 +4361,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   try { if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', function (ev) { if (ev.data && ev.data.cadence === 'later') laterOpen(ev.data.v); }); } catch (e) {}
   // réglages
   var MORN = ['06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00'];
-  function nxCard() {
-    var s = S.settings, q = s.quiet || {}, h = '';
-    h += '<label class="f">Résumé de ma journée, le matin<select id="nx-morn"><option value="">Désactivé</option>' + MORN.map(function (x) { return '<option' + (s.nMorn === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>';
-    h += sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)');
-    h += '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
-    if (S.cats.length) h += '<div class="f"><p class="sub">Rappels par catégorie</p><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></div>';
-    h += sw2('wkmail', !!S.settings.wkMail, 'Résumé de ma semaine par e-mail (le dimanche vers 18 h)');
-    h += sw2('tipstog', S.settings.tips !== false, 'Astuce du jour (dans Aujourd’hui)');
-    h += sw2('mmsgtog', S.settings.mmsg !== false, 'Le mot du coach chaque matin (dans Aujourd’hui)');
-    h += sw2('spall', !!s.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)');
-    h += '<button class="btn sm" data-act="nhist">Historique des rappels</button>';
+  function nxRem() { var s = S.settings; return sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)'); }
+  function nxMorn() { var s = S.settings; return '<label class="f">Résumé de ma journée, le matin<select id="nx-morn"><option value="">Désactivé</option>' + MORN.map(function (x) { return '<option' + (s.nMorn === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label>'; }
+  function nxWeek() { return sw2('wkmail', !!S.settings.wkMail, 'Résumé de ma semaine par e-mail (le dimanche vers 18 h)'); }
+  function nxQuiet() {
+    var s = S.settings, q = s.quiet || {}, h = '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
+    if (S.cats.length) h += '<details class="gchelp"><summary>Rappels par catégorie</summary><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></details>';
     return h;
+  }
+  function nxSp() { return sw2('spall', !!S.settings.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)'); }
+  // v59 : carte « Assistant » (IA, astuces)
+  function assistCard() {
+    var s = S.settings;
+    return '<section class="card"><h3>Assistant</h3>' + sw2('mmsgtog', s.mmsg !== false, 'Le mot du coach chaque matin') + coachVoiceRow() + sw2('tipstog', s.tips !== false, 'Astuce du jour') + '<p class="hint">Les fonctions d’IA (coach, photo, saisie magique, recettes) utilisent Google Gemini. Ce qui est envoyé est expliqué dans la politique de confidentialité.</p></section>';
   }
   function v40Click(a, b) {
     var s = S.settings;
@@ -4378,10 +4420,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       if (ok) { busy.push([at, at + len]); busy.sort(function (p, q) { return p[0] - q[0]; }); plan.push({ x: x, t: hm(at), len: len }); } else left.push(x);
     });
     return { plan: plan.sort(function (p, q) { return p.t < q.t ? -1 : 1; }), left: left };
-  }
-  function autoBtn(t) {
-    if (!itemsOn(t).some(function (x) { return !x.time && !x.done && !x.src.rep; })) return '';
-    return '<button class="autob" data-act="autoplan">' + ic('sparkle') + '<span>Organiser ma journée</span>' + ic('arrow', 'go') + '</button>';
   }
   function autoSheet() {
     var t = todayISO(), r = sheet.r || (sheet.r = autoPlan(t)), h = '<h2>Organiser ma journée</h2>';
@@ -4497,10 +4535,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     });
   }
   function coachScroll() { setTimeout(function () { var m = document.getElementById('coachm'); if (m) m.scrollTop = m.scrollHeight; }, 30); }
-  function coachCta(t) {
-    var sun = dow(t) === 7 && new Date().getHours() >= 10;
-    return '<button class="autob coachb" data-act="coach"' + (sun ? ' data-v="Fais le bilan de ma semaine"' : '') + '>' + ic('sparkle') + '<span>' + (sun ? 'Ton bilan de la semaine avec le coach' : 'Demander au coach') + '</span>' + ic('arrow', 'go') + '</button>';
-  }
   function v42Click(a, b) {
     if (a === 'coach') { sheet = { k: 'coach' }; COACH.err = ''; render(); coachScroll(); if (b.dataset.v && !COACH.hist.some(function (m) { return m.t === b.dataset.v; })) coachAsk(b.dataset.v); return true; }
     if (a === 'coachq') { coachAsk(b.dataset.v); return true; }
@@ -4608,7 +4642,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (pr.length) s += 'Ta priorité : ' + pr[0].text + '. ';
     return s + 'Bonne journée !';
   }
-  function speakBtn() { return 'speechSynthesis' in window ? '<button class="autob speakb" data-act="speak">' + ic(SPEAK ? 'minus' : 'sun') + '<span>' + (SPEAK ? 'Arrêter la lecture' : 'Écouter ma journée') + '</span>' + ic('arrow', 'go') + '</button>' : ''; }
   function speakDay() {
     try {
       var SS = window.speechSynthesis;
@@ -4685,10 +4718,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return '<p class="freel">' + ic('hourglass') + '<span>Temps libre restant aujourd’hui : <b>' + (free >= 60 ? Math.floor(free / 60) + ' h ' + (free % 60 ? p2(free % 60) : '') : free + ' min') + '</b></span></p>';
   }
   // boutons « J’ai 15 min » et « Je suis débordé »
-  function quickHelp(t, its) {
-    var left = its.filter(function (x) { return !x.done; }); if (!left.length) return '';
-    return '<div class="qhelp"><button class="chip" data-act="q15">' + ic('clock') + 'J’ai 15 min</button>' + (left.length > 3 ? '<button class="chip" data-act="panic">' + ic('alert') + 'Je suis débordé</button>' : '') + '</div>';
-  }
   function panicSheet() {
     var t = todayISO(), left = itemsOn(t).filter(function (x) { return !x.done; });
     if (!sheet.keep) sheet.keep = left.slice().sort(function (a, b) { return (b.prio - a.prio) || ((a.time || '99') < (b.time || '99') ? -1 : 1); }).slice(0, 3).map(function (x) { return x.id; });
@@ -4797,7 +4826,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var ms = S.meds || []; if (!ms.length) return '';
     var lg = (S.medlog || {})[t] || {}, n = 0, dn = 0, h = '';
     ms.forEach(function (m) { (m.times || []).forEach(function (tm) { n++; var k = m.id + '|' + tm, on = !!lg[k]; if (on) dn++; h += '<button class="chip medc" aria-pressed="' + on + '" data-act="medtog" data-v="' + k + '">' + ic(on ? 'check' : 'pill') + esc(tm + ' · ' + m.name) + '</button>'; }); });
-    return '<section class="blk"><div class="sh"><h3>Médicaments</h3><span class="cnt">' + dn + '/' + n + '</span></div><div class="chips">' + h + '</div><button class="lnk" data-act="medman">Gérer</button></section>';
+    return '<section class="blk"><div class="sh"><h3>Médicaments <small class="cnt">' + dn + '/' + n + '</small></h3><button class="lnk" data-act="medman">Gérer</button></div><div class="chips">' + h + '</div></section>';
   }
   function medSheet() {
     var h = '<h2>Médicaments</h2><p class="sub">Un rappel à chaque heure choisie, et tu coches « pris » dans Aujourd’hui.</p><div class="list">' + (S.meds || []).map(function (m) {
@@ -4863,7 +4892,6 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return '<div class="row ibrow"><span class="txt"><span>' + esc(z.text) + '</span></span><button class="btn sm" data-act="ibplan" data-id="' + z.id + '" data-v="' + t + '">Aujourd’hui</button><button class="btn sm ghost" data-act="ibplan" data-id="' + z.id + '" data-v="' + addDays(t, 1) + '">Demain</button><button class="x" data-act="ibdel" data-id="' + z.id + '" aria-label="Retirer ' + esc(z.text) + '">×</button></div>';
     }).join('') + '</div></section>';
   }
-  function inboxBtn() { return '<button type="button" class="btn ghost sm ibadd" data-act="ibadd">' + ic('box') + '<span>Mettre dans la boîte à idées (sans date)</span></button>'; }
   // modèles de projets
   var PTPL = [['Déménagement', '📦', ['Trier et donner', 'Réserver le camion', 'Faire les cartons', 'Changer d’adresse (poste, banque, CAF)', 'Résilier / transférer internet et énergie', 'État des lieux']], ['Voyage', '✈️', ['Réserver le transport', 'Réserver le logement', 'Vérifier passeport et papiers', 'Assurance voyage', 'Faire la valise', 'Préparer l’itinéraire']], ['Rentrée', '📚', ['Liste des fournitures', 'Acheter les fournitures', 'Inscriptions activités', 'Assurance scolaire', 'Préparer les vêtements']], ['Fête / anniversaire', '🎉', ['Choisir la date', 'Liste des invités', 'Envoyer les invitations', 'Commander le gâteau', 'Courses', 'Décoration']]];
   function projTpl() { return '<div class="chips ptpl"><span class="sub">Modèles :</span>' + PTPL.map(function (p, i) { return '<button type="button" class="chip" data-act="ptpl" data-v="' + i + '">' + eico(p[1]) + esc(p[0]) + '</button>'; }).join('') + '</div>'; }
@@ -4961,7 +4989,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   // menus de la semaine → courses
   function menusPane() {
     var a = weekStart(todayISO()), wk = a, mn = (S.menus || {})[wk] || {}, h = recipesBlock() + '<h3 class="mnuh">Menus de la semaine</h3><p class="sub">Les repas de la semaine, puis les ingrédients envoyés à ta liste de courses en un geste.</p><div class="card mnu">';
-    for (var i = 0; i < 7; i++) { var d = addDays(a, i), v = mn[d] || {}; h += '<div class="mnd"><b>' + esc(cap1(JOURS[dow(d) - 1])) + '</b><input type="text" data-mnu="' + d + '|m" value="' + esc(v.m || '') + '" maxlength="80" placeholder="Midi" aria-label="Midi ' + esc(dayShort(d)) + '"><input type="text" data-mnu="' + d + '|s" value="' + esc(v.s || '') + '" maxlength="80" placeholder="Soir" aria-label="Soir ' + esc(dayShort(d)) + '"></div>'; }
+    for (var i = 0; i < 7; i++) { var d = addDays(a, i), v = mn[d] || {}; h += '<div class="mnd"><b>' + esc(cap1(JOURS[dow(d) - 1])) + '</b><input type="text" data-nomic data-mnu="' + d + '|m" value="' + esc(v.m || '') + '" maxlength="80" placeholder="Midi" aria-label="Midi ' + esc(dayShort(d)) + '"><input type="text" data-nomic data-mnu="' + d + '|s" value="' + esc(v.s || '') + '" maxlength="80" placeholder="Soir" aria-label="Soir ' + esc(dayShort(d)) + '"></div>'; }
     h += '</div><div class="card"><h3>Ingrédients</h3><textarea id="mnu-ing" rows="5" maxlength="2000" placeholder="Un ingrédient par ligne">' + esc(((S.menuIng || {})[wk]) || '') + '</textarea><div class="btns"><button class="btn sm" data-act="mnuai"' + (MNU.busy ? ' disabled' : '') + '>' + ic('sparkle') + '<span>' + (MNU.busy ? 'Recherche…' : 'Trouver les ingrédients avec l’IA') + '</span></button></div>' +
       '<div class="btns"><button class="btn primary sm" data-act="mnushop" data-v="me">Vers ma liste Courses</button>' + (cloudOn && auth && SP.spaces.length ? SP.spaces.map(function (z) { return '<button class="btn sm" data-act="mnushop" data-v="' + z.id + '">Vers les courses de « ' + esc(z.name) + ' »</button>'; }).join('') : '') + '</div></div>';
     return h;
@@ -5272,6 +5300,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function v54Click(a, b) {
     var t = todayISO();
+    if (a === 'mview') { moneyView = b.dataset.v; render(); window.scrollTo(0, 0); return true; }
     if (a === 'debtadd') {
       var who = ((document.getElementById('debt-who') || {}).value || '').trim(), amt = parseAmt((document.getElementById('debt-amt') || {}).value), dir = (document.getElementById('debt-dir') || {}).value || 'me', note = ((document.getElementById('debt-note') || {}).value || '').trim();
       if (!who || !amt) { showToast('Écris qui et combien.'); return true; }
@@ -5323,7 +5352,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function holLine(day) { return holOn(day).map(function (h) { return '<p class="holl ' + h.k + '">' + ic(h.k === 'fer' ? 'star' : 'sun') + '<span>' + esc(h.n) + (h.k === 'fer' ? ' · jour férié' : '') + '</span></p>'; }).join(''); }
   function holCard() {
     var s = S.settings;
-    return '<div class="f"><p class="sub">Jours fériés et vacances scolaires</p>' + sw2('feries', s.feries !== false, 'Afficher les jours fériés') + '<label class="f">Vacances scolaires<select id="zone-sel"><option value="">Ne pas afficher</option>' + ['A', 'B', 'C'].map(function (z) { return '<option value="' + z + '"' + (s.zone === z ? ' selected' : '') + '>Zone ' + z + '</option>'; }).join('') + '</select></label><p class="hint">Zone A : Besançon, Bordeaux, Clermont, Dijon, Grenoble, Limoges, Lyon, Poitiers. Zone B : Aix-Marseille, Amiens, Lille, Nancy-Metz, Nantes, Nice, Normandie, Orléans-Tours, Reims, Rennes, Strasbourg. Zone C : Créteil, Montpellier, Paris, Toulouse, Versailles.</p></div>';
+    return '<div class="f">' + sw2('feries', s.feries !== false, 'Afficher les jours fériés') + '<label class="f">Vacances scolaires<select id="zone-sel"><option value="">Ne pas afficher</option>' + ['A', 'B', 'C'].map(function (z) { return '<option value="' + z + '"' + (s.zone === z ? ' selected' : '') + '>Zone ' + z + '</option>'; }).join('') + '</select></label><details class="gchelp"><summary>Quelle est ma zone ?</summary><p class="hint">Zone A : Besançon, Bordeaux, Clermont, Dijon, Grenoble, Limoges, Lyon, Poitiers. Zone B : Aix-Marseille, Amiens, Lille, Nancy-Metz, Nantes, Nice, Normandie, Orléans-Tours, Reims, Rennes, Strasbourg. Zone C : Créteil, Montpellier, Paris, Toulouse, Versailles.</p></details></div>';
   }
   // import Todoist / TickTick (fichier CSV)
   function csvParse(txt) {
