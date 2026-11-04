@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hZ4MloSYfYxROMtU54G/3amJcbvWG9KpVLPS3pd/AUc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sfMbPj+rNFvNDZA+krCqtTyfL4SaQIWJHaMtBsmncAA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#5B4BFF">
@@ -853,6 +853,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .star .ic { fill: currentColor; stroke-width: 1.2; }
 .row .txt small .rp, .row .txt small .rm { display: inline-flex; align-items: center; gap: 3px; }
 .msep { color: var(--line); }
+.top .date #clk { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -861,7 +862,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 26;
+  var APP_VER = 27;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1355,7 +1356,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
-    return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
+    return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + (tab === 'today' ? '<span class="clk"> · <time id="clk">' + nowHM() + '</time></span>' : '') + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
       (tab !== 'profile' ? avatarHtml(false, true) : '') + '</header>';
   }
   function navHtml() {
@@ -3784,7 +3785,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   wxLoad();
   setTimeout(function () { maybePlan(); }, 700);
   setInterval(function () { wxLoad(); if (sheet && sheet.k === 'slist' && auth && !document.hidden && !editing()) slFetch(); if (tab === 'space' && auth && !document.hidden && !editing() && !rtLive()) spFetch(true); }, 15000);
-  setInterval(function () { timerLoop(); remCheck(); if (todayISO() !== lastDay) { var was = lastDay; lastDay = todayISO(); if (cur === was) cur = lastDay; if (!editing() && !sheet) render(); maybePlan(); pushSync(false); } }, 1000);
+  setInterval(function () { var ck = document.getElementById('clk'); if (ck && ck.textContent !== nowHM()) ck.textContent = nowHM(); timerLoop(); remCheck(); if (todayISO() !== lastDay) { var was = lastDay; lastDay = todayISO(); if (cur === was) cur = lastDay; if (!editing() && !sheet) render(); maybePlan(); pushSync(false); } }, 1000);
   
 })();
 </script>
