@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ehff8hFT2DpYC6aXV++k27NIpUcg9gId93bbT6zaAS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ahF3uz2cQCHtvrS74USQicF7Bus2XK9wY11Sjcb/mS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -935,6 +935,30 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .rtc { display: grid; gap: 8px; margin-bottom: 10px; }
 .rtc textarea { width: 100%; font: inherit; }
 .rtc .btn { justify-self: start; }
+/* v39 : outils */
+.top .hact { display: flex; align-items: center; gap: 8px; }
+.hsrch { width: 40px; height: 40px; border-radius: 50%; }
+.hsrch .ic { width: 22px; height: 22px; }
+.focusv { text-align: center; display: grid; gap: 14px; padding: 8px 0 4px; }
+.focusv h2 { font-size: 26px; margin: 0; }
+.focusv .seg { justify-self: center; }
+.fclk { font-size: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -1px; margin: 6px 0; }
+.focusv .btns { justify-content: center; }
+.wkprint { margin: 0 0 10px; gap: 6px; }
+.ntools { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.ntx .nh { display: block; font-weight: 700; font-size: 1.05em; }
+.ntx .nln, .ntx .nli { display: block; }
+.ntx .nli::before { content: '•'; margin-right: 6px; color: var(--accent); }
+.ncb2 { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.ncb2 svg { width: 16px; height: 16px; border: 1.5px solid var(--muted); border-radius: 4px; padding: 1px; stroke: transparent; flex: none; }
+.ncb2.on svg { background: var(--accent); border-color: var(--accent); stroke: #fff; }
+.ncb2.on > span { text-decoration: line-through; color: var(--muted); }
+.aisleh { display: flex; gap: 6px; align-items: center; margin: 12px 0 4px; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .3px; }
+@media print {
+  body.printwk .top, body.printwk nav, body.printwk .fab, body.printwk .seg, body.printwk .pnav .icb, body.printwk .today-btn, body.printwk .addline, body.printwk .wkprint, body.printwk .gsec form, body.printwk .toast { display: none !important; }
+  body.printwk { background: #fff !important; color: #000 !important; }
+  body.printwk .wday { break-inside: avoid; }
+}
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -943,7 +967,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 38;
+  var APP_VER = 39;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1226,7 +1250,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     return h;
   }
   function viewWeek() {
-    var a = weekStart(cur), t = todayISO(), h = goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
+    var a = weekStart(cur), t = todayISO(), h = printBtn() + goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its;
       h += '<div class="wday' + (d === t ? ' today' : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
@@ -1366,7 +1390,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
     h += '<section class="card"><h3>Sons et vibrations</h3>' + sw2('sound', st.sound, 'Son à la fin d’un Pomodoro') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
-      sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
+      sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + wakeRow() + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
     h += '<section class="card prem"><h3>Abonnement</h3><p class="sub"><span class="pill">Gratuit</span> Pendant le lancement, tout Cadence est gratuit. Une offre Premium arrivera plus tard.</p><button class="btn" data-act="legal" data-v="premium">Découvrir Premium</button></section>';
     h += '<section class="card"><h3>Catégories</h3><p class="sub">Touche une couleur pour la changer. Choisis la catégorie d’une tâche en la modifiant.</p><div class="list">' +
       S.cats.map(function (c) { return '<div class="row catrow"><label class="cc2" style="background:' + c.color + '"><span class="vh">Couleur de ' + esc(c.name) + '</span><input type="color" data-catc="' + c.id + '" value="' + c.color + '"></label><input type="text" class="catn" data-catn="' + c.id + '" value="' + esc(c.name) + '" maxlength="30" aria-label="Nom de la catégorie"><button class="x' + (armKey === 'cat:' + c.id ? ' armed' : '') + '" data-act="catdel" data-id="' + c.id + '" aria-label="Supprimer la catégorie ' + esc(c.name) + '">' + (armKey === 'cat:' + c.id ? 'OK ?' : '×') + '</button></div>'; }).join('') +
@@ -1424,7 +1448,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         '<button type="submit" class="btn primary big">' + (isAdd ? 'Ajouter' : 'Enregistrer') + '</button>';
       if (!isAdd) h += '<button type="button" class="btn" data-act="postpone" data-id="' + x.id + '" data-d="' + (sheet.d || x.d) + '">Reporter à demain</button>';
       if (!isAdd) h += gcalHtml(x, sheet.d || x.d);
-      if (!isAdd) h += '<div class="btns">' + shareBtn(x) + '</div>';
+      if (!isAdd) h += '<div class="btns">' + shareBtn(x) + '<button type="button" class="btn sm ghost" data-act="ifocus" data-id="' + x.id + '" data-d="' + sheet.d + '">' + ic('target') + '<span>Mode Focus</span></button></div>';
       if (!isAdd) h += x.rep ? '<div class="btns"><button type="button" class="btn danger" data-act="idelone" data-id="' + x.id + '" data-d="' + sheet.d + '">Supprimer ce jour</button><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer la série</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>' :
         '<div class="btns"><button type="button" class="btn danger" data-act="idel" data-id="' + x.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div>';
       h += '</form>';
@@ -1434,13 +1458,13 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 
   /* ---------- page ---------- */
   var TABS = [['today', 'Aujourd’hui'], ['agenda', 'Agenda'], ['space', 'Ensemble'], ['notes', 'Notes'], ['budget', 'Budget'], ['goals', 'Objectifs'], ['pomo', 'Pomodoro']];
-  var SHEETS = { routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
-  var SHEETN = { routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
+  var SHEETS = { focus: focusSheet, routines: routSheet, scan: scanSheet, city: citySheet, dates: datesSheet, plan: planSheet, note: noteSheet, list: listSheet, slist: slSheet, proj: projSheet, goal: goalSheet, dream: dreamSheet, habit: habitSheet, month: monthSheet, caps: capsSheet, spitem: spItemSheet, spinv: spInvSheet, spset: spSetSheet, spnew: spNewSheet };
+  var SHEETN = { focus: 'Mode Focus', routines: 'Routines', scan: 'Scanner un agenda papier', add: 'Ajouter une tâche', edit: 'Modifier la tâche', legal: 'Informations', quick: 'Nouvelle tâche', city: 'Ville pour la météo', dates: 'Dates importantes', plan: 'Plan de la journée', note: 'Note', list: 'Liste', slist: 'Liste partagée', proj: 'Projet', goal: 'Objectif', dream: 'Rêve', habit: 'Habitude', month: 'Bilan du mois', caps: 'Plafonds du budget', spitem: 'Élément partagé', spinv: 'Inviter', spset: 'Réglages de l’espace', spnew: 'Nouvel espace' };
   function header() {
     var t = todayISO();
     var title = tab === 'today' ? greeting() + (callName() ? ' ' + callName() : '') : tab === 'agenda' ? 'Agenda' : tab === 'space' ? 'Ensemble' : tab === 'notes' ? 'Notes et listes' : tab === 'budget' ? 'Budget' : tab === 'goals' ? 'Objectifs et progrès' : tab === 'pomo' ? 'Pomodoro' : 'Profil';
     return '<header class="top"><div><p class="date">' + esc(dayLong(t)) + (tab === 'today' ? '<span class="clk"> · <time id="clk">' + nowHM() + '</time></span>' : '') + '</p><h1>' + esc(title) + '</h1>' + (tab === 'today' && S.profile.motto ? '<p class="motto">« ' + esc(S.profile.motto) + ' »</p>' : '') + '</div>' +
-      (tab !== 'profile' ? avatarHtml(false, true) : '') + '</header>';
+      '<div class="hact">' + searchIc() + (tab !== 'profile' ? avatarHtml(false, true) : '') + '</div></header>';
   }
   function navHtml() {
     var running = S.timers.some(function (t) { return t.phase !== 'idle' && !t.paused; });
@@ -1501,6 +1525,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v39Click(a, b)) return;
     if (v38Click(a, b)) return;
     if (v37Click(a)) return;
     if (v33Click(a, b)) return;
@@ -2319,7 +2344,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   var NOTECOL = [['', 'Blanc'], ['y', 'Jaune'], ['o', 'Orange'], ['p', 'Rose'], ['g', 'Vert'], ['b', 'Bleu']];
   function notesSorted() { return (S.notes || []).slice().sort(function (a, b) { if (!!a.pin !== !!b.pin) return a.pin ? -1 : 1; return (b.up || '') < (a.up || '') ? -1 : 1; }); }
   function noteCard(n) {
-    return '<button class="nt' + (n.color ? ' nc-' + n.color : '') + '" data-act="nedit" data-id="' + n.id + '">' + (n.pin ? '<span class="npin" aria-label="Épinglée">' + eico('📌') + '</span>' : '') + '<span class="ntx">' + esc(n.text.length > 220 ? n.text.slice(0, 220) + '…' : n.text) + '</span><small>' + esc(relDay(n.up.slice(0, 10)) || dayShort(n.up.slice(0, 10))) + '</small></button>';
+    return '<button class="nt' + (n.color ? ' nc-' + n.color : '') + '" data-act="nedit" data-id="' + n.id + '">' + (n.pin ? '<span class="npin" aria-label="Épinglée">' + eico('📌') + '</span>' : '') + '<span class="ntx">' + noteFmt(n, n.text.length > 220 ? n.text.slice(0, 220) + '…' : n.text) + '</span><small>' + esc(relDay(n.up.slice(0, 10)) || dayShort(n.up.slice(0, 10))) + '</small></button>';
   }
   function notesPane() {
     var ns = notesSorted();
@@ -2333,7 +2358,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (sheet.color === undefined) sheet.color = n.color || '';
     if (sheet.pin === undefined) sheet.pin = !!n.pin;
     return '<h2>Note</h2><form id="neform" autocomplete="off"><label class="vh" for="ne-text">Texte de la note</label><textarea id="ne-text" data-keep maxlength="2000" rows="6">' + esc(n.text) + '</textarea>' +
-      '<div class="btns">' + micBtn('#ne-text') + '</div><div class="f"><p class="sub">Couleur</p><div class="ncols" role="group" aria-label="Couleur">' + NOTECOL.map(function (c) { return '<button type="button" class="ncb nc-' + (c[0] || 'w') + '" aria-pressed="' + (sheet.color === c[0]) + '" aria-label="' + c[1] + '" data-act="ncol" data-v="' + c[0] + '"></button>'; }).join('') + '</div></div>' +
+      noteTools() + '<div class="btns">' + micBtn('#ne-text') + '</div><div class="f"><p class="sub">Couleur</p><div class="ncols" role="group" aria-label="Couleur">' + NOTECOL.map(function (c) { return '<button type="button" class="ncb nc-' + (c[0] || 'w') + '" aria-pressed="' + (sheet.color === c[0]) + '" aria-label="' + c[1] + '" data-act="ncol" data-v="' + c[0] + '"></button>'; }).join('') + '</div></div>' +
       '<button type="button" class="chip" aria-pressed="' + !!sheet.pin + '" data-act="npin">Épingler en haut</button>' +
       '<button type="submit" class="btn primary big">Enregistrer</button><button type="button" class="btn" data-act="n2task" data-id="' + n.id + '">Transformer en tâche</button>' +
       '<div class="btns"><button type="button" class="btn danger" data-act="ndel" data-id="' + n.id + '">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div></form>';
@@ -2354,6 +2379,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     (SL.lists || []).forEach(function (l) { var it = SL.items[l.id] || []; if (has(l.name) || it.some(function (i) { return has(i.text); })) res.push('<button class="row sr" data-act="openslist" data-id="' + l.id + '"><span class="he">' + eico('👥') + '</span><span class="txt"><span>' + esc(l.name) + '</span><small>Liste partagée</small></span></button>'); });
     (S.goals || []).forEach(function (g) { if (has(g.text)) res.push('<button class="row sr" data-act="gedit" data-id="' + g.id + '"><span class="he">' + eico('🎯') + '</span><span class="txt"><span>' + esc(g.text) + '</span><small>Objectif</small></span></button>'); });
     (S.projects || []).forEach(function (p) { if (has(p.name)) res.push('<button class="row sr" data-act="openproj" data-id="' + p.id + '"><span class="he">' + eico(p.emoji || '📁') + '</span><span class="txt"><span>' + esc(p.name) + '</span><small>Projet</small></span></button>'); });
+    res = res.concat(moneyHits(has));
     if (!res.length) return '<p class="empty card">Aucun résultat pour « ' + esc(srchQ.trim()) + ' ».</p>';
     return '<div class="list">' + res.slice(0, 30).join('') + '</div>' + (res.length > 30 ? '<p class="hint">' + (res.length - 30) + ' autres résultats : précise ta recherche.</p>' : '');
   }
@@ -2373,10 +2399,16 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (SL.msg) h += '<p class="sub" role="status">' + esc(SL.msg) + '</p>';
     return h;
   }
+  // v39 : une liste de courses est rangée par rayon
+  function lItems(l) {
+    if (listEmoji(l.name) !== '🛒') return l.items;
+    var order = AISLES.map(function (a) { return a[0]; }).concat(['Autre']), last = '';
+    return l.items.map(function (i, k) { return { i: i, k: k, a: guessAisle(i.t) || 'Autre' }; }).sort(function (p, q) { return (order.indexOf(p.a) - order.indexOf(q.a)) || (p.k - q.k); }).map(function (o) { var c = Object.create(o.i); c.aisleH = o.a !== last ? o.a : ''; last = o.a; return c; });
+  }
   function listSheet() {
     var l = listById(sheet.id); if (!l) { sheet = null; return ''; }
     var h = '<div class="lhead"><span class="le">' + eico(l.emoji || '📝') + '</span><input type="text" class="lname" data-lname="' + l.id + '" value="' + esc(l.name) + '" maxlength="60" aria-label="Nom de la liste"></div><div class="list">' +
-      l.items.map(function (i) { return '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.t) + '" data-act="litog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.t) + '</span></div><button class="x" data-act="lidel" data-id="' + i.id + '" aria-label="Retirer ' + esc(i.t) + '">×</button></div>'; }).join('') +
+      lItems(l).map(function (i) { return (i.aisleH ? '<p class="aisleh">' + eico(aisleEmo(i.aisleH)) + '<span>' + esc(i.aisleH) + '</span></p>' : '') + '<div class="row' + (i.done ? ' done' : '') + '"><button class="ck" aria-pressed="' + !!i.done + '" aria-label="' + (i.done ? 'Décocher' : 'Cocher') + ' : ' + esc(i.t) + '" data-act="litog" data-id="' + i.id + '">' + CHECK + '</button><div class="txt"><span>' + esc(i.t) + '</span></div><button class="x" data-act="lidel" data-id="' + i.id + '" aria-label="Retirer ' + esc(i.t) + '">×</button></div>'; }).join('') +
       '<form class="add" data-kind="litem" data-id="' + l.id + '" autocomplete="off"><input type="text" name="t" placeholder="Ajouter un élément" maxlength="200" aria-label="Nouvel élément"><button type="submit" class="addplus" aria-label="Ajouter">+</button></form></div>';
     var dn = l.items.filter(function (i) { return i.done; }).length;
     h += '<div class="btns">' + (dn ? '<button class="btn sm" data-act="liclear" data-id="' + l.id + '">Retirer les cochés (' + dn + ')</button>' : '') + (cloudOn && auth ? '<button class="btn sm primary" data-act="lshare" data-id="' + l.id + '"' + (SL.busy ? ' disabled' : '') + '>Partager cette liste</button>' : '') + '</div>';
@@ -3870,6 +3902,97 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function v38Change(el) {
     var d = el.dataset || {};
     if (d.rtn || d.rtt) { routs().forEach(function (r) { if (r.id === (d.rtn || d.rtt)) { if (d.rtn) r.name = (el.value.trim() || r.name).slice(0, 40); else r.tasks = el.value.slice(0, 1500); } }); save(); return true; }
+    return false;
+  }
+  /* ---------- v39 : outils (recherche partout, mode Focus, écran allumé, impression, notes riches, partager vers Cadence) ---------- */
+  // recherche : bouton dans l’en-tête
+  function searchIc() { return tab === 'profile' ? '' : '<button class="icb hsrch" data-act="gsearch" aria-label="Rechercher partout">' + ic('search') + '</button>'; }
+  function moneyHits(has) {
+    return ((S.money && S.money.tx) || []).filter(function (t) { return has(t.lab || '') || has((mcat(t.cat) || [])[2] || ''); }).slice(0, 10).map(function (t) {
+      var c = mcat(t.cat);
+      return '<button class="row sr" data-act="tab" data-v="budget"><span class="he">' + eico(c[1]) + '</span><span class="txt"><span>' + esc(t.lab || c[2]) + ' · ' + (t.type === 'in' ? '+' : '−') + eur(t.amt) + '</span><small>Budget · ' + esc(cap1(relDay(t.d) || dayLong(t.d))) + '</small></span></button>';
+    });
+  }
+  // mode Focus
+  var FOC = null;
+  function focLeft() { return !FOC ? 0 : FOC.run ? Math.max(0, FOC.end - Date.now()) : FOC.left; }
+  function focusSheet() {
+    var x = byId(sheet.id); if (!x) { sheet = null; return ''; }
+    if (!FOC || FOC.id !== x.id) FOC = { id: x.id, d: sheet.d || x.d, min: 25, left: 25 * 60000, run: false, end: 0, used: 0 };
+    var h = '<div class="focusv"><p class="sub">Mode Focus</p><h2>' + esc(x.text) + '</h2>';
+    if (!FOC.run && FOC.left === FOC.min * 60000) h += '<div class="seg" role="group" aria-label="Durée">' + [15, 25, 45, 60].map(function (m) { return '<button aria-pressed="' + (FOC.min === m) + '" data-act="focmin" data-v="' + m + '">' + m + ' min</button>'; }).join('') + '</div>';
+    h += '<p class="fclk" id="fclk" role="timer">' + clockTxt(focLeft()) + '</p>';
+    h += '<div class="btns">' + (FOC.run ? '<button class="btn" data-act="focpause">Pause</button>' : '<button class="btn primary" data-act="focgo">' + (FOC.left < FOC.min * 60000 ? 'Reprendre' : 'Démarrer') + '</button>') + '<button class="btn primary" data-act="focdone">' + ic('check') + '<span>C’est fait</span></button></div>';
+    return h + '<button class="btn ghost" data-act="focstop">Quitter le mode Focus</button></div>';
+  }
+  function focTick() {
+    if (!FOC || !FOC.run) return;
+    var l = focLeft(), el = document.getElementById('fclk'); if (el) el.textContent = clockTxt(l);
+    if (l <= 0) { FOC.run = false; FOC.left = 0; focSave(); try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {} uiSound('done'); showToast('Temps écoulé. Bravo pour ta concentration !'); render(); }
+  }
+  setInterval(focTick, 1000);
+  function focSave() { if (!FOC) return; var x = byId(FOC.id), spent = Math.round((FOC.min * 60000 - focLeft()) / 60000) - FOC.used; if (x && spent > 0) { x.focus = (x.focus || 0) + spent; FOC.used += spent; save(); } }
+  // écran allumé (réglage)
+  var WL = null;
+  function wakeWanted() { return !!S.settings.wake && !document.hidden && ((FOC && FOC.run) || S.timers.some(function (t) { return t.phase !== 'idle' && !t.paused; })); }
+  function wakeCheck() {
+    if (!('wakeLock' in navigator)) return;
+    if (wakeWanted() && !WL) { WL = 'pending'; navigator.wakeLock.request('screen').then(function (l) { WL = l; l.addEventListener('release', function () { WL = null; }); }).catch(function () { WL = null; }); }
+    else if (!wakeWanted() && WL && WL !== 'pending') { try { WL.release(); } catch (e) {} WL = null; }
+  }
+  setInterval(wakeCheck, 2000); document.addEventListener('visibilitychange', wakeCheck);
+  function wakeRow() { return 'wakeLock' in navigator ? sw2('wakelock', S.settings.wake, 'Garder l’écran allumé pendant un Pomodoro ou le mode Focus') : ''; }
+  // impression / PDF de la semaine
+  function printBtn() { return '<button class="btn sm ghost wkprint" data-act="wkprint">' + ic('note') + '<span>Imprimer ou enregistrer en PDF</span></button>'; }
+  // notes riches : « # titre », « - [ ] case », « - puce », **gras**
+  function noteFmt(n, txt) {
+    return String(txt).split('\n').map(function (ln, i) {
+      var b = function (s) { return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'); }, m;
+      if ((m = /^#\s+(.*)$/.exec(ln))) return '<span class="nh">' + b(m[1]) + '</span>';
+      if ((m = /^- \[( |x)\]\s?(.*)$/i.exec(ln))) return '<span class="ncb2' + (m[1] !== ' ' ? ' on' : '') + '" data-act="ntick" data-id="' + n.id + '" data-v="' + i + '" role="checkbox" aria-checked="' + (m[1] !== ' ') + '">' + CHECK + '<span>' + b(m[2]) + '</span></span>';
+      if ((m = /^[-•]\s+(.*)$/.exec(ln))) return '<span class="nli">' + b(m[1]) + '</span>';
+      return ln ? '<span class="nln">' + b(ln) + '</span>' : '<span class="nln">&nbsp;</span>';
+    }).join('');
+  }
+  function noteTools() { return '<div class="ntools" role="group" aria-label="Mise en forme"><button type="button" class="chip" data-act="nfmt" data-v="h">Titre</button><button type="button" class="chip" data-act="nfmt" data-v="b"><b>Gras</b></button><button type="button" class="chip" data-act="nfmt" data-v="c">Case à cocher</button><button type="button" class="chip" data-act="nfmt" data-v="l">Puce</button></div>'; }
+  function nfmtApply(k) {
+    var ta = document.getElementById('ne-text') || document.getElementById('n-text'); if (!ta) return;
+    var v = ta.value, a = ta.selectionStart || 0, e = ta.selectionEnd || a, ls = v.lastIndexOf('\n', a - 1) + 1, pre = { h: '# ', c: '- [ ] ', l: '- ' }[k];
+    if (k === 'b') { var sel = v.slice(a, e) || 'texte'; ta.value = v.slice(0, a) + '**' + sel + '**' + v.slice(e); ta.setSelectionRange(a + 2, a + 2 + sel.length); }
+    else { ta.value = v.slice(0, ls) + pre + v.slice(ls); ta.setSelectionRange(a + pre.length, e + pre.length); }
+    ta.focus(); ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  // partager vers Cadence (Android, appli installée) : ?text=…&title=…&url=…
+  (function () {
+    try {
+      var q = new URLSearchParams(location.search), parts = [q.get('title'), q.get('text'), q.get('url')].filter(function (s) { return s && s.trim(); });
+      if (!parts.length) return;
+      var pre = parts.filter(function (s, i) { return parts.indexOf(s) === i; }).join(' ').replace(/\s+/g, ' ').trim().slice(0, 200);
+      history.replaceState(null, '', location.pathname);
+      var tries = 0, go = function () { if (S.profile.done && (!cloudOn || auth) && !isLocked()) { sheet = { k: 'quick', err: '', pre: pre }; render(); } else if (++tries < 20) setTimeout(go, 500); };
+      setTimeout(go, 600);
+    } catch (e) {}
+  })();
+  function v39Click(a, b) {
+    if (a === 'gsearch') { tab = 'notes'; notesView = 'notes'; sheet = null; render(); window.scrollTo(0, 0); var s = document.getElementById('srch'); if (s) s.focus(); return true; }
+    if (a === 'ifocus') { sheet = { k: 'focus', id: b.dataset.id, d: b.dataset.d }; render(); return true; }
+    if (a === 'focmin') { FOC.min = +b.dataset.v; FOC.left = FOC.min * 60000; render(); return true; }
+    if (a === 'focgo') { FOC.run = true; FOC.end = Date.now() + FOC.left; render(); wakeCheck(); return true; }
+    if (a === 'focpause') { FOC.left = focLeft(); FOC.run = false; focSave(); render(); return true; }
+    if (a === 'focstop') { if (FOC) { FOC.left = focLeft(); focSave(); } FOC = null; sheet = null; render(); wakeCheck(); return true; }
+    if (a === 'focdone') {
+      var f = FOC; if (f) { f.left = focLeft(); focSave(); } FOC = null; sheet = null;
+      var x = f && byId(f.id); if (x) { if (x.rep) { x.doneOn = x.doneOn || []; if (x.doneOn.indexOf(f.d) < 0) x.doneOn.push(f.d); } else { x.done = true; x.doneAt = todayISO(); } save(); afterDone(); }
+      showToast('Tâche terminée.'); render(); wakeCheck(); return true;
+    }
+    if (a === 'wakelock') { S.settings.wake = !S.settings.wake; save(); render(); wakeCheck(); return true; }
+    if (a === 'wkprint') { document.body.classList.add('printwk'); setTimeout(function () { try { window.print(); } catch (e) {} setTimeout(function () { document.body.classList.remove('printwk'); }, 500); }, 50); return true; }
+    if (a === 'nfmt') { nfmtApply(b.dataset.v); return true; }
+    if (a === 'ntick') {
+      var n = noteById(b.dataset.id); if (!n) return true;
+      var L = n.text.split('\n'), i = +b.dataset.v; if (L[i] !== undefined) { L[i] = /^- \[ \]/.test(L[i]) ? L[i].replace(/^- \[ \]/, '- [x]') : L[i].replace(/^- \[[xX]\]/, '- [ ]'); n.text = L.join('\n'); n.up = new Date().toISOString(); save(); render(); }
+      return true;
+    }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
