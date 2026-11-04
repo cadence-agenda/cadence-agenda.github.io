@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZTQOv9XNa9ZhN4+nL+NoOwY9i5U8m1pOfspJZTyfMRs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QSoxcuyINsMExsGb+dHrd/Pxi8oOzRgZJvra6if2F5A='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1078,7 +1078,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 50;
+  var APP_VER = 51;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -4709,7 +4709,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function chartCard() {
     var t = todayISO(), y = +t.slice(0, 4), m = +t.slice(5, 7) - 1, ms = [];
-    for (var i = 5; i >= 0; i--) { var d = new Date(y, m - i, 1), k = d.getFullYear() + '-' + p2(d.getMonth() + 1); ms.push({ k: k, l: MOIS[d.getMonth()].slice(0, 3), v: monthOut(k) }); }
+    for (var i = 5; i >= 0; i--) { var d = new Date(y, m - i, 1), k = d.getFullYear() + '-' + p2(d.getMonth() + 1); ms.push({ k: k, l: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'][d.getMonth()], v: monthOut(k) }); }
     var mx = Math.max.apply(null, ms.map(function (z) { return z.v; }).concat([1]));
     if (!ms.some(function (z) { return z.v; })) return '';
     var avg = ms.slice(0, 5).filter(function (z) { return z.v; }), av = avg.length ? avg.reduce(function (a, z) { return a + z.v; }, 0) / avg.length : 0, cur0 = ms[5].v;
