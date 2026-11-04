@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qcpe3ojCFTg1QRUOeFvUxJDnmHpIfWnGmxleojj9jHs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QQIQk1SoB7bFdWDZv9XuftgYdreJc4uD+5JSgI3DzTE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1119,7 +1119,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 59;
+  var APP_VER = 60;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1401,18 +1401,19 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function viewDay() {
     var its = itemsOn(cur);
-    var h = holLine(cur) + dayColSeg(cur) + goalsBlock('d', cur) + habitsDay(cur);
+    var h = holLine(cur);
     h += '<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(cur).map(function (b) { return '<p class="bdl">' + bdLabel(b, cur) + '</p>'; }).join('') + dayList(cur, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous.' }) + '</section>' + gcalBlock(cur) + sharedBlock(cur);
+    h += habitsDay(cur) + goalsBlock('d', cur) + dayColSeg(cur);
     return h;
   }
   function viewWeek() {
-    var a = weekStart(cur), t = todayISO(), h = goalsBlock('w', cur) + '<section class="wk" aria-label="Jours de la semaine">';
+    var a = weekStart(cur), t = todayISO(), h = '<section class="wk" aria-label="Jours de la semaine">';
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = (S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its).filter(kidOk);
       h += '<div class="wday' + (d === t ? ' today' : '') + (dayCol(d) ? ' dc-' + dayCol(d) : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
         '<div class="list">' + holLine(d) + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter' + (its.length ? '' : ' une tâche') + '</button></div></div>';
     }
-    return h + '</section>' + printBtn();
+    return h + '</section>' + goalsBlock('w', cur) + printBtn();
   }
   function viewMonth() {
     var m0 = cur.slice(0, 7) + '-01', start = weekStart(m0), t = todayISO(), mo = m0.slice(0, 7);
@@ -1468,7 +1469,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var main = t.phase === 'idle' ? '<button class="btn primary" data-act="tstart" data-id="' + t.id + '">Démarrer</button>' :
       t.paused ? '<button class="btn primary" data-act="tstart" data-id="' + t.id + '">Reprendre</button>' : '<button class="btn primary" data-act="tpause" data-id="' + t.id + '">Pause</button>';
     var n = (S.plog[todayISO()] || {})[t.id] || 0;
-    return '<section class="tmr' + cls + '" aria-label="Minuteur ' + esc(t.name) + '"><div class="th"><input type="text" data-tname="' + t.id + '" value="' + esc(t.name) + '" aria-label="Nom du minuteur" maxlength="40"><span class="ph">' + ph + '</span></div>' +
+    return '<section class="tmr' + cls + '" aria-label="Minuteur ' + esc(t.name) + '"><div class="th"><input type="text" data-nomic data-tname="' + t.id + '" value="' + esc(t.name) + '" aria-label="Nom du minuteur" maxlength="40"><span class="ph">' + ph + '</span></div>' +
       '<div class="tring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" class="t0"/><circle cx="100" cy="100" r="90" class="t1" id="ring-' + t.id + '" stroke-dasharray="565.5" stroke-dashoffset="' + (565.5 * (1 - pct / 100)).toFixed(1) + '"/></svg><div class="clock" id="clk-' + t.id + '" role="timer">' + clockTxt(left) + '</div></div>' +
       '<div class="btns">' + main + (t.phase !== 'idle' ? '<button class="btn" data-act="tskip" data-id="' + t.id + '" aria-label="' + (t.phase === 'work' ? 'Passer à la pause' : 'Terminer la pause') + '">Passer</button><button class="btn" data-act="treset" data-id="' + t.id + '">Arrêter</button>' : '') + '</div>' +
       '<div class="tset"><div class="stp"><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="-5" aria-label="Travail : moins 5 minutes">−</button><label class="tdur"><span class="vh">Minutes de travail</span><input type="number" inputmode="numeric" min="1" max="180" data-tdur="' + t.id + '|work" value="' + t.work + '"><small>min de travail</small></label><button data-act="tset" data-id="' + t.id + '" data-f="work" data-v="5" aria-label="Travail : plus 5 minutes">+</button></div>' +
