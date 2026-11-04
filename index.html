@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-eKB21q1yOfemQYhScFlduikpMk/MCrZxBYzoY+bItZI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tNjUndThzBCnzMOCNB3+iurVii3uYbvBXLzZnP85a6Y='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1086,6 +1086,9 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .fcast b.neg { color: var(--bad); } .fcast b.pos { color: var(--ok, #1F7A3A); }
 .pbud { display: flex; gap: 6px; align-items: center; margin: 6px 0; }
 .abos { margin-top: 8px; }
+/* v55 */
+.holl { display: flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; margin: 4px 2px 6px; color: #B35300; }
+.holl.vac { color: #1F7A3A; } .holl .ic { width: 15px; height: 15px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1094,7 +1097,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 54;
+  var APP_VER = 55;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1376,7 +1379,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function viewDay() {
     var its = itemsOn(cur);
-    var h = dayColSeg(cur) + goalsBlock('d', cur) + habitsDay(cur);
+    var h = holLine(cur) + dayColSeg(cur) + goalsBlock('d', cur) + habitsDay(cur);
     h += '<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(cur).map(function (b) { return '<p class="bdl">' + bdLabel(b, cur) + '</p>'; }).join('') + dayList(cur, { empty: 'Rien de prévu. Ajoute ta première tâche ci-dessous.' }) + '</section>' + gcalBlock(cur) + sharedBlock(cur);
     return h;
   }
@@ -1385,7 +1388,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = (S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its).filter(kidOk);
       h += '<div class="wday' + (d === t ? ' today' : '') + (dayCol(d) ? ' dc-' + dayCol(d) : '') + '"><button class="wnum" data-act="openday" data-v="' + d + '" aria-label="Ouvrir ' + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
-        '<div class="list">' + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter' + (its.length ? '' : ' une tâche') + '</button></div></div>';
+        '<div class="list">' + holLine(d) + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter' + (its.length ? '' : ' une tâche') + '</button></div></div>';
     }
     return h + '</section>';
   }
@@ -1518,7 +1521,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<div class="f"><p class="sub">Taille du texte</p>' + segOpt('size', st.size || 'n', [['n', 'Normale'], ['l', 'Grande'], ['xl', 'Très grande']], 'Taille du texte') + '</div></section>';
     h += '<section class="card"><h3>Agenda</h3><div class="f"><p class="sub">Vue à l’ouverture</p>' + segOpt('defview', st.defView || 'w', [['d', 'Jour'], ['w', 'Semaine'], ['m', 'Mois'], ['y', 'Année']], 'Vue à l’ouverture') + '</div>' +
       '<div class="f"><p class="sub">La semaine commence le</p>' + segOpt('wstart', st.weekStart === 7 ? 7 : 1, [[1, 'Lundi'], [7, 'Dimanche']], 'Premier jour de la semaine') + '</div>' +
-      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + vacCard() + kidsCard() + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
+      sw2('hidedone', st.hideDone, 'Masquer les tâches faites') + holCard() + vacCard() + kidsCard() + '<div class="f"><p class="sub">Dates importantes</p><button class="btn sm" data-act="dates">Comptes à rebours et anniversaires</button></div></section>';
     h += '<section class="card"><h3>Sons et vibrations</h3>' + sw2('sound', st.sound, 'Son à la fin d’un Pomodoro') +
       (st.sound ? '<div class="f"><p class="sub">Sonnerie</p>' + segOpt('tone', st.tone || 'cloche', TONES, 'Sonnerie') + '</div><button class="btn sm" data-act="tonetest">Écouter</button>' : '') +
       sw2('vibrate', st.vibrate, 'Vibration à la fin d’un Pomodoro') + sw2('haptic', st.haptic !== false, 'Petite vibration quand je coche') + wakeRow() + sw2('uisound', st.uiSound !== false, 'Sons légers de l’interface') + '</section>';
@@ -1529,7 +1532,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += accountCard();
     h += '<section class="card"><h3>Mes données</h3><p class="sub">Garde une copie de tes données dans un fichier, ou recharge une copie. Importer remplace tout ce qui est sur cet appareil.</p>' +
       '<div class="btns"><button class="btn" data-act="export">Exporter (sauvegarde)</button><button class="btn" data-act="csv">Exporter mes tâches (tableur)</button><label class="btn" for="imp">Importer<input type="file" id="imp" accept="application/json,.json" hidden></label>' +
-      copyBtn() + '<button class="btn" data-act="printall">Tout exporter en PDF</button><button class="btn" data-act="trash">Corbeille</button><button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
+      copyBtn() + '<label class="btn" for="imp-csv">Importer depuis Todoist ou TickTick<input type="file" id="imp-csv" accept=".csv,text/csv" hidden></label><button class="btn" data-act="printall">Tout exporter en PDF</button><button class="btn" data-act="trash">Corbeille</button><button class="btn ' + (armKey === 'wipe' ? 'armed' : 'danger') + '" data-act="wipe">' + (armKey === 'wipe' ? 'Confirmer : tout effacer' : 'Effacer l’agenda') + '</button></div></section>';
     h += '<section class="card"><h3>Informations</h3><div class="links"><button data-act="legal" data-v="cgu">Conditions d’utilisation</button><button data-act="legal" data-v="privacy">Politique de confidentialité</button><button data-act="legal" data-v="mentions">Mentions légales</button><button data-act="review">Donner mon avis</button><a href="mailto:' + CONTACT + '?subject=Cadence">Contacter le support</a></div></section>';
     h += '<p class="ver">Cadence, version ' + APP_VER + '</p>';
     return foldify(h);
@@ -1657,6 +1660,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v55Click(a)) return;
     if (v54Click(a, b)) return;
     if (v53Click(a, b)) return;
     if (v52Click(a, b)) return;
@@ -1820,6 +1824,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (el.dataset && (el.dataset.pf || el.dataset.tname)) { if (el.dataset.tname && !el.value.trim()) el.value = (S.timers.filter(function (z) { return z.id === el.dataset.tname; })[0] || {}).name || ''; return; }
     if (el.dataset && el.dataset.catc) { var cc0 = catOf(el.dataset.catc); if (cc0) { cc0.color = el.value; save(); render(); } return; }
     if (el.dataset && el.dataset.catn) { if (!el.value.trim()) { var cn2 = catOf(el.dataset.catn); if (cn2) el.value = cn2.name; } return; }
+    if (v55Change(el)) return;
     if (v52Change(el)) return;
     if (v50Change(el)) return;
     if (v48Change(el)) return;
@@ -2401,7 +2406,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function quoteLine() { return '<p class="qline">' + esc(quoteOfDay()) + '</p>'; }
   function viewToday() {
     var t = todayISO(), its = itemsOn(t), h = '';
-    h += netBadge() + vacBanner(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
+    h += netBadge() + vacBanner(t) + holLine(t) + morningMsg(t) + letterCard(t) + carryCard() + intentLine(t) + heroToday(its) + quickHelp(t, its) + dayTimeline(t, its) + freeLeft(t, its) + energyBlock(t, its);
     h += '<section class="blk"><div class="sh"><h3>À faire aujourd’hui</h3><span class="cnt">' + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(t).map(function (b) { return '<p class="bdl">' + ic('cake') + '<span>' + bdLabel(b, t) + '</span></p>'; }).join('') + dayList(t, { empty: 'Rien de prévu. Ajoute une tâche ci-dessous ou avec le bouton +.' }) + carryBtn(t) + '</section>' + inboxBlock(t) + gcalBlock(t);
     h += habitsDay(t) + medsDay(t) + petsDue(t) + autoBtn(t) + coachCta(t) + speakBtn() + planCta(t) + weekStrip(t) + datesStrip(t) + sharedBlock(t) + goalsBlock('d', t) + monthReviewCard() + weekReview();
     if (new Date().getHours() >= 18) h += eveningCard(its);
@@ -3865,16 +3870,16 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function gcalBlock(day) {
     var arr = gcalOn(day); if (!arr.length) return '';
-    return '<section class="blk"><div class="sh"><h3>Google Agenda</h3><span class="cnt">' + plural(arr.length, 'événement', 'événements') + '</span></div><div class="list">' + arr.map(gcRow).join('') + '</div></section>';
+    return '<section class="blk"><div class="sh"><h3>Mes autres agendas</h3><span class="cnt">' + plural(arr.length, 'événement', 'événements') + '</span></div><div class="list">' + arr.map(gcRow).join('') + '</div></section>';
   }
   function gcalWeek(day) { return gcalOn(day).map(gcRow).join(''); }
 
   // réglages : Profil → Connexions
-  function gcUrlOk(u) { return /^(https|webcal):\/\/calendar\.google\.com\/calendar\/ical\/[^\s]+\.ics$/i.test(u); }
+  function gcUrlOk(u) { return /^(https|webcal):\/\/calendar\.google\.com\/calendar\/ical\/[^\s]+\.ics$/i.test(u) || /^(https|webcal):\/\/outlook\.(live|office365|office)\.com\/[^\s]+\.ics$/i.test(u) || /^(https|webcal):\/\/p\d+-caldav\.icloud\.com\/published\/[^\s]+$/i.test(u); }
   function icsUrl() { return CLOUD_URL + '/functions/v1/cadence-ics?t=' + S.settings.icsTok; }
   function connCard() {
     var cals = gcCals(), h = '<section class="card"><h3>Connexions</h3>';
-    h += '<p class="sub"><b>Google Agenda dans Cadence.</b> Tes événements Google s’affichent à part, en couleur, sans pouvoir être modifiés ici. Ils sont mis à jour à chaque ouverture de l’appli.</p>';
+    h += '<p class="sub"><b>Tes autres agendas dans Cadence</b> (Google, Outlook, iCloud). Leurs événements s’affichent à part, en couleur, sans pouvoir être modifiés ici. Ils sont mis à jour à chaque ouverture de l’appli.</p>';
     if (!cloudOn || !auth) return h + '<p class="hint">Connecte-toi à ton compte Cadence pour relier Google Agenda.</p></section>';
     if (cals.length) {
       h += '<div class="list">' + cals.map(function (c) {
@@ -3887,10 +3892,10 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       h += '<label class="f">Rappel avant un événement Google<select data-gcrem>' + [['', 'Aucun rappel'], ['0', 'À l’heure'], ['5', '5 min avant'], ['10', '10 min avant'], ['15', '15 min avant'], ['30', '30 min avant'], ['60', '1 h avant']].map(function (o) { return '<option value="' + o[0] + '"' + (String(S.settings.gcRem === undefined ? '15' : S.settings.gcRem) === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
     }
     if (cals.length < 10) {
-      h += '<div class="f gcadd"><p class="sub">' + (cals.length ? 'Ajouter un autre agenda' : 'Ajouter un agenda Google') + '</p><input type="text" id="gc-name" data-keep maxlength="30" placeholder="Nom (ex. Travail)" aria-label="Nom de l’agenda">' +
-        '<input type="url" id="gc-url" data-keep placeholder="Adresse secrète au format iCal" aria-label="Adresse secrète au format iCal" autocomplete="off" spellcheck="false">' +
+      h += '<div class="f gcadd"><p class="sub">' + (cals.length ? 'Ajouter un autre agenda' : 'Ajouter un agenda (Google, Outlook ou iCloud)') + '</p><input type="text" id="gc-name" data-keep maxlength="30" placeholder="Nom (ex. Travail)" aria-label="Nom de l’agenda">' +
+        '<input type="url" id="gc-url" data-keep placeholder="Adresse de l’agenda (iCal / ICS)" aria-label="Adresse de l’agenda" autocomplete="off" spellcheck="false">' +
         (gcMsg ? '<p class="err" role="alert">' + esc(gcMsg) + '</p>' : '') + '<button class="btn primary sm" data-act="gcadd">Ajouter</button></div>';
-      h += '<details class="gchelp"><summary>Où trouver l’adresse secrète ?</summary><ol><li>Sur un ordinateur, ouvre <b>calendar.google.com</b>.</li><li>En haut à droite, touche la roue dentée puis <b>Paramètres</b>.</li><li>À gauche, sous « Paramètres de mes agendas », choisis ton agenda.</li><li>Descends jusqu’à <b>Intégrer l’agenda</b>, puis copie l’<b>Adresse secrète au format iCal</b>.</li><li>Colle-la ici. Ne la partage avec personne : elle donne accès à ton agenda.</li></ol></details>';
+      h += '<details class="gchelp"><summary>Où trouver l’adresse ?</summary><ol><li>Sur un ordinateur, ouvre <b>calendar.google.com</b>.</li><li>En haut à droite, touche la roue dentée puis <b>Paramètres</b>.</li><li>À gauche, sous « Paramètres de mes agendas », choisis ton agenda.</li><li>Descends jusqu’à <b>Intégrer l’agenda</b>, puis copie l’<b>Adresse secrète au format iCal</b>.</li><li>Colle-la ici. Ne la partage avec personne : elle donne accès à ton agenda.</li></ol><p><b>Outlook</b> : sur outlook.com, Paramètres → Calendrier → Calendriers partagés → Publier un calendrier → choisis l’agenda et « Peut afficher tous les détails » → Publier, puis copie le lien <b>ICS</b>.</p><p><b>iCloud (iPhone)</b> : app Calendrier → Calendriers → touche (i) à côté de l’agenda → active « Calendrier public » → Partager le lien → Copier.</p></details>';
     }
     h += '<p class="sub gcsep"><b>Cadence dans Google Agenda.</b> Un lien d’abonnement affiche tes tâches Cadence dans Google Agenda. Google le met à jour tout seul, en général plusieurs fois par jour.</p>';
     if (!S.settings.icsTok) h += '<button class="btn sm" data-act="icson">Créer mon lien d’abonnement</button>';
@@ -3902,9 +3907,9 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function v33Click(a, b) {
     if (a === 'gcadd') {
       var nm = ((document.getElementById('gc-name') || {}).value || '').trim(), u = ((document.getElementById('gc-url') || {}).value || '').trim();
-      if (!gcUrlOk(u)) { gcMsg = 'Colle l’« Adresse secrète au format iCal » de Google Agenda. Elle commence par https://calendar.google.com et finit par .ics'; render(); return true; }
+      if (!gcUrlOk(u)) { gcMsg = 'Colle l’adresse iCal de ton agenda : Google (« Adresse secrète au format iCal »), Outlook (lien ICS) ou iCloud (lien du calendrier public).'; render(); return true; }
       if (gcCals().some(function (c) { return c.url === u; })) { gcMsg = 'Cet agenda est déjà ajouté.'; render(); return true; }
-      var cals = gcCals().slice(); cals.push({ id: uid(), name: (nm || 'Google Agenda').slice(0, 30), url: u, color: GC_COLORS[cals.length % GC_COLORS.length] });
+      var cals = gcCals().slice(); cals.push({ id: uid(), name: (nm || (/outlook/i.test(u) ? 'Outlook' : /icloud/i.test(u) ? 'iCloud' : 'Google Agenda')).slice(0, 30), url: u, color: GC_COLORS[cals.length % GC_COLORS.length] });
       S.settings.cals = cals; gcMsg = ''; save();
       ['gc-name', 'gc-url'].forEach(function (k) { var e = document.getElementById(k); if (e) e.value = ''; });
       render(); gcalFetch(true); return true;
@@ -5269,6 +5274,83 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     }
     if (a === 'petdone') { (S.petc || []).forEach(function (c) { if (c.id === b.dataset.id) c.last = t; }); save(); showToast('Noté. Prochain rappel programmé.'); render(); return true; }
     if (a === 'petdel') { S.petc = (S.petc || []).filter(function (c) { return c.id !== b.dataset.id; }); save(); render(); return true; }
+    return false;
+  }
+  /* ---------- v55 : jours fériés, vacances scolaires, import Todoist / TickTick ---------- */
+  function easter(y) { var a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451), mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1; return y + '-' + p2(mo) + '-' + p2(da); }
+  var FERC = {};
+  function feries(y) {
+    if (FERC[y]) return FERC[y];
+    var e = easter(y), o = {};
+    [['01-01', 'Jour de l’an'], ['05-01', 'Fête du Travail'], ['05-08', 'Victoire 1945'], ['07-14', 'Fête nationale'], ['08-15', 'Assomption'], ['11-01', 'Toussaint'], ['11-11', 'Armistice'], ['12-25', 'Noël']].forEach(function (z) { o[y + '-' + z[0]] = z[1]; });
+    o[addDays(e, 1)] = 'Lundi de Pâques'; o[addDays(e, 39)] = 'Ascension'; o[addDays(e, 50)] = 'Lundi de Pentecôte';
+    return (FERC[y] = o);
+  }
+  // vacances scolaires (source officielle : data.education.gouv.fr)
+  var VACS = { at: 0, z: '', list: [] };
+  try { var v0 = JSON.parse(localStorage.getItem('cadence.vacs') || 'null'); if (v0 && v0.list) VACS = v0; } catch (e) {}
+  function parisDay(iso) { try { var f = new Intl.DateTimeFormat('fr-CA', { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' }); return f.format(new Date(iso)); } catch (e) { return String(iso).slice(0, 10); } }
+  function vacsLoad(force) {
+    var z = S.settings.zone || ''; if (!z || !navigator.onLine) return;
+    if (!force && VACS.z === z && Date.now() - VACS.at < 7 * 864e5) return;
+    var t = todayISO(), q = 'zones="Zone ' + z + '" and end_date>="' + addDays(t, -30) + '"';
+    fetch('https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/fr-en-calendrier-scolaire/records?limit=100&order_by=start_date&where=' + encodeURIComponent(q)).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !Array.isArray(j.results)) return; var seen = {}, list = [];
+      j.results.forEach(function (r) { if (!r.start_date || !r.end_date || (r.population && r.population !== '-' && r.population !== 'Élèves')) return; var k = r.description + '|' + r.start_date; if (seen[k]) return; seen[k] = 1; var s = parisDay(r.start_date), e = addDays(parisDay(r.end_date), -1); if (e >= s) list.push({ n: String(r.description || 'Vacances').slice(0, 60), s: s, e: e }); });
+      VACS = { at: Date.now(), z: z, list: list }; try { localStorage.setItem('cadence.vacs', JSON.stringify(VACS)); } catch (e) {} render();
+    }).catch(function () {});
+  }
+  setTimeout(function () { try { vacsLoad(false); } catch (e) {} }, 3000);
+  function holOn(day) {
+    var out = [], f = S.settings.feries !== false ? feries(+day.slice(0, 4))[day] : '';
+    if (f) out.push({ n: f, k: 'fer' });
+    if (S.settings.zone && VACS.z === S.settings.zone) VACS.list.forEach(function (v) { if (day >= v.s && day <= v.e) out.push({ n: v.n + ' (zone ' + VACS.z + ')', k: 'vac' }); });
+    return out;
+  }
+  function holLine(day) { return holOn(day).map(function (h) { return '<p class="holl ' + h.k + '">' + ic(h.k === 'fer' ? 'star' : 'sun') + '<span>' + esc(h.n) + (h.k === 'fer' ? ' · jour férié' : '') + '</span></p>'; }).join(''); }
+  function holCard() {
+    var s = S.settings;
+    return '<div class="f"><p class="sub">Jours fériés et vacances scolaires</p>' + sw2('feries', s.feries !== false, 'Afficher les jours fériés') + '<label class="f">Vacances scolaires<select id="zone-sel"><option value="">Ne pas afficher</option>' + ['A', 'B', 'C'].map(function (z) { return '<option value="' + z + '"' + (s.zone === z ? ' selected' : '') + '>Zone ' + z + '</option>'; }).join('') + '</select></label><p class="hint">Zone A : Besançon, Bordeaux, Clermont, Dijon, Grenoble, Limoges, Lyon, Poitiers. Zone B : Aix-Marseille, Amiens, Lille, Nancy-Metz, Nantes, Nice, Normandie, Orléans-Tours, Reims, Rennes, Strasbourg. Zone C : Créteil, Montpellier, Paris, Toulouse, Versailles.</p></div>';
+  }
+  // import Todoist / TickTick (fichier CSV)
+  function csvParse(txt) {
+    var rows = [], row = [], cur = '', q = false;
+    for (var i = 0; i < txt.length; i++) { var c = txt[i]; if (q) { if (c === '"') { if (txt[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; } else if (c === '"') q = true; else if (c === ',') { row.push(cur); cur = ''; } else if (c === '\n' || c === '\r') { if (c === '\r' && txt[i + 1] === '\n') i++; row.push(cur); rows.push(row); row = []; cur = ''; } else cur += c; }
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function importTasks(txt) {
+    var rows = csvParse(txt.replace(/^﻿/, '')), hi = -1, H = [];
+    for (var i = 0; i < Math.min(rows.length, 15); i++) { var up = rows[i].map(function (c) { return c.trim().toUpperCase(); }); if (up.indexOf('CONTENT') >= 0 || up.indexOf('TITLE') >= 0) { hi = i; H = up; break; } }
+    if (hi < 0) return null;
+    var cT = H.indexOf('CONTENT') >= 0 ? H.indexOf('CONTENT') : H.indexOf('TITLE'), cTy = H.indexOf('TYPE'), cD = H.indexOf('DATE') >= 0 ? H.indexOf('DATE') : H.indexOf('DUE DATE'), cSt = H.indexOf('STATUS'), cP = H.indexOf('PRIORITY'), tick = H.indexOf('TITLE') >= 0;
+    var n = 0, ni = 0, t = todayISO();
+    rows.slice(hi + 1).forEach(function (r) {
+      var tx = String(r[cT] || '').trim(); if (!tx) return;
+      if (cTy >= 0 && r[cTy] && String(r[cTy]).toLowerCase() !== 'task') return;
+      if (tick && cSt >= 0 && /^(1|2)$/.test(String(r[cSt]).trim())) return;
+      var raw = cD >= 0 ? String(r[cD] || '').trim() : '', d = '', tm = '';
+      var m = /^(\d{4}-\d\d-\d\d)(?:[T ](\d\d):(\d\d))?/.exec(raw);
+      if (m) { d = m[1]; if (m[2] && !(m[2] === '00' && m[3] === '00')) tm = m[2] + ':' + m[3]; }
+      else if (raw) { var dt = new Date(raw); if (!isNaN(dt.getTime()) && dt.getFullYear() > 2000) d = dt.getFullYear() + '-' + p2(dt.getMonth() + 1) + '-' + p2(dt.getDate()); }
+      var prio = cP >= 0 && (tick ? +r[cP] >= 5 : +r[cP] === 4);
+      tx = tx.replace(/\s+/g, ' ').slice(0, 200);
+      if (d) { S.items.push({ id: uid(), d: d < addDays(t, -365) ? t : d, text: tx, time: tm, done: false, cat: '', rep: '', rem: '', prio: prio }); n++; }
+      else { S.inbox = (S.inbox || []).concat([{ id: uid(), text: tx }]); ni++; }
+    });
+    return { n: n, ni: ni };
+  }
+  function v55Click(a) {
+    if (a === 'feries') { S.settings.feries = S.settings.feries === false; save(); render(); return true; }
+    return false;
+  }
+  function v55Change(el) {
+    if (el.id === 'zone-sel') { S.settings.zone = el.value; save(); vacsLoad(true); render(); return true; }
+    if (el.id === 'imp-csv') {
+      var f = el.files && el.files[0]; el.value = ''; if (!f) return true;
+      var rd = new FileReader(); rd.onload = function () { var r = importTasks(String(rd.result || '')); if (!r) { showToast('Fichier non reconnu : exporte un CSV depuis Todoist ou TickTick.'); render(); return; } save(); showToast(plural(r.n, 'tâche importée', 'tâches importées') + (r.ni ? ', ' + r.ni + ' sans date dans la boîte à idées' : '')); render(); }; rd.readAsText(f);
+      return true;
+    }
     return false;
   }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
