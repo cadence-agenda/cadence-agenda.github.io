@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-UszXSSnhhsKXjSZoj/NJle1p6DAZx+aW8z3QvKIj2kI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ulaqjbgzz4tAvNlJ2vx/Z9p4PV374SFA91RVcZiYIVA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -896,7 +896,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 31;
+  var APP_VER = 32;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -3466,7 +3466,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   }
   function scanStart(file) {
     if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser le scan.'); render(); return; }
-    shrinkImg(file, 1800, 0.82, function (url) {
+    shrinkImg(file, 1400, 0.8, function (url) {
       sheet = { k: 'scan', st: 'busy', items: [] }; render();
       var t = todayISO();
       authed('POST', '/functions/v1/cadence-scan', { image: url.split(',')[1], mime: 'image/jpeg', today: t, weekday: JOURS[dow(t) - 1], cats: S.cats.map(function (c) { return c.name; }) }).then(function (r) {
@@ -3480,7 +3480,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
         if (!sheet || sheet.k !== 'scan') return;
         var m = String((er && er.message) || '');
         sheet.st = 'err';
-        sheet.err = er && er.net ? 'Pas de connexion internet.' : /nokey/.test(m) || (er && er.status === 404) ? 'Le scan n’est pas encore activé sur le serveur.' : er && er.status === 429 ? 'Limite gratuite atteinte pour aujourd’hui. Réessaie demain.' : 'La photo n’a pas pu être lue. Réessaie avec une photo nette, bien éclairée et prise de face.';
+        sheet.err = er && er.net ? 'Pas de connexion internet.' : /nokey/.test(m) || (er && er.status === 404) ? 'Le scan n’est pas encore activé sur le serveur.' : er && er.status === 429 ? 'Limite gratuite atteinte pour aujourd’hui. Réessaie demain.' : /busy/.test(m) ? 'Le service de lecture de Google est surchargé. Réessaie dans une minute.' : 'La photo n’a pas pu être lue. Réessaie avec une photo nette, bien éclairée et prise de face.';
         render();
       });
     });
