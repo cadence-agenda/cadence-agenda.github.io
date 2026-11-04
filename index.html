@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0eoPkoXEHjpaqwM7bBxwReRRJs4Z2OBL0XsRb/KQUtE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WQ/HsRuzve3CJQnqwgoUvUo1d4ErwyA21cFCC7xoA3I='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1105,7 +1105,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 57;
+  var APP_VER = 58;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1898,6 +1898,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       '<li>Le contenu de ton agenda : prénom, nom, surnom, devise, photo de profil si tu en ajoutes une, tâches (avec leurs lieux, photos jointes et sous-tâches), notes, listes, projets, habitudes, objectifs, tableau de rêves, dates importantes, budget (montants, catégories et notes de tes dépenses et revenus), espaces communs (ce que toi et les membres y ajoutez, ainsi que vos prénoms, est visible par tous les membres de l’espace), réglages des minuteurs et préférences d’affichage, et si tu les ajoutes : rappels de médicaments, dates d’expiration de documents, idées cadeaux, lettres au futur moi et gratitude.</li>' +
       '<li>Si tu utilises la lecture de photo, la Saisie magique ou le Coach : la photo, le texte ou un résumé de ton agenda (tâches, habitudes, totaux du budget) sont envoyés à Google (service Gemini) uniquement pour être traités, puis elle n’est pas conservée par Cadence. Avec la formule gratuite de Google, les photos envoyées peuvent être utilisées par Google pour améliorer ses produits : évite de photographier des informations sensibles.</li>' +
       '<li>Dans un espace commun, les dépenses partagées et les défis (montants, qui a payé, jours cochés) sont visibles par tous les membres de l’espace.</li>' +
+      '<li>Si tu actives le résumé de la semaine par e-mail : un e-mail est envoyé chaque dimanche à ton adresse avec un résumé de ton agenda. Tu peux l’arrêter à tout moment (Profil, Notifications).</li>' +
       '<li>Si tu te connectes avec Google : Google transmet à Cadence ton adresse e-mail et ton nom, rien d’autre.</li>' +
       '<li>Si tu relies Google Agenda (Profil, Connexions) : l’adresse secrète de ton agenda est enregistrée avec tes données, et le serveur de Cadence lit tes événements Google pour les afficher dans l’appli. Ils ne sont pas copiés dans ton agenda Cadence et restent sur ton appareil. Le lien d’abonnement que tu peux créer permet à Google Agenda de lire tes tâches Cadence ; tu peux le changer à tout moment.</li>' +
       '<li>Si tu actives le verrouillage : ton code est enregistré uniquement sur ton téléphone, sous une forme protégée (hachée). Ton empreinte digitale ne quitte jamais ton téléphone : ni Cadence ni son éditeur n’y ont accès.</li>' +
@@ -4325,6 +4326,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += sw2('nveille', s.nVeille !== false, 'La veille à 20 h, pour les tâches prioritaires') + sw2('nins', s.nIns !== false, 'Relancer une tâche prioritaire pas faite (3 fois, toutes les 30 min)');
     h += '<div class="f"><p class="sub">Heures calmes (pas de rappels automatiques)</p><div class="cols"><label class="f">De<select id="nx-qf"><option value="">Aucune</option>' + ['20:00', '21:00', '22:00', '23:00', '00:00'].map(function (x) { return '<option' + (q.from === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label><label class="f">À<select id="nx-qt">' + ['06:00', '07:00', '08:00', '09:00', '10:00'].map(function (x) { return '<option' + ((q.to || '07:00') === x ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select></label></div><p class="hint">Les rappels que tu mets toi-même sur une tâche arrivent quand même.</p></div>';
     if (S.cats.length) h += '<div class="f"><p class="sub">Rappels par catégorie</p><div class="list">' + S.cats.map(function (c) { var v = (s.muteCats || {})[c.id] || ''; return '<label class="row nmrow"><span class="cdot" style="background:' + c.color + '"></span><span class="txt"><span>' + esc(c.name) + '</span></span><select data-nmute="' + c.id + '" aria-label="Rappels ' + esc(c.name) + '"><option value=""' + (v === '' ? ' selected' : '') + '>Toujours</option><option value="we"' + (v === 'we' ? ' selected' : '') + '>Pas le week-end</option><option value="off"' + (v === 'off' ? ' selected' : '') + '>Jamais</option></select></label>'; }).join('') + '</div></div>';
+    h += sw2('wkmail', !!S.settings.wkMail, 'Résumé de ma semaine par e-mail (le dimanche vers 18 h)');
     h += sw2('tipstog', S.settings.tips !== false, 'Astuce du jour (dans Aujourd’hui)');
     h += sw2('mmsgtog', S.settings.mmsg !== false, 'Le mot du coach chaque matin (dans Aujourd’hui)');
     h += sw2('spall', !!s.spAll, 'Toutes les nouveautés de mes espaces (sinon seulement ce qui m’est attribué)');
@@ -4336,6 +4338,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     if (a === 'nveille') { s.nVeille = s.nVeille === false; save(); render(); return true; }
     if (a === 'nins') { s.nIns = s.nIns === false; save(); render(); return true; }
     if (a === 'spall') { s.spAll = !s.spAll; save(); render(); return true; }
+    if (a === 'wkmail') { s.wkMail = !s.wkMail; save(); showToast(s.wkMail ? 'Tu recevras ton résumé chaque dimanche.' : 'Résumé par e-mail arrêté.'); render(); return true; }
     if (a === 'nhist') { sheet = { k: 'nhist' }; render(); return true; }
     if (a === 'latergo') {
       var p = String(sheet.v || '').split('|'), x = byId(p[0]), d = p[1] || todayISO(); if (!x) { sheet = null; render(); return true; }
