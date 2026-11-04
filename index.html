@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ueAlVdcJfRj6o2VyBhsIRAtxB0u8OwnVbYPJlf8YBf8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-TT7t/HRT8lbyr90kpDRMUDMvsSsFBeldf0uGYxC6/Dw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -10,13 +10,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cadence">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="description" content="Agenda, tâches, habitudes et objectifs réunis dans une appli simple et motivante. Gratuite.">
+<meta name="description" content="Agenda, rappels, listes en famille, budget et un coach qui organise ta journée. Gratuite, en français.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cadence">
 <meta property="og:url" content="https://cadence-agenda.github.io/">
 <meta property="og:title" content="Cadence : une vie organisée">
-<meta property="og:description" content="Agenda, tâches, habitudes et objectifs réunis dans une appli simple et motivante. Gratuite.">
-<meta property="og:image" content="https://cadence-agenda.github.io/og.jpg">
+<meta property="og:description" content="Agenda, rappels, listes en famille, budget et un coach qui organise ta journée. Gratuite, en français.">
+<meta property="og:image" content="https://cadence-agenda.github.io/og2.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,8 +24,8 @@
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cadence : une vie organisée">
-<meta name="twitter:description" content="Agenda, tâches, habitudes et objectifs réunis dans une appli simple et motivante.">
-<meta name="twitter:image" content="https://cadence-agenda.github.io/og.jpg">
+<meta name="twitter:description" content="Agenda, rappels, listes en famille, budget et un coach qui organise ta journée. Gratuite, en français.">
+<meta name="twitter:image" content="https://cadence-agenda.github.io/og2.jpg">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px)}body{margin:0}[hidden]{display:none!important}</style>
@@ -1153,6 +1153,17 @@ label.pulse { animation: pulse 1.2s ease 3; } @keyframes pulse { 50% { box-shado
 /* v68 : le message du bas ne cache plus les boutons d’une fenêtre ouverte */
 body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0px)); }
 .toast span { pointer-events: none; }
+/* v69 */
+.invb { display: flex; gap: 10px; align-items: flex-start; background: color-mix(in srgb, var(--accent) 10%, var(--card)); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius: 14px; padding: 10px 12px; margin: 0 0 14px; font-size: 15px; line-height: 1.4; }
+.inst h1 { font-size: 26px; line-height: 1.15; }
+.why { list-style: none; margin: 12px 0 6px; padding: 0; display: grid; gap: 8px; }
+.why li { display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 14px; padding: 10px 12px; }
+.why .whyi { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.why .whyi .ic { width: 20px; height: 20px; } .why b { display: block; font-size: 15px; } .why small { color: var(--muted); font-size: 13.5px; }
+.whyf { text-align: center; color: var(--muted); font-size: 13px; margin: 4px 0 18px; }
+.insth { font-size: 19px; margin: 4px 0 2px; }
+.jpaste { margin-top: 12px; } .jpaste form { margin-top: 8px; }
+.inst h1 { font-size: 23px; margin-bottom: 4px; } .why { gap: 6px; margin-top: 8px; } .why li { padding: 7px 10px; } .why .whyi { width: 32px; height: 32px; border-radius: 9px; } .why small { display: block; line-height: 1.3; } .whyf { margin-bottom: 12px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1161,7 +1172,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
 <script>
 (function () {
   'use strict';
-  var APP_VER = 68;
+  var APP_VER = 69;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1607,7 +1618,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     var ver = h.slice(h.lastIndexOf('<p class="ver">')), body = h.slice(0, h.lastIndexOf('<p class="ver">')), parts = body.split(/(?=<section class="card)/), head = parts[0].indexOf('<section') === 0 ? '' : parts.shift(), first = parts.shift();
     var key = function (p) { var m = /<h3>([^<]+)<\/h3>/.exec(p); var i = m ? ORD.indexOf(m[1]) : -1; return i < 0 ? 99 : i; };
     parts.sort(function (a, b) { return key(a) - key(b); });
-    h = head + first + parts.join('') + ver;
+    h = head + first + inviteCard() + parts.join('') + ver;
     return foldify(h);
   }
   /* v26 : Profil en sections repliables (l’état ouvert/fermé survit aux mises à jour de l’écran) */
@@ -1734,6 +1745,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v69Click(a)) return;
     if (v68Click(a, b)) return;
     if (v67Click(a, b)) return;
     if (v66Click(a, b)) return;
@@ -1861,6 +1873,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
       if (!fi.trim()) { notice = 'Écris ton prénom pour continuer.'; render(); return; }
       notice = ''; S.profile.first = fi.trim().slice(0, 40); S.profile.last = la.trim().slice(0, 40); S.profile.nick = ((document.getElementById('ob-nick') || {}).value || '').trim().slice(0, 30); save(); obStep = 1; render(); window.scrollTo(0, 0); return;
     }
+    if (v69Submit(f)) return;
     if (v67Submit(f)) return;
     if (v23Submit(f)) return;
     if (v22Submit(f)) return;
@@ -1941,8 +1954,8 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
   }
   function viewAuth() {
     var up = authMode === 'up', dis = acct.busy ? ' disabled' : '';
-    var h = '<div class="auth"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>';
-    h += '<h1>' + (up ? 'Crée ton compte' : 'Content de te revoir') + '</h1><p class="lead">' + (up ? 'Ton agenda, tes objectifs et tes minuteurs, sauvegardés en ligne et disponibles sur tous tes appareils.' : 'Connecte-toi pour retrouver ton agenda.') + '</p>';
+    var h = '<div class="auth"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>' + (up ? inviteBanner() : '');
+    h += '<h1>' + (up ? 'Crée ton compte' : 'Content de te revoir') + '</h1><p class="lead">' + (up ? 'Agenda, rappels, listes partagées, budget et coach : tout est sauvegardé et te suit sur tous tes appareils. Gratuit.' : 'Connecte-toi pour retrouver ton agenda.') + '</p>';
     h += '<div class="seg" role="group" aria-label="Compte"><button aria-pressed="' + up + '" data-act="amode" data-v="up">Créer un compte</button><button aria-pressed="' + !up + '" data-act="amode" data-v="in">Se connecter</button></div>';
     h += googleBtn();
     h += '<form id="acform" class="card" autocomplete="on" novalidate><label class="f" for="a-mail">E-mail<input type="email" id="a-mail" data-keep autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="toi@exemple.fr"></label>' +
@@ -2556,8 +2569,8 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     var p = S.profile;
     if (obStep === 0) {
       return '<div class="ob">' + obDots(0) + '<h1>Bienvenue sur Cadence</h1><p class="lead">Comment t’appelles-tu ? Tu pourras le modifier dans le Profil.</p>' +
-        '<form id="ob1" class="card" autocomplete="on"><div class="cols"><label class="f">Prénom<input type="text" id="ob-first" data-keep value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label>' +
-        '<label class="f">Nom (facultatif)<input type="text" id="ob-last" data-keep value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
+        '<form id="ob1" class="card" autocomplete="on"><div class="cols"><label class="f">Prénom<input type="text" id="ob-first" data-keep data-nomic value="' + esc(p.first) + '" autocomplete="given-name" maxlength="40"></label>' +
+        '<label class="f">Nom (facultatif)<input type="text" id="ob-last" data-keep data-nomic value="' + esc(p.last) + '" autocomplete="family-name" maxlength="40"></label></div>' +
         usesChips() + (notice ? '<p class="err" role="alert">' + esc(notice) + '</p>' : '') + '<button type="submit" class="btn primary big">Continuer</button></form></div>';
     }
     if (obStep === 1) {
@@ -2670,7 +2683,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     else if (!SL.lists.length) h += '<p class="sub card">Partage une liste (courses de la maison, préparatifs…) avec ta famille ou tes amis : ouvre une liste et appuie sur « Partager ». Chacun peut ajouter et cocher, et tu vois qui a fait quoi.</p>';
     else h += '<div class="lcards">' + SL.lists.map(function (l) { var it = SL.items[l.id], mem = (l.cadence_list_members || []).length; return '<button class="lcard sh2" data-act="openslist" data-id="' + l.id + '"><span class="le">' + eico(l.emoji || '📝') + '</span><b>' + esc(l.name) + '</b><small>' + plural(mem, 'membre', 'membres') + (it ? ' · ' + it.filter(function (i) { return i.done; }).length + '/' + it.length : '') + '</small></button>'; }).join('') + '</div>';
     if (SL.msg) h += '<p class="sub" role="status">' + esc(SL.msg) + '</p>';
-    return h;
+    return h + joinPasteForm();
   }
   // v39 : une liste de courses est rangée par rayon
   function lItems(l) {
@@ -4078,7 +4091,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
   function viewInstall() {
     var p = instPlat(), h = '<div class="auth inst"><div class="brand"><span class="logo">' + LOGO + '</span><b>Cadence</b></div>';
     if (INST.done) return h + '<h1>C’est installé</h1><p class="lead">Ferme cette page et ouvre <b>Cadence</b> depuis ton écran d’accueil pour créer ton compte.</p></div>';
-    h += '<h1>Installe Cadence</h1><p class="lead">Ajoute l’appli sur ton écran d’accueil : elle s’ouvre en plein écran comme une vraie appli, et tu reçois tes rappels. C’est gratuit et ça prend 10 secondes.</p>';
+    h += inviteBanner() + '<h1>Ton agenda, ta famille, ton budget : au même endroit</h1>' + whyBlock() + '<h2 class="insth">Installe Cadence en 10 secondes</h2><p class="lead">Elle s’ouvre en plein écran comme une vraie appli, et tu reçois tes rappels.</p>' + iosJoinNote();
     if (BIP) h += '<button class="btn primary big" data-act="instgo">Installer l’application</button>';
     else if (p === 'ios') h += '<ol class="isteps">' + instStep(1, 'Touche le bouton <b>Partager</b> ' + SHARE_IC + ' en bas de l’écran (ou en haut sur iPad).') + instStep(2, 'Descends et touche <b>Sur l’écran d’accueil</b>.') + instStep(3, 'Touche <b>Ajouter</b>, puis ouvre Cadence depuis ton écran d’accueil.') + '</ol>';
     else if (p === 'inapp') h += '<ol class="isteps">' + instStep(1, 'Tu es dans le navigateur d’une autre appli. Touche le menu <b>⋯</b> en haut à droite.') + instStep(2, 'Choisis <b>Ouvrir dans le navigateur</b> (Chrome ou Safari).') + instStep(3, 'Tu pourras alors installer Cadence.') + '</ol>';
@@ -5583,7 +5596,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     try {
       var r = new SR(); r.lang = 'fr-FR'; r.interimResults = true; r.continuous = true;
       r.onresult = function (ev) { var tx = ''; for (var i = 0; i < ev.results.length; i++) tx += ev.results[i][0].transcript; VN.txt = (VN.base + tx.trim()).slice(0, 4000); var e2 = document.getElementById('vn-txt'); if (e2) e2.value = VN.txt; };
-      r.onerror = function (ev) { if (ev && ev.error === 'not-allowed') showToast('Micro refusé : autorise-le dans les réglages du navigateur.'); };
+      r.onerror = function (ev) { if (ev && ev.error === 'not-allowed') { showToast('Micro refusé : autorise-le dans les réglages du navigateur.'); render(); } };
       r.onend = function () { if (VN.rec === r) { VN.rec = null; render(); } };
       VN.rec = r; r.start(); render();
     } catch (e) { VN.rec = null; showToast('La dictée n’est pas disponible ici.'); render(); }
@@ -5608,7 +5621,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
       var el = document.getElementById('vn-txt'), tx = ((el && el.value) || VN.txt).trim(); if (!tx) return true; VN.txt = tx;
       if (b.dataset.v === 'raw') { addNote(tx); sheet = null; VN.txt = ''; showToast('Note enregistrée'); tab = 'notes'; notesView = 'notes'; render(); return true; }
       if (b.dataset.v === 'tasks') { scanRun({ text: tx.slice(0, 2000) }, true); addNote(tx); VN.txt = ''; return true; }
-      if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); return true; }
+      if (!cloudOn || !auth) { showToast('Connecte-toi pour utiliser l’IA.'); render(); return true; }
       VN.busy = 'sum'; render();
       authed('POST', '/functions/v1/cadence-coach', { msg: 'Résume cette note vocale en 3 à 5 points courts, en gardant les infos importantes (noms, dates, chiffres). Réponds uniquement avec les points, un par ligne, commençant par « - ».', ctx: 'Note vocale : ' + tx.slice(0, 4000) }).then(function (r) {
         VN.busy = ''; var su = String((r && r.text) || '').trim(); addNote(('Résumé :\n' + su + '\n\nTexte complet :\n' + tx).slice(0, 2000)); VN.txt = ''; sheet = null; showToast('Note résumée enregistrée'); tab = 'notes'; notesView = 'notes'; render();
@@ -5683,11 +5696,11 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
   function v66Click(a, b) {
     if (a === 'favpick') {
       var p = (S.places || []).filter(function (z) { return z.id === b.dataset.id; })[0]; if (!p) return true;
-      var l = document.getElementById('s-loc'), tr = document.getElementById('s-trav'); if (l) l.value = p.a; if (tr && p.t) tr.value = p.t; showToast(p.n + ' : lieu ajouté'); return true;
+      var l = document.getElementById('s-loc'), tr = document.getElementById('s-trav'); if (l) l.value = p.a; if (tr && p.t) tr.value = p.t; showToast(p.n + ' : lieu ajouté'); render(); return true;
     }
     if (a === 'favadd') {
       var a2 = ((document.getElementById('s-loc') || {}).value || '').trim(), t2 = (document.getElementById('s-trav') || {}).value || '';
-      if (!a2) { showToast('Écris d’abord une adresse.'); var e = document.getElementById('s-loc'); if (e) e.focus(); return true; }
+      if (!a2) { showToast('Écris d’abord une adresse.'); render(); var e = document.getElementById('s-loc'); if (e) e.focus(); return true; }
       var nm = window.prompt('Nom du lieu (ex. Maison, Travail, Salle de sport) :', a2.split(',')[0].slice(0, 24)); if (nm === null) return true; nm = nm.trim().slice(0, 24) || a2.slice(0, 24);
       S.places = (S.places || []).filter(function (z) { return nrm(z.n) !== nrm(nm); }).concat([{ id: uid(), n: nm, a: a2.slice(0, 160), t: /^\d+$/.test(t2) ? t2 : '' }]).slice(-8); save();
       sheet.more = true; showToast('Lieu « ' + nm + ' » enregistré'); render(); return true;
@@ -5737,7 +5750,7 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
       raw('POST', '/rest/v1/rpc/cadence_list_guest_tog', { p_id: GUEST.id, p_code: GUEST.code, p_item: it.id, p_name: nm }).catch(gFail); return true;
     }
     if (a === 'greload') { GUEST.st = GUEST.st === 'net' ? 'load' : GUEST.st; render(); guestLoad(); return true; }
-    if (a === 'gskip') { gSaveName(); GUEST.st = 'off'; render(); return true; }
+    if (a === 'gskip') { gSaveName(); iosJoinCopy(); GUEST.st = 'off'; render(); return true; }
     return false;
   }
   function v67Submit(f) {
@@ -5793,6 +5806,54 @@ body.noscroll .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top, 0
     return false;
   }
   function soirBtn() { var h = new Date().getHours(); return h >= 18 && !(S.soirLog || {})[todayISO()] ? '<button class="btn sm primary" data-act="soir">' + ic('moon') + '<span>Faire mon bilan (30 s)</span></button>' : ''; }
+  /* ---------- v69 : arrivée d’une nouvelle personne + « Faire découvrir Cadence » ---------- */
+  // ?de=Prénom : la personne qui a envoyé le lien
+  (function () {
+    try {
+      var q = new URLSearchParams(location.search), de = (q.get('de') || '').replace(/[^\p{L}\p{M}' -]/gu, '').trim().slice(0, 30);
+      if (de) { localStorage.setItem('cadence.de', de); q.delete('de'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q.toString() : '')); }
+    } catch (e) {}
+  })();
+  function inviterName() { try { return localStorage.getItem('cadence.de') || ''; } catch (e) { return ''; } }
+  function joinPending() { try { return /~/.test(localStorage.getItem('cadence.join') || ''); } catch (e) { return false; } }
+  function inviteBanner() {
+    var de = inviterName(), jn = joinPending();
+    if (!de && !jn) return '';
+    return '<div class="invb">' + eico(jn ? '📝' : '👋') + '<span>' + (de ? '<b>' + esc(de) + '</b> t’invite sur Cadence.' : 'On t’a partagé une liste.') + (jn ? ' Ta liste partagée t’attend juste après l’inscription.' : '') + '</span></div>';
+  }
+  var WHY = [['cal', 'Ton agenda et tes rappels', 'Même appli fermée, tu n’oublies plus rien.'], ['sparkle', 'Un coach qui organise ta journée', 'Dis ce que tu as à faire, il range tout pour toi.'], ['users', 'En famille ou à plusieurs', 'Listes de courses et agenda partagés, en direct.'], ['wallet', 'Ton budget et tes objectifs', 'Dépenses, épargne, habitudes : tout au même endroit.']];
+  function whyBlock() { return '<ul class="why">' + WHY.map(function (w) { return '<li><span class="whyi">' + ic(w[0]) + '</span><span><b>' + w[1] + '</b><small>' + w[2] + '</small></span></li>'; }).join('') + '</ul><p class="whyf">Gratuit · en français · sur iPhone et Android</p>'; }
+  // lien à envoyer : la personne verra « Terry t’invite »
+  function appLink() { var n = (S.profile.first || '').trim(); return 'https://cadence-agenda.github.io/' + (n ? '?de=' + encodeURIComponent(n) : ''); }
+  function shareApp() {
+    var url = appLink(), msg = 'Je t’invite sur Cadence, l’appli que j’utilise pour organiser ma vie : agenda, rappels, listes partagées, budget et un coach qui range ta journée. C’est gratuit 👉';
+    try { if (navigator.share) { navigator.share({ title: 'Cadence', text: msg, url: url }).catch(function () {}); return; } } catch (e) {}
+    try { navigator.clipboard.writeText(msg + ' ' + url).then(function () { showToast('Message copié : colle-le dans WhatsApp, SMS…'); render(); }, function () { window.prompt('Copie ce message :', msg + ' ' + url); }); } catch (e) { window.prompt('Copie ce message :', msg + ' ' + url); }
+  }
+  function inviteCard() {
+    return '<div class="card invc"><h3>Faire découvrir Cadence</h3><p class="sub">Envoie Cadence à un proche. En ouvrant ton lien, il verra que c’est toi qui l’invites, et l’appli lui expliquera comment l’installer.</p><div class="btns"><button class="btn primary" data-act="shareapp">' + ic('users') + '<span>Envoyer l’appli à quelqu’un</span></button></div></div>';
+  }
+  // rejoindre une liste en collant le lien (utile sur iPhone : l’appli installée ne voit pas le lien ouvert dans Safari)
+  function joinPasteForm() { return auth ? '<div class="jpaste"><p class="sub">J’ai reçu un lien d’invitation</p><form id="jpform" class="add" autocomplete="off"><input type="url" id="jp-url" data-keep data-nomic placeholder="Colle le lien ici" aria-label="Lien d’invitation"><button type="submit" class="btn sm primary">Rejoindre</button></form></div>' : ''; }
+  function v69Click(a) {
+    if (a === 'shareapp') { shareApp(); return true; }
+    return false;
+  }
+  function v69Submit(f) {
+    if (f.id !== 'jpform') return false;
+    var v = ((document.getElementById('jp-url') || {}).value || '').trim(), m = /join=([0-9a-f-]{36}~[0-9a-f]{32})/i.exec(v);
+    if (!m) { showToast('Ce n’est pas un lien d’invitation Cadence.'); render(); return true; }
+    try { localStorage.setItem('cadence.join', m[1].toLowerCase()); } catch (e) {}
+    slJoinPending(); return true;
+  }
+  // sur iPhone, l’appli installée ne garde pas le lien : on le copie au moment de s’inscrire
+  function iosJoinCopy() {
+    if (instPlat() !== 'ios' || isApp()) return;
+    var j = ''; try { j = localStorage.getItem('cadence.join') || ''; } catch (e) {}
+    if (!/~/.test(j)) return;
+    try { navigator.clipboard.writeText(location.origin + location.pathname + '?join=' + j).then(function () { try { localStorage.setItem('cadence.joincp', '1'); } catch (e) {} render(); }, function () {}); } catch (e) {}
+  }
+  function iosJoinNote() { var c = ''; try { c = localStorage.getItem('cadence.joincp') || ''; } catch (e) {} return c && instPlat() === 'ios' ? '<p class="invb">' + eico('📋') + '<span>Ton lien d’invitation est copié. Une fois Cadence installée et ton compte créé : <b>Notes → Listes → J’ai reçu un lien d’invitation</b>, puis colle-le.</span></p>' : ''; }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
