@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I3qvVSrxkm+u9v2CiH6vs3HP+KcRyE+bwBcc+8h9DAo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-4ZwTLu6Zp+wDC5c/jJmId0geSXr/V/2l/nO1/DlKGJk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -644,7 +644,6 @@ input[type="number"] { font: inherit; color: var(--ink); background: var(--surfa
 .scr { display: flex; justify-content: space-between; font-size: 15px; }
 .bigcode { font-family: var(--font-clock); font-size: 46px; font-weight: 500; letter-spacing: .12em; text-align: center; background: var(--accent-soft); color: var(--accent); border-radius: 18px; padding: 18px 0; }
 .card.spadd { display: flex; padding: 8px; }
-.seg button { white-space: nowrap; }
 
 /* ===== v23 : verrouillage ===== */
 .lockscr { display: grid; gap: 18px; padding-top: 40px; justify-items: center; text-align: center; min-height: 80vh; align-content: start; }
@@ -989,6 +988,15 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 .coachf { display: flex; gap: 8px; align-items: flex-end; }
 .coachf textarea { flex: 1; font: inherit; }
 .scexp { font-size: 12px; font-weight: 700; color: var(--accent); align-self: center; }
+/* v43 : défis */
+.chc .chm { display: grid; grid-template-columns: auto 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.chc .chm small { grid-column: 1 / 3; color: var(--muted); }
+.chc .chm .btn { grid-row: 1 / 3; grid-column: 3; }
+.chdots { display: flex; gap: 4px; }
+.chdots i { width: 10px; height: 10px; border-radius: 50%; background: var(--soft); }
+.chdots i.on { background: var(--accent); }
+.chdots i.na { opacity: .35; }
+.chdel { margin-top: 6px; font-size: 13px; color: var(--muted); }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -997,7 +1005,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
 <script>
 (function () {
   'use strict';
-  var APP_VER = 42;
+  var APP_VER = 43;
   var KEY = 'cadence.agenda.v1';
   var app = document.getElementById('app');
   var swReg = null;
@@ -1556,6 +1564,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id, v = b.dataset.v, x, g, t;
     unlockAudio();
+    if (v43Click(a, b)) return;
     if (v42Click(a, b)) return;
     if (v41Click(a, b)) return;
     if (v40Click(a, b)) return;
@@ -3136,7 +3145,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
       return authed('GET', '/rest/v1/cadence_space_items?space_id=in.(' + SP.spaces.map(function (s) { return s.id; }).join(',') + ')&select=*&order=created_at.asc').then(function (its) {
         var by = {}; SP.spaces.forEach(function (s) { by[s.id] = []; }); (its || []).forEach(function (i) { if (by[i.space_id]) by[i.space_id].push(i); }); SP.items = by; spSave();
       });
-    }).then(function () { spCur(); rtSync(); if (!quiet || tab === 'space') softRender(); }).catch(function (er) { if (slNotReady(er)) { SP.err = 'notready'; softRender(); } });
+    }).then(function () { spCur(); rtSync(); chFetch(); if (!quiet || tab === 'space') softRender(); }).catch(function (er) { if (slNotReady(er)) { SP.err = 'notready'; softRender(); } });
   }
   function spJoinMsg(c) {
     return c === 'limite' ? 'Trop d’essais : réessaie dans une heure.' : c === 'email' ? 'Confirme d’abord ton adresse e-mail.' : c === 'auth' ? 'Reconnecte-toi, puis réessaie.' : 'Code incorrect ou expiré. Demande un nouveau code à la personne qui t’invite.';
@@ -3190,7 +3199,7 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   function rtLive() { return !!(rt.ws && rt.ws.readyState === 1); }
 
   /* --- écran Ensemble --- */
-  var SPVIEWS = [['shop', 'Courses'], ['task', 'Tâches'], ['event', 'Agenda'], ['note', 'Notes']];
+  var SPVIEWS = [['shop', 'Courses'], ['task', 'Tâches'], ['event', 'Agenda'], ['note', 'Notes'], ['chal', 'Défis']];
   function spStartHtml() {
     return '<section class="card sphero"><span class="spbig">' + eico('🏠') + '</span><h2>Un espace en commun</h2><p class="sub">Courses, tâches de la maison, agenda et notes partagés avec ta famille, ton couple ou tes colocs. Ce que l’un ajoute, l’autre le voit tout de suite.</p></section>' +
       '<form id="spcreate" class="card" autocomplete="off"><h3>Créer un espace</h3><label class="f">Nom de l’espace<input type="text" id="sp-name" data-keep maxlength="40" placeholder="Ex. Famille, Maison, Nous deux…"></label>' +
@@ -3207,8 +3216,8 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
     h += '<div class="spchips">' + SP.spaces.map(function (z) { return '<button class="chip" aria-pressed="' + (z.id === s.id) + '" data-act="spsel" data-v="' + z.id + '">' + eico(z.emoji) + esc(z.name) + '</button>'; }).join('') + '<button class="chip" data-act="spnew" aria-label="Créer ou rejoindre un autre espace">' + ic('plus') + '</button></div>';
     h += '<section class="card sphead"><div class="sph1"><span class="spe">' + eico(s.emoji) + '</span><div><h2>' + esc(s.name) + '</h2><p class="sub">' + (rtLive() ? '<span class="live">● En direct</span> · ' : '') + plural(mem.length, 'membre', 'membres') + '</p></div><button class="icb" data-act="spset" aria-label="Réglages de l’espace">⋯</button></div>' +
       '<div class="spmem">' + mem.map(function (m) { var me = auth && m.user_id === auth.uid; return '<span class="spm' + (me ? ' me' : '') + '"><i>' + esc(spInit(m.name)) + '</i>' + esc(me ? 'Moi' : m.name || 'Membre') + '</span>'; }).join('') + '<button class="btn sm primary" data-act="spinv">' + ic('plus') + 'Inviter</button></div></section>';
-    h += '<div class="seg" role="group" aria-label="Section">' + SPVIEWS.map(function (v) { var n = spItemsOf(v[0]).filter(function (i) { return !i.done; }).length; return '<button aria-pressed="' + (SP.view === v[0]) + '" data-act="spview" data-v="' + v[0] + '">' + v[1] + (n && v[0] !== 'note' ? ' <small>' + n + '</small>' : '') + '</button>'; }).join('') + '</div>';
-    h += SP.view === 'task' ? spTasks(s) : SP.view === 'event' ? spAgenda(s) : SP.view === 'note' ? spNotes(s) : spShop(s);
+    h += '<div class="seg" role="group" aria-label="Section">' + SPVIEWS.map(function (v) { var n = spItemsOf(v[0]).filter(function (i) { return !i.done; }).length; return '<button aria-pressed="' + (SP.view === v[0]) + '" data-act="spview" data-v="' + v[0] + '">' + v[1] + (n && v[0] !== 'note' && v[0] !== 'chal' ? ' <small>' + n + '</small>' : '') + '</button>'; }).join('') + '</div>';
+    h += SP.view === 'chal' ? spChals(s) : SP.view === 'task' ? spTasks(s) : SP.view === 'event' ? spAgenda(s) : SP.view === 'note' ? spNotes(s) : spShop(s);
     return h;
   }
   function spRow(i, s, opts) {
@@ -4325,6 +4334,69 @@ details.fold .fb { display: grid; gap: 12px; padding: 0 16px 16px; }
   document.addEventListener('submit', function (e) {
     if (e.target && e.target.id === 'coachf') { e.preventDefault(); e.stopPropagation(); var el = document.getElementById('coach-in'), q = el ? el.value : ''; if (el) el.value = ''; coachAsk(q); }
   }, true);
+  /* ---------- v43 : défis à plusieurs (binôme = un espace à deux) ---------- */
+  SP.chals = SP.chals || {}; SP.checks = SP.checks || {};
+  var CH_TPL = ['Marcher 30 minutes', 'Pas d’écran après 22 h', 'Boire 1,5 L d’eau', 'Lire 20 minutes', 'Faire du sport', 'Se coucher avant 23 h'];
+  function chFetch() {
+    if (!cloudOn || !auth || !SP.spaces.length) return Promise.resolve();
+    var ids = SP.spaces.map(function (s) { return s.id; }).join(',');
+    return authed('GET', '/rest/v1/cadence_space_chals?space_id=in.(' + ids + ')&select=*&order=created_at.asc').then(function (r) {
+      var by = {}; (Array.isArray(r) ? r : []).forEach(function (c) { (by[c.space_id] = by[c.space_id] || []).push(c); }); SP.chals = by;
+      return authed('GET', '/rest/v1/cadence_space_checks?space_id=in.(' + ids + ')&select=chal_id,user_id,d');
+    }).then(function (r) {
+      var by = {}; (Array.isArray(r) ? r : []).forEach(function (k) { (by[k.chal_id] = by[k.chal_id] || []).push(k); }); SP.checks = by;
+      if (tab === 'space') softRender();
+    }).catch(function () {});
+  }
+  function chDays(c, uidv) { return (SP.checks[c.id] || []).filter(function (k) { return k.user_id === uidv; }).map(function (k) { return k.d; }); }
+  function chStreak(ds) { var t = todayISO(), d = ds.indexOf(t) >= 0 ? t : addDays(t, -1), n = 0; while (ds.indexOf(d) >= 0) { n++; d = addDays(d, -1); } return n; }
+  function spChals(s) {
+    var cs = SP.chals[s.id] || [], t = todayISO(), me = auth ? auth.uid : '', mem = spMembers(s);
+    var h = '<p class="sub">Lancez un défi ensemble : chacun coche quand c’est fait, et tout le monde voit les progrès. Pour un binôme, crée un espace à deux avec un ami.</p>';
+    h += cs.map(function (c) {
+      var day = Math.floor((parseISO(t) - parseISO(c.start)) / 864e5) + 1, over = day > c.days;
+      var rows = mem.map(function (m) {
+        var ds = chDays(c, m.user_id), isMe = m.user_id === me, did = ds.indexOf(t) >= 0, dots = '';
+        for (var k = 6; k >= 0; k--) { var dd = addDays(t, -k); dots += '<i class="' + (ds.indexOf(dd) >= 0 ? 'on' : dd < c.start ? 'na' : '') + '" title="' + esc(dayShort(dd)) + '"></i>'; }
+        var st = chStreak(ds);
+        return '<div class="chm"><span class="spm' + (isMe ? ' me' : '') + '"><i>' + esc(spInit(m.name)) + '</i>' + esc(isMe ? 'Moi' : m.name || 'Membre') + '</span><span class="chdots" aria-label="7 derniers jours">' + dots + '</span><small>' + plural(ds.length, 'jour', 'jours') + (st > 1 ? ' · série de ' + st : '') + '</small>' +
+          (isMe && !over ? '<button class="btn sm ' + (did ? 'ghost' : 'primary') + '" data-act="chtog" data-id="' + c.id + '">' + (did ? ic('check') + '<span>Fait</span>' : 'Fait aujourd’hui') + '</button>' : '') + '</div>';
+      }).join('');
+      return '<section class="card chc"><div class="sh"><h3>' + esc(c.name) + '</h3><span class="cnt">' + (over ? 'Terminé' : 'Jour ' + Math.max(1, day) + ' sur ' + c.days) + '</span></div>' + rows +
+        '<button class="lnk chdel" data-act="chdel" data-id="' + c.id + '">' + (armKey === 'ch:' + c.id ? 'Confirmer la suppression' : 'Supprimer le défi') + '</button></section>';
+    }).join('');
+    h += '<section class="card chnew"><h3>Nouveau défi</h3><div class="chips">' + CH_TPL.map(function (x) { return '<button type="button" class="chip" data-act="chtpl" data-v="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>' +
+      '<label class="f">Le défi<input type="text" id="ch-name" data-keep maxlength="80" placeholder="Ex. 30 jours sans sucre"></label><label class="f">Durée<select id="ch-days" data-keep>' + [[7, '7 jours'], [14, '14 jours'], [21, '21 jours'], [30, '30 jours'], [60, '60 jours'], [100, '100 jours']].map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === 30 ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>' +
+      '<button class="btn primary" data-act="chnew">Lancer le défi</button></section>';
+    return h;
+  }
+  function v43Click(a, b) {
+    var s = spCur();
+    if (a === 'chtpl') { var el = document.getElementById('ch-name'); if (el) el.value = b.dataset.v; return true; }
+    if (a === 'chnew') {
+      var n = ((document.getElementById('ch-name') || {}).value || '').trim(), dy = +((document.getElementById('ch-days') || {}).value || 30);
+      if (!n || !s) { showToast('Écris le défi, par exemple « Marcher 30 minutes ».'); render(); return true; }
+      var row = { space_id: s.id, name: n.slice(0, 80), days: dy, start: todayISO(), created_by: auth.uid, created_name: myName() };
+      (SP.chals[s.id] = SP.chals[s.id] || []).push(Object.assign({ id: 'tmp' + uid() }, row));
+      var el2 = document.getElementById('ch-name'); if (el2) el2.value = '';
+      uiSound('pop'); render();
+      authed('POST', '/rest/v1/cadence_space_chals', row, { Prefer: 'return=minimal' }).then(chFetch).catch(function (er) { chFetch(); spFail(er); });
+      return true;
+    }
+    if (a === 'chtog') {
+      var id = b.dataset.id, t = todayISO(), me = auth.uid, arr = SP.checks[id] = SP.checks[id] || [], k = arr.filter(function (z) { return z.user_id === me && z.d === t; })[0];
+      if (!s || /^tmp/.test(id)) return true;
+      if (k) { SP.checks[id] = arr.filter(function (z) { return z !== k; }); render(); authed('DELETE', '/rest/v1/cadence_space_checks?chal_id=eq.' + id + '&user_id=eq.' + me + '&d=eq.' + t).then(chFetch).catch(spFail); }
+      else { arr.push({ chal_id: id, user_id: me, d: t }); haptic(); uiSound('tick'); render(); authed('POST', '/rest/v1/cadence_space_checks', { chal_id: id, space_id: s.id, d: t }, { Prefer: 'return=minimal' }).then(chFetch).catch(spFail); }
+      return true;
+    }
+    if (a === 'chdel') {
+      if (!arm('ch:' + b.dataset.id)) return true;
+      if (s) SP.chals[s.id] = (SP.chals[s.id] || []).filter(function (c) { return c.id !== b.dataset.id; });
+      render(); authed('DELETE', '/rest/v1/cadence_space_chals?id=eq.' + b.dataset.id).then(chFetch).catch(spFail); return true;
+    }
+    return false;
+  }
   /* ---------- Compte et sauvegarde en ligne (Supabase, appels directs) ---------- */
   var CLOUD_URL = 'https://brxynzbajlemciybghzw.supabase.co', CLOUD_KEY = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
   var CK = 'cadence.auth', CR = 'cadence.sync.r', CM = 'cadence.sync.m', CT = 'cadence.sync.t', CD = 'cadence.dirty';
