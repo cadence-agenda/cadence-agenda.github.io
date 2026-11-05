@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-5vf5ZE8Nv4BjXRdUuax9MbhujXL2E4rD0BLkwFidpPo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kSUJ8Pf6gVwqWEl8Z946xc03GpDM+cTiZNTa8uBWDI0='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1335,6 +1335,20 @@ body.scrolled .tbar { opacity: 1; transform: none; }
 .addmini i { font-style: normal; font-size: 20px; color: var(--accent); font-weight: 600; }
 .wday.wempty .wnum { opacity: .7; }
 .wday.past:not(.today) { opacity: .6; }
+/* v91 : Menu : chaque thème montre ce qu'il contient */
+.allgrp > summary { display: flex; align-items: center; gap: 12px; list-style: none; cursor: pointer; padding: 12px 14px; min-height: 64px; }
+.allgrp > summary .allt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.allgrp > summary .allt b { font-size: 16px; font-weight: 600; color: var(--ink); }
+.allgrp > summary .allt small { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.allgrp > summary .chev { flex: none; width: 16px; height: 16px; color: var(--muted); transition: transform .18s ease; }
+.allgrp[open] > summary { border-bottom: .5px solid var(--line); }
+.allgrp .allg { background: transparent; }
+.allgrp > summary { text-align: left; overflow: hidden; }
+.allgrp > summary .allt { overflow: hidden; }
+.allgrp > summary .allt small { display: block; text-align: left; }
+.allgrp > summary .alli { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 13%, transparent); color: var(--accent); }
+.allgrp > summary .alli .ic { width: 20px; height: 20px; }
+.allgrp > summary .allt small { margin-left: 0; } .allgrp > summary { min-height: 60px; padding: 10px 14px; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1350,7 +1364,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 90;
+  var APP_VER = 91;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -6288,12 +6302,14 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     ALLF.forEach(function (g, gi) {
       var it = g[1].map(function (x, i) { return [x, i]; }).filter(function (p) { return !q || nrm(p[0][1] + ' ' + p[0][2] + ' ' + g[0]).indexOf(q) >= 0; });
       if (!it.length) return; any = true;
-      h += (q ? '<p class="allh">' + esc(g[0]) + '</p>' : '<details class="allgrp"><summary class="allh">' + esc(g[0]) + '<small>' + it.length + '</small>' + ic('next', 'chev') + '</summary>') + '<div class="allg">' + it.map(function (p) { var x = p[0]; return '<button class="allb" data-act="allgo" data-g="' + gi + '" data-i="' + p[1] + '"><span class="alli">' + ic(x[0]) + '</span><span class="allt"><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></span>' + ic('next', 'chev') + '</button>'; }).join('') + '</div>' + (q ? '' : '</details>');
+      h += (q ? '<p class="allh">' + esc(g[0]) + '</p>' : '<details class="allgrp"' + (ALLOPEN[gi] ? ' open' : '') + ' data-g="' + gi + '"><summary><span class="alli">' + ic(it[0][0][0]) + '</span><span class="allt"><b>' + esc(g[0]) + '</b><small>' + esc(it.slice(0, 3).map(function (p) { return p[0][1]; }).join(', ') + (it.length > 3 ? '…' : '')) + '</small></span>' + ic('next', 'chev') + '</summary>') + '<div class="allg">' + it.map(function (p) { var x = p[0]; return '<button class="allb" data-act="allgo" data-g="' + gi + '" data-i="' + p[1] + '"><span class="alli">' + ic(x[0]) + '</span><span class="allt"><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></span>' + ic('next', 'chev') + '</button>'; }).join('') + '</div>' + (q ? '' : '</details>');
     });
     if (!any) h += L$('<p class="sub">Rien trouvé. Essaie un autre mot.</p>');
     return h + L$('<button class="btn ghost" data-act="sclose">Fermer</button>');
   }
   var ALLQ = { q: '' };
+  var ALLOPEN = {};
+  document.addEventListener('toggle', function (e) { var d = e.target; if (d && d.classList && d.classList.contains('allgrp')) ALLOPEN[d.dataset.g] = d.open; }, true);
   function allGo(x) {
     var act = x[3], v = x[4] || '';
     sheet = null;
