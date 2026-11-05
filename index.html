@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6KvC9M4A4Eip0iMm8qHUNMFSFHysDtOYXu5tnK1eOdc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-/mEgka0cJZ1YZEfz0KYcsoPaDCV7kuVcsmO35cKAfoc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1350,7 +1350,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
 .allgrp > summary .alli .ic { width: 20px; height: 20px; }
 .allgrp > summary .allt small { margin-left: 0; } .allgrp > summary { min-height: 60px; padding: 10px 14px; }
 /* v92 : Menu en grille d'icônes */
-.mgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 8px; margin: 8px 0 24px; }
+.mtgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 8px; margin: 8px 0 24px; }
 .mtile { display: grid; justify-items: center; gap: 7px; padding: 4px 0; border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; min-width: 0; }
 .mico { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
 .mico .ic { width: 30px; height: 30px; stroke-width: 1.9; }
@@ -1359,6 +1359,18 @@ body.scrolled .tbar { opacity: 1; transform: none; }
 .mall { width: 100%; border-radius: 14px; background: var(--surface); }
 /* v92 : le bouton + ne déborde plus sur la barre du bas */
 .fab { bottom: calc(env(safe-area-inset-bottom, 0px) + 92px) !important; }
+/* v93 : Agenda Semaine en blocs (modèle E) */
+.wk { gap: 8px; }
+.wday { grid-template-columns: 44px minmax(0, 1fr); gap: 8px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 6px 10px 6px 4px; }
+.wday.today { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.wday .list, .wday.wempty .list { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; min-height: 0; }
+.wday .row { min-height: 42px; padding: 2px 0; border-top: 0; }
+.wnum { padding: 4px 0; gap: 1px; } .wnum b { font-size: 22px; } .wnum span { font-size: 12px; }
+.wcnt { font-size: 11px; color: var(--muted); font-weight: 600; }
+.wday .addline { min-height: 32px; padding: 0 4px; border-top: 0; font-size: 13px; color: var(--muted); text-align: left; }
+.wday.wempty .addmini { min-height: 38px; border: 0; padding: 0 4px; }
+.wday.wempty .wnum { opacity: 1; }
+.wday.past:not(.today) { opacity: .55; }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1374,7 +1386,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 92;
+  var APP_VER = 93;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -1672,7 +1684,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     var its = itemsOn(cur);
     var h = holLine(cur);
     h += L$('<section class="blk"><div class="sh"><h3>À faire</h3><span class="cnt">') + countLine(its) + '</span></div>' + loadHtml(its) + bdOn(cur).map(function (b) { return '<p class="bdl">' + bdLabel(b, cur) + '</p>'; }).join('') + dayList(cur, { empty: L$('Rien de prévu. Ajoute ta première tâche ci-dessous.') }) + '</section>' + gcalBlock(cur) + sharedBlock(cur);
-    h += habitsDay(cur) + dayColSeg(cur);
+    h += habitsDay(cur);
     return h;
   }
   function viewWeek() {
@@ -1680,7 +1692,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     for (var i = 0; i < 7; i++) {
       var d = addDays(a, i), its = itemsOn(d), vis = (S.settings.hideDone ? its.filter(function (x) { return !x.done; }) : its).filter(kidOk);
       var emp = !vis.length && !its.length && !holLine(d) && !gcalWeek(d);
-      h += '<div class="wday' + (emp ? ' wempty' : '') + (d < t ? ' past' : '') + (d === t ? ' today' : '') + (dayCol(d) ? ' dc-' + dayCol(d) : '') + '"><button class="wnum" data-act="openday" data-v="' + d + L$('" aria-label="Ouvrir ') + esc(dayLong(d)) + '"><b>' + parseISO(d).getDate() + '</b><span>' + JC[dow(d) - 1] + '</span></button>' +
+      h += '<div class="wday' + (emp ? ' wempty' : '') + (d < t ? ' past' : '') + (d === t ? ' today' : '') + '"><button class="wnum" data-act="openday" data-v="' + d + L$('" aria-label="Ouvrir ') + esc(dayLong(d)) + '"><span>' + JC[dow(d) - 1] + '</span><b>' + parseISO(d).getDate() + '</b>' + (its.length ? '<small class="wcnt">' + its.filter(function (x) { return x.done; }).length + '/' + its.length + '</small>' : '') + '</button>' +
         '<div class="list">' + holLine(d) + gcalWeek(d) + vis.map(itemRow).join('') + hiddenLine(its.length - vis.length) + (emp ? '<button class="addline addmini" data-act="addsheet" data-v="' + d + '" aria-label="' + L$(L$('Ajouter une tâche')) + ' · ' + esc(dayLong(d)) + '"><span>' + L$(L$('Rien de prévu')) + '</span><i aria-hidden="true">+</i></button>' : '<button class="addline" data-act="addsheet" data-v="' + d + '">+ Ajouter</button>') + '</div></div>';
     }
     return h + '</section>';
@@ -2043,7 +2055,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     if (a === 'uisound') { S.settings.uiSound = S.settings.uiSound === false; save(); if (S.settings.uiSound) { unlockAudio(); uiSound('tick'); } render(); return; }
     if (a === 'haptic') { S.settings.haptic = S.settings.haptic === false; if (S.settings.haptic) haptic(); save(); render(); return; }
     if (a === 'vibrate') { S.settings.vibrate = !S.settings.vibrate; if (S.settings.vibrate) { try { navigator.vibrate && navigator.vibrate(60); } catch (er) {} } save(); render(); return; }
-    if (a === 'tab') { if (tab === v && !sheet) { window.scrollTo({ top: 0, behavior: calm() ? 'auto' : 'smooth' }); return; } navGo(v, !!(b.closest && b.closest('.sheet, .mgrid'))); if (v === 'space' && auth && Date.now() - SP.at > 10000) spFetch(true); return; }
+    if (a === 'tab') { if (tab === v && !sheet) { window.scrollTo({ top: 0, behavior: calm() ? 'auto' : 'smooth' }); return; } navGo(v, !!(b.closest && b.closest('.sheet, .mtgrid'))); if (v === 'space' && auth && Date.now() - SP.at > 10000) spFetch(true); return; }
     if (a === 'view') { if (view !== v) anim = 'fade'; view = v; if (v === 'm') sel = cur; render(); return; }
     if (a === 'prev' || a === 'next') { anim = a === 'prev' ? 'right' : 'left'; move(a === 'prev' ? -1 : 1); render(); return; }
     if (a === 'gotoday') { cur = todayISO(); sel = cur; render(); return; }
@@ -4488,11 +4500,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   }
   // routines
   function routs() { if (!Array.isArray(S.routines)) S.routines = [{ id: uid(), name: L$('Routine du matin'), tasks: L$('7h Réveil\n7h15 Douche\n7h30 Petit-déjeuner') }]; return S.routines; }
-  function routChips() {
-    return '';
-    var r = Array.isArray(S.routines) ? S.routines : [];
-    return L$('<div class="rtchips"><span class="sub">Routines</span>') + r.map(function (x) { return '<button type="button" class="chip" data-act="rtgo" data-id="' + x.id + '">' + esc(x.name) + '</button>'; }).join('') + '<button type="button" class="chip ghost" data-act="rtman">' + (r.length ? L$('Gérer') : L$('+ Créer une routine')) + '</button></div>';
-  }
+  function routChips() { return ''; }
   function routSheet() {
     var h = L$('<h2>Routines</h2><p class="sub">Une routine ajoute plusieurs tâches d’un coup. Écris une tâche par ligne ; l’heure est reconnue (« 7h30 Douche »).</p>');
     routs().forEach(function (r) {
@@ -7008,7 +7016,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   function mUse() { S.settings.mUse = S.settings.mUse || {}; return S.settings.mUse; }
   function viewMenu() {
     var u = S.settings.mUse || {}, t = MTILES.map(function (x, i) { return [x, i]; }).sort(function (a, b) { return (u[b[0][0]] || 0) - (u[a[0][0]] || 0) || a[1] - b[1]; });
-    return '<div class="mgrid">' + t.map(function (p) { var x = p[0]; return '<button class="mtile" ' + (x[3] === 'tab' ? 'data-act="tab" data-v="' + x[0] + '"' : 'data-act="mgo" data-v="' + x[0] + '"') + ' data-m="' + x[0] + '"><span class="mico" style="background:' + x[4] + '">' + ic(x[1]) + '</span><span class="mname">' + esc(L$(x[2])) + '</span></button>'; }).join('') + '</div>' +
+    return '<div class="mtgrid">' + t.map(function (p) { var x = p[0]; return '<button class="mtile" ' + (x[3] === 'tab' ? 'data-act="tab" data-v="' + x[0] + '"' : 'data-act="mgo" data-v="' + x[0] + '"') + ' data-m="' + x[0] + '"><span class="mico" style="background:' + x[4] + '">' + ic(x[1]) + '</span><span class="mname">' + esc(L$(x[2])) + '</span></button>'; }).join('') + '</div>' +
       '<button class="allb mall" data-act="allf"><span class="alli">' + ic('grid') + '</span><span class="allt"><b>' + L$(L$('Toutes les fonctions')) + '</b><small>' + L$(L$('Rechercher ou parcourir tout Cadence')) + '</small></span>' + ic('next', 'chev') + '</button>';
   }
   document.addEventListener('click', function (e) { var m = e.target.closest && e.target.closest('.mtile'); if (m) { var u = mUse(); u[m.dataset.m] = (u[m.dataset.m] || 0) + 1; } }, true);
