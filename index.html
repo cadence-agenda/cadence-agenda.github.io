@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-CEXdU+iqh5kSENkVcIfBaaInDEzCFbAKTVR06TuYCOs='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Ji2o9DDAcgGXREbLWOukSbMzc7DsBAmNN6LGIvBqAu8='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1188,7 +1188,7 @@ b.warn { color: var(--warn); }
 .tlb.wk span { left: 8px; max-width: calc(100% - 12px); } .tlb.wk span b { color: var(--muted); }
 /* v73 */
 .hall .ic { width: 20px; height: 20px; }
-.allh { margin: 16px 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.allh { margin: 8px 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
 .allg { display: grid; gap: 6px; }
 .allb { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; color: var(--ink); font: inherit; cursor: pointer; }
 .allb .alli { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 13%, transparent); color: var(--accent); } .allb .alli .ic { width: 19px; height: 19px; }
@@ -1242,6 +1242,9 @@ body { padding-bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
 .plust { display: grid; justify-items: center; gap: 6px; padding: 14px 4px; min-height: 84px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); font: inherit; font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; }
 .plust .ic { width: 26px; height: 26px; color: var(--accent); }
 .plust[aria-current="page"] { border-color: var(--accent); background: var(--soft); }
+/* v81 : une feuille ne passe jamais sous la barre d’état du téléphone */
+.sheet { max-height: calc(100vh - 56px - env(safe-area-inset-top, 0px)); max-height: calc(100dvh - 56px - env(safe-area-inset-top, 0px)); }
+.sheet.tall { max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px)); max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px)); }
 .grid { display: grid; gap: 12px; }
 </style>
 </head>
@@ -1257,7 +1260,7 @@ body { padding-bottom: calc(156px + env(safe-area-inset-bottom, 0px)); }
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 80;
+  var APP_VER = 81;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
