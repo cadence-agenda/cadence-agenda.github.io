@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-/mEgka0cJZ1YZEfz0KYcsoPaDCV7kuVcsmO35cKAfoc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-NBXvBelyB5/BaLoXv/LRELMKgA9rysydRgZPj3Xl8QE='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1386,7 +1386,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 93;
+  var APP_VER = 94;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -1795,7 +1795,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     }
     if (last && now - last.at < 90000) {
       beep();
-      notify(t.name, last.k === 'work' ? L$('Session terminée. Place à la pause de ') + t.brk + ' min.' : L$('Pause terminée. Prêt pour la suite ?'));
+      notify(t.name, last.k === 'work' ? L$('Session terminée. Place à la pause de ') + t.brk + ' min.' : L$('Pause terminée. Prêt pour la suite ?'), 'pomo-' + t.id + '-' + Math.round(last.at / 60000));
     }
     return !!last;
   }
@@ -2093,15 +2093,15 @@ body.scrolled .tbar { opacity: 1; transform: none; }
       t = S.timers.filter(function (z) { return z.id === id; })[0]; if (!t) return; unlockAudio();
       if (t.phase === 'idle') { t.phase = 'work'; t.end = Date.now() + t.work * 60000; t.paused = false; }
       else if (t.paused) { t.end = Date.now() + t.left; t.paused = false; t.left = 0; }
-      save(); render(); return;
+      save(); render(); pushSync(false); return;
     }
-    if (a === 'tpause') { t = S.timers.filter(function (z) { return z.id === id; })[0]; if (t && t.phase !== 'idle' && !t.paused) { t.left = Math.max(0, t.end - Date.now()); t.paused = true; save(); render(); } return; }
-    if (a === 'treset') { t = S.timers.filter(function (z) { return z.id === id; })[0]; if (t) { t.phase = 'idle'; t.paused = false; t.end = 0; t.left = 0; t.task = null; save(); render(); } return; }
+    if (a === 'tpause') { t = S.timers.filter(function (z) { return z.id === id; })[0]; if (t && t.phase !== 'idle' && !t.paused) { t.left = Math.max(0, t.end - Date.now()); t.paused = true; save(); render(); pushSync(false); } return; }
+    if (a === 'treset') { t = S.timers.filter(function (z) { return z.id === id; })[0]; if (t) { t.phase = 'idle'; t.paused = false; t.end = 0; t.left = 0; t.task = null; save(); render(); pushSync(false); } return; }
     if (a === 'tskip') {
       t = S.timers.filter(function (z) { return z.id === id; })[0]; if (!t) return;
       if (t.phase === 'work') { t.phase = 'brk'; t.paused = false; t.left = 0; t.end = Date.now() + t.brk * 60000; }
       else { t.phase = 'idle'; t.paused = false; t.end = 0; t.left = 0; }
-      save(); render(); return;
+      save(); render(); pushSync(false); return;
     }
     if (a === 'tset') {
       t = S.timers.filter(function (z) { return z.id === id; })[0]; if (!t) return;
@@ -2595,7 +2595,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     var x = byId(id); if (!x) return;
     var t = S.timers.filter(function (z) { return z.phase === 'idle'; })[0] || S.timers[0];
     unlockAudio(); t.task = { id: x.id, d: day, text: x.text }; t.phase = 'work'; t.paused = false; t.left = 0; t.end = Date.now() + t.work * 60000;
-    save(); tab = 'pomo'; anim = 'fade'; sheet = null; render(); window.scrollTo(0, 0);
+    save(); tab = 'pomo'; anim = 'fade'; sheet = null; render(); window.scrollTo(0, 0); pushSync(false);
   }
   /* --- habitudes --- */
   var HEMO = ['💧', '📖', '🏃', '🧘', '🥗', '😴', '💪', '✍️', '🚭', '🎸', '🧹', '🙏'];
@@ -3304,7 +3304,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   }
   /* --- notifications même appli fermée (Web Push) --- */
   var VAPID_PUB = 'BOYfEVL5xzEK5RUeZ-RsJPMDUyhz2sgedmQsUpS5yiH37Pgq_ffYyZuSu-4UUR3VNfECUOnqBJ5i4b3sDkh505Q';
-  var pushBusy = false, pushMsg = '', pushTm = 0, pushSrv = '';
+  var pushBusy = false, pushMsg = '', pushTm = 0, pushSrv = '', pushResub = false;
   function pushSupported() { try { return 'serviceWorker' in navigator && 'PushManager' in window && L$('Notification') in window && /^https?:/.test(location.protocol); } catch (e) { return false; } }
   function pushOn() { try { return localStorage.getItem('cadence.push') === '1' && L$('Notification') in window && Notification.permission === 'granted'; } catch (e) { return false; } }
   function pushState() { if (!pushSupported()) return 'unsupported'; if (Notification.permission === 'denied') return 'denied'; return pushOn() ? 'on' : 'off'; }
@@ -3320,7 +3320,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
       return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(VAPID_PUB) }); });
     }).then(function (sub) {
       var j = sub.toJSON();
-      return authed('POST', '/rest/v1/rpc/cadence_push_sub', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth }).then(function () { try { localStorage.setItem('cadence.push', '1'); localStorage.setItem('cadence.push.ep', j.endpoint); localStorage.removeItem('cadence.push.h'); } catch (e) {} });
+      return authed('POST', '/rest/v1/rpc/cadence_push_sub', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth }).then(function () { try { localStorage.setItem('cadence.push', '1'); localStorage.setItem('cadence.push.ep', j.endpoint); if (auth && auth.uid) localStorage.setItem('cadence.push.uid', auth.uid); localStorage.removeItem('cadence.push.h'); } catch (e) {} });
     }).then(function () {
       pushBusy = false; pushSrv = ''; pushMsg = ''; showToast(L$('Notifications activées')); render(); pushSync(true);
     }).catch(function (er) {
@@ -3335,7 +3335,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     });
   }
   function pushDisable(quiet) {
-    var ep = ''; try { ep = localStorage.getItem('cadence.push.ep') || ''; localStorage.removeItem('cadence.push'); localStorage.removeItem('cadence.push.h'); } catch (e) {}
+    var ep = ''; try { ep = localStorage.getItem('cadence.push.ep') || ''; localStorage.removeItem('cadence.push'); localStorage.removeItem('cadence.push.h'); localStorage.removeItem('cadence.push.uid'); } catch (e) {}
     var p = Promise.resolve();
     if (ep && auth) p = authed('POST', '/rest/v1/rpc/cadence_push_unsub', { p_endpoint: ep }).catch(function () {});
     try { if (navigator.serviceWorker) navigator.serviceWorker.ready.then(function (r) { return r.pushManager.getSubscription(); }).then(function (s) { if (s) s.unsubscribe(); }).catch(function () {}); } catch (e) {}
@@ -3374,6 +3374,12 @@ body.scrolled .tbar { opacity: 1; transform: none; }
         rows.push({ at: new Date(at3).toISOString(), p: { title: L$('Anniversaire de ') + b.name, body: (b.y ? b.name + L$(' fête ses ') + (+day.slice(0, 4) - b.y) + L$(' ans aujourd’hui. ') : L$('Aujourd’hui. ')), tag: 'bd-' + b.id + '-' + day, url: './?tab=today' }, ref: { k: 'bd', d: day } });
       });
     }
+    (S.timers || []).forEach(function (tm) {
+      if (tm.phase === 'idle' || tm.paused || !tm.end) return;
+      var pq = { url: './?tab=pomo', quiet: true }, brkEnd = tm.phase === 'work' ? tm.end + tm.brk * 60000 : tm.end, ptag = function (ms) { return { tag: 'pomo-' + tm.id + '-' + Math.round(ms / 60000) }; };
+      if (tm.phase === 'work' && tm.end > now) rows.push({ at: new Date(tm.end).toISOString(), p: Object.assign({ title: tm.name, body: L$('Session terminée. Place à la pause de ') + tm.brk + ' min.' }, pq, ptag(tm.end)), ref: { k: 'pomo', id: tm.id } });
+      if (brkEnd > now) rows.push({ at: new Date(brkEnd).toISOString(), p: Object.assign({ title: tm.name, body: L$('Pause terminée. Prêt pour la suite ?') }, pq, ptag(brkEnd)), ref: { k: 'pomo', id: tm.id } });
+    });
     rows = nxExtra(rows, t, now, tz);
     rows.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
     return rows.slice(0, 250);
@@ -3385,6 +3391,18 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     if (!cloudOn || !auth || !S.profile.done) return;
     if (pushOn() && !S.settings.pushAny) { S.settings.pushAny = true; save(); }
     if (!pushOn() && !S.settings.pushAny) return;
+    // v93 : après un changement de compte, réinscrire ce téléphone au compte connecté (sinon aucun rappel n'arrive)
+    var puid = ''; try { puid = localStorage.getItem('cadence.push.uid') || ''; } catch (e) {}
+    if (pushOn() && auth.uid && puid !== auth.uid && pushSupported()) {
+      if (pushResub) return; pushResub = true;
+      navigator.serviceWorker.ready.then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: u8(VAPID_PUB) }); });
+      }).then(function (sub) {
+        var j = sub.toJSON();
+        return authed('POST', '/rest/v1/rpc/cadence_push_sub', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth }).then(function () { try { localStorage.setItem('cadence.push.uid', auth.uid); localStorage.setItem('cadence.push.ep', j.endpoint); localStorage.removeItem('cadence.push.h'); } catch (e) {} });
+      }).then(function () { pushResub = false; pushSync(true); }).catch(function () { pushResub = false; });
+      return;
+    }
     var rows = pushRows(), hh = hashStr(JSON.stringify(rows)) + '|' + todayISO(), old = '';
     try { old = localStorage.getItem('cadence.push.h') || ''; } catch (e) {}
     if (!force && hh === old) return;

@@ -31,9 +31,11 @@ self.addEventListener('push', (e) => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch (_) { d = { body: e.data ? e.data.text() : '' }; }
   const o = { body: d.body || '', icon: 'icon-192.png', badge: 'badge-96.png', data: { url: d.url || './', tok: d.tok || '' }, vibrate: [120, 60, 120], timestamp: Date.now() };
   if (d.tag) { o.tag = d.tag; o.renotify = true; }
-  if (d.actions && d.tok) o.actions = [{ action: 'done', title: '✅ Fait' }, d.later ? { action: 'later', title: '⏰ Reporter' } : { action: 'snooze', title: '⏰ Dans 10 min' }];
+  if (d.actions && d.tok) o.actions = [{ action: 'done', title: 'Fait' }, d.later ? { action: 'later', title: 'Reporter' } : { action: 'snooze', title: 'Dans 10 min' }];
   if (d.later) o.data.later = d.later;
-  e.waitUntil(self.registration.showNotification(d.title || 'Cadence', o));
+  const show = () => self.registration.showNotification(d.title || 'Cadence', o);
+  // déjà affichée par l'appli ouverte (Pomodoro) : on la remplace sans resonner
+  e.waitUntil(d.quiet && d.tag ? self.registration.getNotifications({ tag: d.tag }).then((ns) => { if (ns.length) { o.renotify = false; o.silent = true; } return show(); }).catch(show) : show());
 });
 function tellClients() { return self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((cs) => cs.forEach((c) => c.postMessage({ cadence: 'sync' }))); }
 self.addEventListener('notificationclick', (e) => {
