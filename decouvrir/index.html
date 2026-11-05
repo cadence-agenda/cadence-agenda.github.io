@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cadence · organise toute ta vie</title>
+<meta name="description" content="Agenda, tâches, courses et budget de toute la famille, au même endroit, rangés tout seuls. Gratuit, sans publicité, données en Europe.">
+<meta property="og:title" content="Cadence · organise toute ta vie">
+<meta property="og:description" content="Agenda, tâches, courses et budget de toute la famille, au même endroit. Gratuit.">
+<meta property="og:image" content="https://cadence-agenda.github.io/og4.jpg">
+<meta property="og:url" content="https://cadence-agenda.github.io/decouvrir/">
+<meta name="theme-color" content="#5856D6">
+<link rel="icon" href="../icon-192.png">
+<style>
+:root { --bg: #F5F5FA; --surface: #FFFFFF; --soft: #ECECF4; --ink: #1C1C1E; --muted: #5E5E63; --line: #E3E3E8; --acc: #5856D6; --acc2: #8E8CFF; --on: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #000000; --surface: #1C1C1E; --soft: #2C2C2E; --ink: #F2F2F7; --muted: #A1A1A8; --line: #2E2E32; --acc: #8E8CFF; --on: #0B0B1A; } }
+:root[data-theme="dark"] { --bg: #000000; --surface: #1C1C1E; --soft: #2C2C2E; --ink: #F2F2F7; --muted: #A1A1A8; --line: #2E2E32; --acc: #8E8CFF; --on: #0B0B1A; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+header.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; text-decoration: none; }
+.logo { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #5856D6, #8E8CFF); display: grid; place-items: center; color: #fff; }
+.logo svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none; border: 0; cursor: pointer; }
+.btn.primary { background: var(--acc); color: var(--on); }
+.btn.ghost { background: var(--soft); color: var(--ink); }
+.btn.sm { min-height: 40px; padding: 0 16px; font-size: 15px; }
+.hero { padding: 56px 0 24px; display: grid; gap: 36px; align-items: center; }
+@media (min-width: 860px) { .hero { grid-template-columns: 1.1fr .9fr; padding: 80px 0 40px; } }
+h1 { font-size: clamp(36px, 6vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 18px; }
+h1 em { font-style: normal; color: var(--acc); }
+.lead { font-size: 19px; color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.note { font-size: 14px; color: var(--muted); margin-top: 12px; }
+.phones { display: flex; justify-content: center; gap: 14px; }
+.phone { width: min(46%, 250px); border-radius: 30px; border: 8px solid #111; background: #111; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(30, 30, 80, .35); }
+.phone img { display: block; width: 100%; height: auto; }
+.phone.b { transform: translateY(36px); }
+section.block { padding: 56px 0; }
+h2 { font-size: clamp(26px, 4vw, 38px); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 14px; }
+.sub { color: var(--muted); margin: 0 0 30px; max-width: 40em; }
+.grid4 { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+.card h3 { margin: 12px 0 6px; font-size: 19px; }
+.card p { margin: 0; color: var(--muted); font-size: 16px; }
+.ic { width: 44px; height: 44px; border-radius: 12px; background: color-mix(in srgb, var(--acc) 14%, transparent); color: var(--acc); display: grid; place-items: center; }
+.ic svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.shots { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.shot figure { margin: 0; }
+.shot img { width: 100%; height: auto; border-radius: 22px; border: 1px solid var(--line); display: block; }
+.shot figcaption { margin-top: 10px; font-weight: 700; }
+.shot figcaption span { display: block; font-weight: 400; color: var(--muted); font-size: 15px; }
+.trust { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.trust .card { display: flex; gap: 14px; align-items: flex-start; }
+.trust .card p { font-size: 15px; }
+details.faq { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; margin-bottom: 10px; }
+details.faq summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; min-height: 28px; align-items: center; }
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after { content: "+"; font-size: 22px; color: var(--acc); }
+details.faq[open] summary::after { content: "–"; }
+details.faq p { color: var(--muted); margin: 10px 0 0; }
+.final { text-align: center; background: linear-gradient(135deg, #5856D6, #7C7AF0); color: #fff; border-radius: 28px; padding: 48px 24px; margin: 20px 0 56px; }
+.final h2 { color: #fff; }
+.final p { color: rgba(255, 255, 255, .88); margin: 0 auto 24px; max-width: 30em; }
+.final .btn { background: #fff; color: #3B39B8; }
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: grid; gap: 8px; }
+footer b { color: var(--ink); }
+@media (max-width: 520px) { body { font-size: 16px; } .hero { padding-top: 36px; } .phone.b { transform: translateY(24px); } header.top .btn.sm span.long { display: none; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.8 7.2A6.48 6.48 0 1 0 17.76 13.92"/><path d="M10.56 12l2.4 2.4 5.28-5.76"/></svg></span>Cadence</a>
+  <a class="btn primary sm" href="../">Ouvrir <span class="long">l’appli</span></a>
+</div></header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <h1>Toute ta vie organisée, <em>au même endroit.</em></h1>
+    <p class="lead">Agenda, tâches, courses et budget de toute la famille. Tu écris ou tu dis ce que tu as en tête, Cadence range tout seul. Gratuit, sans publicité.</p>
+    <div class="ctas"><a class="btn primary" href="../">Essayer gratuitement</a><a class="btn ghost" href="#fonctions">Découvrir</a></div>
+    <p class="note">Sans compte pour commencer · Sur iPhone, Android et ordinateur · Tes données en Europe</p>
+  </div>
+  <div class="phones" aria-hidden="true">
+    <div class="phone"><img src="aujourdhui.jpg" alt="" width="780" height="1688"></div>
+    <div class="phone b"><img src="ensemble.jpg" alt="" width="780" height="1688"></div>
+  </div>
+</div>
+
+<section class="block" id="fonctions"><div class="wrap">
+  <h2>Moins de charge mentale, plus de temps pour vous.</h2>
+  <p class="sub">Cadence est pensé pour les familles et les jeunes actifs qui ont trop de choses en tête.</p>
+  <div class="grid4">
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.8L19 9.6l-4.2 3.2 1.4 5.2L12 15l-4.2 3 1.4-5.2L5 9.6l5.2-1.8z"/></svg></span><h3>Rangé tout seul</h3><p>« Dentiste jeudi 15h » : c’est dans l’agenda, avec un rappel. Une photo d’ordonnance ou d’agenda papier ? Cadence en fait des tâches.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2c2.8.3 5 2.7 5 5.8"/></svg></span><h3>Toute la famille synchronisée</h3><p>Courses, tâches de la maison, menus de la semaine et agenda commun, à jour en direct sur le téléphone de chacun.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 12h4l2-5 4 10 2-5h4"/></svg></span><h3>Juste l’essentiel</h3><p>Chaque matin, ce qui compte aujourd’hui. Trop de choses ? « Débordé ? » trie, reporte et t’aide à souffler.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H9l-4 4z"/><path d="M9 10h6"/></svg></span><h3>Un coach qui agit</h3><p>Pose une question, le coach IA organise ta journée, répartit les tâches de la famille et peut déplacer tes rendez-vous.</p></div>
+  </div>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Tout ce qu’il faut, sans rien de compliqué.</h2>
+  <p class="sub">Un seul endroit pour ce qui t’éparpille aujourd’hui entre cinq applis et des post-it.</p>
+  <div class="shots">
+    <div class="shot"><figure><img src="aujourdhui.jpg" alt="Écran Aujourd’hui : tâches du jour, prochain rendez-vous, progression" loading="lazy" width="780" height="1688"><figcaption>Aujourd’hui<span>Ta journée en un coup d’œil.</span></figcaption></figure></div>
+    <div class="shot"><figure><img src="ensemble.jpg" alt="Écran Ensemble : liste de courses partagée rangée par rayon" loading="lazy" width="780" height="1688"><figcaption>Ensemble<span>Les courses rangées par rayon, pour toute la maison.</span></figcaption></figure></div>
+    <div class="shot"><figure><img src="agenda.jpg" alt="Écran Agenda : vue de la semaine" loading="lazy" width="780" height="1688"><figcaption>Agenda<span>Jour, semaine, mois, année, et Google Agenda.</span></figcaption></figure></div>
+    <div class="shot"><figure><img src="budget.jpg" alt="Écran Budget : revenus, dépenses et prévision de fin de mois" loading="lazy" width="780" height="1688"><figcaption>Budget<span>Combien il te restera à la fin du mois.</span></figcaption></figure></div>
+  </div>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Tes données t’appartiennent.</h2>
+  <div class="trust">
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><div><h3>Stockées en Europe</h3><p>Sur des serveurs en Irlande. Chaque compte n’a accès qu’à ses propres données.</p></div></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span><div><h3>Zéro publicité</h3><p>Pas de revente de données, pas de traceur publicitaire. Jamais.</p></div></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 4v10m0 0l-4-4m4 4l4-4"/><path d="M5 18h14"/></svg></span><div><h3>Libre de partir</h3><p>Exporte tout ou supprime ton compte en deux appuis, depuis le Profil.</p></div></div>
+  </div>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Questions fréquentes</h2>
+  <details class="faq"><summary>C’est vraiment gratuit ?</summary><p>Oui. Toutes les fonctions sont gratuites pendant le lancement, sans moyen de paiement. Une offre Premium (avec un essai gratuit) pourra arriver plus tard : ce qui est gratuit aujourd’hui le restera, et rien ne sera jamais prélevé sans ton accord.</p></details>
+  <details class="faq"><summary>Faut-il installer quelque chose ?</summary><p>Non. Cadence s’ouvre dans ton navigateur. Pour l’avoir comme une vraie appli, avec les notifications, ajoute-la à l’écran d’accueil : Cadence t’explique comment en un écran, sur iPhone comme sur Android.</p></details>
+  <details class="faq"><summary>Je peux essayer sans créer de compte ?</summary><p>Oui. Tes données restent alors sur ton téléphone. Crée ton compte quand tu veux pour les sauvegarder, les retrouver sur tes autres appareils et partager avec ta famille : rien n’est perdu.</p></details>
+  <details class="faq"><summary>Comment partager avec ma famille ?</summary><p>Dans l’onglet Ensemble, crée un espace « Famille » et envoie le code à tes proches. Courses, tâches, menus, agenda et dépenses sont alors partagés en direct.</p></details>
+  <details class="faq"><summary>Et l’intelligence artificielle, elle voit tout ?</summary><p>Non. Le coach ne reçoit qu’un résumé de ton agenda, et seulement quand tu lui poses une question. Ses réponses peuvent contenir des erreurs : vérifie-les, surtout pour la santé ou l’argent.</p></details>
+</div></section>
+
+<div class="wrap"><div class="final">
+  <h2>Prêt à souffler un peu ?</h2>
+  <p>Commence en 10 secondes, sans compte. Ta journée de demain sera déjà plus simple.</p>
+  <a class="btn" href="../">Essayer Cadence gratuitement</a>
+</div></div>
+</main>
+
+<footer><div class="wrap">
+  <span><b>Cadence</b> · organise toute ta vie</span>
+  <span>Éditeur : Terry Gentil Sauvet · Contact : <a href="mailto:contact.cadence.app@gmail.com">contact.cadence.app@gmail.com</a></span>
+  <span>Hébergement du site : GitHub, Inc. (GitHub Pages), 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis. Données des comptes : Supabase, serveurs en Europe.</span>
+  <span>Conditions d’utilisation, confidentialité et mentions légales complètes : dans l’appli, Profil › Informations.</span>
+</div></footer>
+</body>
+</html>

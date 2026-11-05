@@ -1,5 +1,5 @@
 /* Cadence : service worker (hors ligne + notifications) */
-const CACHE = 'cadence-v6';
+const CACHE = 'cadence-v7';
 const SB = 'https://brxynzbajlemciybghzw.supabase.co', SBK = 'sb_publishable_dgho_oVTcyYlD0Ve2Qvbzw_4yBNsO0r';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'badge-96.png'];
 self.addEventListener('install', (e) => {
@@ -12,8 +12,17 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const u = new URL(e.request.url);
   if (u.origin === location.origin) {
-    e.respondWith(fetch(e.request).then((r) => { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(e.request, cp)); return r; })
-      .catch(() => caches.match(e.request).then((m) => m || caches.match('index.html'))));
+    // v75 : la vérification de mise à jour (?chk=) ne passe jamais par le cache ; une seule copie par fichier (sans les ?…)
+    if (u.searchParams.has('chk')) return;
+    const key = e.request.mode === 'navigate' ? new Request(new URL('index.html', location.href).href) : new Request(u.origin + u.pathname);
+    const fb = () => caches.match(key).then((m) => m || caches.match('index.html'));
+    const net = fetch(e.request).then((r) => { if (r.ok && r.type === 'basic') { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(key, cp)); } return r; });
+    // réseau lent : après 4 s, on montre la copie enregistrée
+    e.respondWith(new Promise((res) => {
+      let done = false; const fin = (x) => { if (!done && x) { done = true; res(x); } };
+      const t = setTimeout(() => { fb().then(fin); }, 4000);
+      net.then((r) => { clearTimeout(t); fin(r); }).catch(() => { clearTimeout(t); fb().then((m) => fin(m || Response.error())); });
+    }));
   } else if (u.hostname.endsWith('googleapis.com') || u.hostname.endsWith('gstatic.com')) {
     e.respondWith(caches.match(e.request).then((m) => m || fetch(e.request).then((r) => { const cp = r.clone(); caches.open(CACHE).then((c) => c.put(e.request, cp)); return r; })));
   }
