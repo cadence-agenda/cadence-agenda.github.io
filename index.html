@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RumtFFn0flb9NzMkgtEUE0YBoYAsBhKILzku6W9s4oM='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sV2HAzU0lmDV+T9Cs4sR3jxNe5JzgZNoA4e3MhBDYoY='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1415,6 +1415,13 @@ body.scrolled .tbar { opacity: 1; transform: none; }
 .askans { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--soft); }
 .askans p { margin: 0 0 8px; line-height: 1.45; color: var(--ink); }
 .askans p:last-child { margin-bottom: 0; }
+#demo .dprog { display: flex; gap: 4px; margin-bottom: 10px; }
+#demo .dprog i { flex: 1; height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; position: relative; }
+#demo .dprog i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+#demo .dprog i.done::after { transform: scaleX(1); }
+#demo .dprog i.cur::after { animation-name: dprog; animation-timing-function: linear; animation-fill-mode: forwards; animation-duration: inherit; animation-delay: inherit; }
+#demo .dprog i.paused::after { animation-play-state: paused; }
+@keyframes dprog { to { transform: scaleX(1); } }
 .grid { display: grid; gap: 12px; }
 </style>
 <div id="splash" aria-hidden="true"><span class="sp-logo"><svg viewBox="0 0 24 24"><path d="M16.8 7.2A6.48 6.48 0 1 0 17.76 13.92"/><path d="M10.56 12l2.4 2.4 5.28-5.76"/></svg></span></div>
@@ -1431,7 +1438,7 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 96;
+  var APP_VER = 97;
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -6215,6 +6222,28 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   function iosJoinNote() { var c = ''; try { c = localStorage.getItem('cadence.joincp') || ''; } catch (e) {} return c && instPlat() === 'ios' ? '<p class="invb">' + ic('clip') + L$('<span>Ton lien d’invitation est copié. Une fois Cadence installée et ton compte créé : <b>Notes → Listes → J’ai reçu un lien d’invitation</b>, puis colle-le.</span></p>') : ''; }
   /* ---------- v71 : démo guidée juste après la création du compte ---------- */
   var DEMO = { on: false, i: 0 };
+  /* v97 : lecture automatique (comme une petite vidéo) : chaque étape reste le temps de lire, barre de progression, bouton Pause.
+     Coupée si l’appareil demande moins d’animations. Les tests mettent cadence.noauto=1. */
+  function demoAutoOk() { try { return localStorage.getItem('cadence.noauto') !== '1'; } catch (e) { return true; } }
+  function demoReduced() { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } }
+  function demoMs(s) { return Math.min(9000, Math.max(4500, 3500 + String(s[3] || '').length * 40)); }
+  function demoDisarm() { clearTimeout(DEMO.t); DEMO.t = 0; }
+  function demoArm(ms) {
+    var key = DSTEPS.length + ':' + DEMO.i;
+    if (DEMO.key !== key) { DEMO.key = key; DEMO.el = 0; DEMO.t0 = 0; }
+    demoDisarm();
+    if (!demoAutoOk() || DEMO.pause) return;
+    if (!DEMO.t0) DEMO.t0 = Date.now() - (DEMO.el || 0);
+    var rest = Math.max(300, ms - (Date.now() - DEMO.t0));
+    DEMO.t = setTimeout(function () { DEMO.t = 0; if (DEMO.on && !DEMO.pause) v71Click('demonext'); }, rest);
+  }
+  function demoBar(ms, n) {
+    if (!demoAutoOk()) return '';
+    var el = DEMO.pause ? (DEMO.el || 0) : Math.max(0, Date.now() - (DEMO.t0 || Date.now())), h = '<div class="dprog" aria-hidden="true">';
+    for (var k = 0; k < n; k++) h += k < DEMO.i ? '<i class="done"></i>' : k === DEMO.i ? '<i class="cur' + (DEMO.pause ? ' paused' : '') + '" style="animation-duration:' + ms + 'ms;animation-delay:-' + Math.min(el, ms) + 'ms"></i>' : '<i></i>';
+    return h + '</div>';
+  }
+  function demoPauseBtn() { return demoAutoOk() ? '<button class="btn ghost sm" data-act="demopause">' + (DEMO.pause ? L$('Reprendre') : L$('Pause')) + '</button>' : ''; }
   var DSTEPS = [
     ['today', '.startc, .hero2', L$('Ta journée'), L$('Chaque jour, tu retrouves ici ce que tu as à faire et ta progression. Le matin, le coach te dit l’essentiel.')],
     ['today', '.fab', L$('Ajouter en un geste'), L$('Touche + et écris ou dicte « dentiste jeudi 15h » : Cadence comprend le jour et l’heure. Tu peux aussi prendre en photo un agenda papier.')],
@@ -6237,19 +6266,22 @@ body.scrolled .tbar { opacity: 1; transform: none; }
     if (DEMO.on || sheet || tab !== 'today' || !S.profile || !S.profile.done || (S.items && S.items.length) || gateOn() || isLocked()) return false;
     try { return localStorage.getItem('cadence.tour') !== '1'; } catch (e) { return false; }
   }
-  function demoStart() { DSTEPS = DFULL; DEMO.on = true; DEMO.i = 0; sheet = null; tab = DSTEPS[0][0]; render(); window.scrollTo(0, 0); }
-  function demoEnd(goAdd) { DEMO.on = false; try { localStorage.setItem('cadence.tour', '1'); } catch (e) {} var o = document.getElementById('demo'); if (o) o.remove(); tab = 'today'; sheet = goAdd ? { k: 'quick', err: '' } : null; render(); window.scrollTo(0, 0); if (goAdd) focusAdd('#q-text'); }
+  function demoStart() { DSTEPS = DFULL; DEMO.began = false; DEMO.on = true; DEMO.i = 0; sheet = null; tab = DSTEPS[0][0]; render(); window.scrollTo(0, 0); }
+  function demoEnd(goAdd) { demoDisarm(); DEMO.began = false; DEMO.on = false; try { localStorage.setItem('cadence.tour', '1'); } catch (e) {} var o = document.getElementById('demo'); if (o) o.remove(); tab = 'today'; sheet = goAdd ? { k: 'quick', err: '' } : null; render(); window.scrollTo(0, 0); if (goAdd) focusAdd('#q-text'); }
   function demoPlace() {
     var o = document.getElementById('demo');
-    if (!DEMO.on || sheet || !S.profile.done) { if (o) o.remove(); return; }
+    if (!DEMO.on || sheet || !S.profile.done) { demoDisarm(); DEMO.key = ''; if (o) o.remove(); return; }
+    if (!DEMO.began) { DEMO.began = true; DEMO.pause = demoReduced(); DEMO.key = ''; }
     if (!o) { o = document.createElement('div'); o.id = 'demo'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-label', L$('Découverte de Cadence')); document.body.appendChild(o); }
     var n = DSTEPS.length, last = DEMO.i >= n;
     if (last) {
+      demoDisarm();
       o.innerHTML = '<div class="dveil"></div><div class="dbub dmid"><span class="dbig">' + ic('check') + L$('</span><h3>Tu es prêt !</h3><p>Commence par vider ta tête : ajoute tout ce que tu as à faire, Cadence range pour toi.</p><div class="btns"><button class="btn primary" data-act="demoadd">Ajouter ma première tâche</button><button class="btn ghost" data-act="demoend">Plus tard</button></div></div>');
       return;
     }
     var s = DSTEPS[DEMO.i], el = null; s[1].split(', ').some(function (q) { el = document.querySelector(q); return !!el; });
-    var bub = '<div class="dbub"><div class="dtop"><small>' + (DEMO.i + 1) + ' / ' + n + L$('</small><button class="lnk" data-act="demoend">Passer</button></div><h3>') + esc(s[2]) + '</h3><p>' + esc(s[3]) + '</p><div class="btns">' + (DEMO.i ? L$('<button class="btn ghost sm" data-act="demoback">Retour</button>') : '') + '<button class="btn primary sm" data-act="demonext">' + (DEMO.i === n - 1 ? L$('Terminer') : L$('Suivant')) + '</button></div></div>';
+    var ms = demoMs(s); demoArm(ms);
+    var bub = '<div class="dbub">' + demoBar(ms, n) + '<div class="dtop"><small>' + (DEMO.i + 1) + ' / ' + n + L$('</small><button class="lnk" data-act="demoend">Passer</button></div><h3>') + esc(s[2]) + '</h3><p>' + esc(s[3]) + '</p><div class="btns">' + demoPauseBtn() + (DEMO.i ? L$('<button class="btn ghost sm" data-act="demoback">Retour</button>') : '') + '<button class="btn primary sm" data-act="demonext">' + (DEMO.i === n - 1 ? L$('Terminer') : L$('Suivant')) + '</button></div></div>';
     if (!el) { o.innerHTML = '<div class="dveil"></div>' + bub.replace('class="dbub"', 'class="dbub dmid"'); return; }
     if (!el.closest('nav') && !el.classList.contains('fab') && !el.classList.contains('avatar')) { var r0 = el.getBoundingClientRect(); if (r0.top < 70 || r0.bottom > window.innerHeight - 260) window.scrollTo(0, Math.max(0, window.scrollY + r0.top - 90)); }
     var r0b = el.getBoundingClientRect(), Z = ZOOM || 1, r = { left: r0b.left / Z, top: r0b.top / Z, width: r0b.width / Z, height: r0b.height / Z }, pad = 6, top = r.top - pad, h = r.height + pad * 2, below = r.top + r.height / 2 < window.innerHeight / Z / 2;
@@ -6259,6 +6291,11 @@ body.scrolled .tbar { opacity: 1; transform: none; }
   function v71Click(a) {
     if (a === 'demonext') { DEMO.i++; if (DSTEPS === DMINI && DEMO.i >= DSTEPS.length) { demoEnd(false); return true; } if (DEMO.i < DSTEPS.length) tab = DSTEPS[DEMO.i][0]; else tab = 'today'; render(); if (tab !== 'today' || DEMO.i < 3) window.scrollTo(0, 0); return true; }
     if (a === 'demoback') { DEMO.i = Math.max(0, DEMO.i - 1); tab = DSTEPS[DEMO.i][0]; render(); window.scrollTo(0, 0); return true; }
+    if (a === 'demopause') {
+      if (DEMO.pause) DEMO.pause = false;
+      else { DEMO.pause = true; DEMO.el = DEMO.t0 ? Date.now() - DEMO.t0 : 0; DEMO.t0 = 0; demoDisarm(); }
+      demoPlace(); return true;
+    }
     if (a === 'demoend') { demoEnd(false); return true; }
     if (a === 'demoadd') { demoEnd(true); return true; }
     if (a === 'demostart') { demoStart(); return true; }
