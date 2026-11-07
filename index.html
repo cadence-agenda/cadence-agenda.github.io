@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0RgyeMMcxfcOsvfcpx7VYOfXU7USj9MuXFGrpQz5edo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PeVg2QwXFgPUhwA05ZAR3S8gYRcURBRYH+G+alOuQvo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1574,7 +1574,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 106;
+  var APP_VER = 107;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
@@ -7064,6 +7064,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     if (a === 'pedit') { sheet = { k: 'pedit' }; render(); return true; }
     if (a === 'fabadd') {
       if (tab === 'notes' && notesView === 'lists') { sheet = { k: 'newlist' }; render(); focusAdd('.sheet form[data-kind="list"] input'); return true; }
+      if (tab === 'notes') { var nf = document.getElementById('nform'), nr = document.querySelector('.pg .addrow[data-k^="notes:"]'); if (nr) v84Click('addopen', nr); else if (nf) nf.hidden = false; nf = document.getElementById('nform'); var ta = nf && nf.querySelector('textarea'); if (ta) { window.scrollTo(0, 0); ta.focus(); } return true; }
       var r = document.querySelector('.pg .addrow');
       if (r) { r.scrollIntoView({ block: 'center', behavior: calm() ? 'auto' : 'smooth' }); v84Click('addopen', r); return true; }
       var f = [].filter.call(document.querySelectorAll('.pg [data-fk]'), function (x) { return !x.hidden; })[0];
@@ -7212,7 +7213,8 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
       setTimeout(function () { var m = document.querySelector('.chmic:not(.on)'); if (m) m.click(); }, 120);
     }, 480);
   });
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { document.addEventListener(ev, function () { clearTimeout(FABT); }); });
+  // v107 : FABLONG ne doit avaler que le clic qui suit l’appui long (avant, il restait vrai et bloquait le prochain appui sur un bouton rond, par exemple le + des notes)
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { document.addEventListener(ev, function () { clearTimeout(FABT); if (FABLONG) setTimeout(function () { FABLONG = false; }, 350); }); });
   document.addEventListener('click', function (e) { if (FABLONG && e.target.closest && e.target.closest('.fab')) { FABLONG = false; e.stopPropagation(); e.preventDefault(); } }, true);
   /* v89 : étudiants : emploi du temps de cours et révisions réparties jusqu’à l’examen */
   var JOURSL = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
