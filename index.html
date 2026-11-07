@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-mk4QMDrs1Lc8A+7bMK3z7f7TEywks3AZ3wQxJMblD6c='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0RgyeMMcxfcOsvfcpx7VYOfXU7USj9MuXFGrpQz5edo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1574,12 +1574,12 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 105;
+  var APP_VER = 106;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
   var PRIVATE_MODE = (function () { try { return localStorage.getItem('cadence.allfeat') !== '1'; } catch (e) { return true; } })();
-  var GONE = (function () { try { if (localStorage.getItem('cadence.allfeat') === '1') return {}; } catch (e) { /* stockage bloqué */ } return { budget: 1, goals: 1, wkov: 1, proj: 1, revis: 1, meds: 1, dates: 1, profile: 1, lieux: 1, lists: 1 }; })();
+  var GONE = (function () { try { if (localStorage.getItem('cadence.allfeat') === '1') return {}; } catch (e) { /* stockage bloqué */ } return { budget: 1, goals: 1, wkov: 1, proj: 1, revis: 1, meds: 1, dates: 1, profile: 1, lieux: 1, lists: 1, ntools: 1 }; })();
   // v72 : taille toujours adaptée au téléphone, même si le navigateur est en « version pour ordinateur »
   var ZOOM = 1;
   function fitMobile() {
@@ -3162,9 +3162,9 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     if (sheet.imp === undefined) sheet.imp = noteImp(n);
     if (sheet.pin === undefined) sheet.pin = !!n.pin;
     return L$('<h2>Note</h2><form id="neform" autocomplete="off"><label class="vh" for="ne-text">Texte de la note</label><textarea id="ne-text" data-keep maxlength="2000" rows="6">') + esc(n.text) + '</textarea>' +
-      noteTools() + '<div class="btns">' + micBtn('#ne-text') + '</div><div class="f"><p class="sub">Importance</p><div class="chips nimps" role="group" aria-label="Importance">' + NOTEIMP.map(function (c) { return '<button type="button" class="chip ni-' + (c[0] || 'n') + '" aria-pressed="' + (sheet.imp === c[0]) + '" data-act="nimp" data-v="' + c[0] + '"><i class="ndot" aria-hidden="true"></i>' + c[1] + '</button>'; }).join('') + '</div></div>' +
+      (GONE.ntools ? '' : noteTools()) + '<div class="btns">' + micBtn('#ne-text') + '</div><div class="f"><p class="sub">Importance</p><div class="chips nimps" role="group" aria-label="Importance">' + NOTEIMP.map(function (c) { return '<button type="button" class="chip ni-' + (c[0] || 'n') + '" aria-pressed="' + (sheet.imp === c[0]) + '" data-act="nimp" data-v="' + c[0] + '"><i class="ndot" aria-hidden="true"></i>' + c[1] + '</button>'; }).join('') + '</div></div>' +
       '<button type="button" class="chip" aria-pressed="' + !!sheet.pin + L$('" data-act="npin">Épingler en haut</button>') +
-      L$('<button type="submit" class="btn primary big">Enregistrer</button><button type="button" class="btn" data-act="n2task" data-id="') + n.id + L$('">Transformer en tâche</button>') +
+      '<button type="submit" class="btn primary big">Enregistrer</button>' + (GONE.ntools ? '' : '<button type="button" class="btn" data-act="n2task" data-id="' + n.id + L$('">Transformer en tâche</button>')) +
       '<div class="btns"><button type="button" class="btn danger" data-act="ndel" data-id="' + n.id + L$('">Supprimer</button><button type="button" class="btn ghost" data-act="sclose">Annuler</button></div></form>');
   }
   function addNote(text) {
