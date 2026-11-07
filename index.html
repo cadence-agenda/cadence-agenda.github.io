@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gtgJZaSUejJrNGnTQCSlkIXfDUiXDS0tc34frZBqUVc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JVFNHK7N/2NhChUhMnICKlZ1SLu4SqyHFL7OUmlj9pQ='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1551,7 +1551,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 101;
+  var APP_VER = 102;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   var GONE = (function () { try { if (localStorage.getItem('cadence.allfeat') === '1') return {}; } catch (e) { /* stockage bloqué */ } return { budget: 1, goals: 1, wkov: 1, proj: 1, revis: 1, meds: 1, dates: 1, profile: 1, lieux: 1 }; })();
@@ -2066,7 +2066,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
       if (!isAdd && !x) { sheet = null; return ''; }
       if (sheet.cat === undefined) sheet.cat = x ? (x.cat || '') : '';
       if (sheet.prio === undefined) sheet.prio = x ? !!x.prio : false;
-      var repV = x ? (x.rep || '') : '', remV = x ? (x.rem || '') : '';
+      var repV = x ? (x.rep || '') : '', remV = x ? (x.rem || '') : '60';
       h += '<h2>' + (isAdd ? L$('Ajouter une tâche') : L$('Modifier la tâche')) + L$('</h2><form id="sform" autocomplete="off"><label class="f">Tâche<input type="text" id="s-text" data-keep maxlength="200"') + (isAdd ? L$(' placeholder="Ex. Appeler le dentiste"') : ' value="' + esc(x.text) + '"') + '></label>' +
         '<div class="cols"><label class="f">' + (x && x.rep ? L$('À partir du') : L$('Jour')) + '<input type="date" id="s-date" data-keep value="' + (isAdd ? sheet.d : x.d) + L$('"></label><label class="f">Heure (facultatif)<input type="time" id="s-time" data-keep value="') + esc(x ? (x.time || '') : '') + '"></label></div>' +
         L$('<div class="f"><p class="sub">Catégorie</p><div class="chips cats">') + '<button type="button" class="chip" aria-pressed="' + (!sheet.cat) + L$('" data-act="scat" data-v="">Aucune</button>') +
@@ -2146,7 +2146,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   /* ---------- actions ---------- */
   function addItem(day, text, time) {
     text = String(text || '').trim(); if (!text) return null;
-    var x = { id: uid(), d: day, text: text.slice(0, 200), time: /^\d\d:\d\d$/.test(time || '') ? time : '', done: false, cat: '', rep: '', rem: '' };
+    var x = { id: uid(), d: day, text: text.slice(0, 200), time: /^\d\d:\d\d$/.test(time || '') ? time : '', done: false, cat: '', rep: '', rem: /^\d\d:\d\d$/.test(time || '') ? '60' : '' }; /* v102 : rappel 1 h avant par défaut quand il y a une heure (choix de Terry) */
     S.items.push(x); newRid = x.id + '|' + day; uiSound('pop'); save(); return x;
   }
   function addGoal(per, key, text) {
@@ -2329,6 +2329,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
       if (!tx.trim()) { sheet.err = L$('Écris la tâche.'); render(); return; }
       if (!/^\d{4}-\d\d-\d\d$/.test(dt)) { sheet.err = L$('Choisis un jour.'); render(); return; }
       var rp = (document.getElementById('s-rep') || {}).value || '', rmv = (document.getElementById('s-rem') || {}).value || '';
+      if (sheet.k === 'add' && rmv === '60' && !/^\d\d:\d\d$/.test(tm)) rmv = ''; /* v102 : rappel par défaut ignoré sans heure */
       if (rmv !== '' && !/^\d\d:\d\d$/.test(tm)) { sheet.err = L$('Choisis une heure pour recevoir le rappel.'); render(); return; }
       if (rmv !== '' && pushState() === 'off') askNotif();
       var x;
