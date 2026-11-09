@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2eMXlmweTJxE+pwLRyBcjX3LME4KH8Jtdr11+M5qkik='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RGOx1OJ1reIuLEpWgL5TirO78hOgx9pVkBD7OOXRqP0='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1624,7 +1624,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 114;
+  var APP_VER = 115;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
@@ -8142,8 +8142,8 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     h += '</section>';
     var allDay = gcalOn(day).filter(function (e) { return e.allDay || !e.t; }).map(gcRow).join('') + spCommonRows(day).filter(function (o) { return !o.i.t; }).map(spCommonRow).join('');
     if (allDay) h += '<section class="blk"><div class="sh"><h3>' + L$(L$('Toute la journée')) + '</h3></div><div class="list">' + allDay + '</div></section>';
-    h += '<section class="blk"><div class="sh"><h3>' + L$(L$('Sans heure')) + '</h3><span class="cnt">' + countLine(its.filter(function (o) { return !o.time; })) + '</span></div><div class="list">' + untimed.map(function (o) { o.ctx = 'today'; return itemRow(o); }).join('') + hiddenLine(hid) +
-      '<button class="addline" data-act="addsheet" data-v="' + day + '">+ ' + L$(L$('Ajouter')) + '</button></div></section>';
+    /* v115 : plus de « Terminées » ni de « + Ajouter » sous « Sans heure » (le bouton rond suffit) ; bloc caché s’il est vide */
+    if (untimed.length) h += '<section class="blk"><div class="sh"><h3>' + L$(L$('Sans heure')) + '</h3><span class="cnt">' + countLine(its.filter(function (o) { return !o.time; })) + '</span></div><div class="list">' + untimed.map(function (o) { o.ctx = 'today'; return itemRow(o); }).join('') + '</div></section>';
     var du = orgDueRows(day); if (du) h += '<section class="blk"><div class="sh"><h3>' + L$(L$('Dates limites')) + '</h3></div><div class="list">' + du + '</div></section>';
     return h + sharedBlock(day);
   }
