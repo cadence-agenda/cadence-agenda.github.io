@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-9I3nmQjgVZoJXUpyHSikaAicVokEQH4xrRGO7iCm/Fc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sQq3gsbwJRBsIhh3iY6Iijpzk42BXHr5XMqDp/CnM0o='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1624,7 +1624,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 117;
+  var APP_VER = 118;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
@@ -3142,16 +3142,21 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
      « dentiste » puis « dentiste aujourd’hui »… Les coller bout à bout doublait chaque mot.
      On ne garde donc que la partie nouvelle de chaque résultat. */
   function srJoin(results) {
-    var acc = [], prev = [];
+    /* v118 : Android renvoie parfois la phrase entière à chaque fois, en corrigeant un mot au passage
+       (« j’ai un rendez-vous » puis « j’ai rendez-vous dentiste ») : on remplace alors le morceau précédent au lieu d’ajouter. */
+    var segs = [], prev = [], prevFrom = 0;
     for (var i = 0; i < results.length; i++) {
-      var w = String(results[i][0].transcript || '').trim().split(/\s+/).filter(Boolean), k = Math.min(acc.length, w.length), keep = 0;
+      var w = String(results[i][0].transcript || '').trim().split(/\s+/).filter(Boolean), acc = [].concat.apply([], segs);
+      if (!w.length) continue;
+      if (prev.length && nrm(w[0]) === nrm(prev[0]) && w.length >= prev.length - 1) { segs[segs.length - 1] = w.slice(Math.min(prevFrom, w.length)); prev = w; continue; }
+      var k = Math.min(acc.length, w.length), keep = 0;
       for (; k > 0; k--) {
         var ok = true; for (var j = 0; j < k; j++) if (nrm(acc[acc.length - k + j]) !== nrm(w[j])) { ok = false; break; }
         if (ok && (k >= 2 || k === prev.length)) { keep = k; break; }
       }
-      acc = acc.concat(w.slice(keep)); prev = w;
+      segs.push(w.slice(keep)); prev = w; prevFrom = keep;
     }
-    return acc.join(' ');
+    return [].concat.apply([], segs).join(' ');
   }
   function micBtn(target) { return SR ? '<button type="button" class="mic' + (recog && recogT === target ? ' on' : '') + '" data-act="mic" data-v="' + target + '" aria-label="' + (recog && recogT === target ? L$('Arrêter la dictée') : L$('Dicter')) + '">' + (recog && recogT === target ? '<i class="mstop"></i>' : ic('mic')) + '</button>' : ''; }
   // v44 : un micro dans chaque champ de texte (on choisit de s’en servir ou non)
@@ -7854,7 +7859,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   /* lecture d’une phrase : type, jour, heure, date limite, importance (avec la raison) */
   /*noL*/ var ORDV = ['rdv', 'rendez-vous', 'reunion', 'dentiste', 'medecin', 'docteur', 'kine', 'osteo', 'coiffeur', 'diner', 'dejeuner', 'entretien', 'cours', 'seance', 'consultation', 'visite', 'concert', 'match', 'mariage', 'soiree', 'spectacle', 'cinema', 'resto', 'restaurant', 'apero', 'footing', 'sport', 'yoga', 'piscine', 'vol', 'train', 'anniversaire'];
   /* v116 : catégorie devinée par des mots simples (« escalade » → Sport, « dentiste » → Santé), seulement si la catégorie existe chez l’utilisateur */
-  /*noL*/ var OCATW = [['sport', /(^|\s)(sport|escalade|grimpe|bloc|muscu|musculation|salle de sport|gym|fitness|crossfit|footing|jogging|running|course a pied|foot|football|futsal|basket|hand|handball|rugby|tennis|padel|badminton|squash|ping-pong|volley|piscine|natation|nage|velo|vtt|yoga|pilates|danse|boxe|judo|karate|mma|rando|randonnee|ski|surf|skate|marche)(?=[\s,.!]|$)/], ['sante', /(^|\s)(dentiste|orthodontiste|medecin|docteur|generaliste|kine|kinesitherapeute|osteo|osteopathe|ophtalmo|ophtalmologue|dermato|dermatologue|gyneco|gynecologue|pediatre|psy|psychologue|psychiatre|hopital|clinique|pharmacie|analyses|prise de sang|vaccin|radio|irm|echographie|consultation|orthophoniste|podologue|sage-femme)(?=[\s,.!]|$)/], ['travail', /(^|\s)(reunion|boulot|travail|bureau|client|cliente|visio|call|entretien d embauche|collegue|collegues)(?=[\s,.!]|$)/], ['courses', /(^|\s)(courses|supermarche|marche)(?=[\s,.!]|$)/]];
+  /*noL*/ var OCATW = [['sport', /(^|\s)(sport|escalade|grimpe|bloc|muscu|musculation|salle de sport|gym|fitness|crossfit|footing|jogging|running|course a pied|foot|football|futsal|basket|hand|handball|rugby|tennis|padel|badminton|squash|ping-pong|volley|piscine|natation|nage|velo|vtt|yoga|pilates|danse|boxe|judo|karate|mma|rando|randonnee|ski|surf|skate|marche)(?=[\s,.!]|$)/], ['sante', /(^|\s)(dentiste|orthodontiste|medecin|docteur|generaliste|kine|kinesitherapeute|osteo|osteopathe|ophtalmo|ophtalmologue|dermato|dermatologue|gyneco|gynecologue|pediatre|psy|psychologue|psychiatre|hopital|clinique|pharmacie|analyses|prise de sang|vaccin|radio|irm|echographie|consultation|orthophoniste|podologue|sage-femme)(?=[\s,.!]|$)/], ['travail', /(^|\s)(reunion|boulot|travail|travailler|bureau|client|cliente|visio|call|entretien d embauche|collegue|collegues)(?=[\s,.!]|$)/], ['courses', /(^|\s)(courses|supermarche|marche)(?=[\s,.!]|$)/]];
   function orgCatGuess(text) {
     var n = ' ' + nrm(text).replace(/[^a-z0-9\s-]/g, ' ').replace(/\s+/g, ' ') + ' ', cats = S.cats || []; /* v117 : « de l’escalade » */
     for (var i = 0; i < OCATW.length; i++) {
@@ -7877,14 +7882,16 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   /* v117 : titre court : « Je fais de l’escalade avec mes copains » → « Escalade », « J’ai un rendez-vous de dentiste » → « Dentiste » (sans IA) */
   function orgTitle(t) {
     var A = '[\'’]', s = String(t || '').replace(/\s+/g, ' ').trim(), s0;
+    /* v118 : un article est suivi d’une espace (« de dentiste »), sauf l’ et d’ : sinon « de » mangeait le début de « dentiste » */
+    var ART = '(?:(?:un|une|mon|ma|mes|le|la|les|du|des|de\\s+la)\\s+|(?:de\\s+)?(?:l|d)' + A + '\\s*)';
     var lead = [
-      /^(?:et\s+)?(?:ensuite|puis|alors|apr[eè]s|bon|euh|donc)\s*,?\s+/i,
-      new RegExp('^(?:je\\s+vais|on\\s+va|aller)\\s+(?:au|aux|[aà]\\s+la|[aà]\\s+l' + A + '|chez\\s+(?:le|la|l' + A + ')?)\\s*', 'i'),
-      new RegExp('^(?:il\\s+faut\\s+(?:que\\s+)?(?:je|j' + A + ')\\s*|je\\s+(?:dois|vais|veux|voudrais|aimerais|pense|compte)\\s+(?:aller\\s+)?(?=\\S))', 'i'),
-      new RegExp('^(?:au|aux|[aà]\\s+la|[aà]\\s+l' + A + '|chez\\s+(?:le|la|l' + A + ')?)\\s*(?=\\S)', 'i'),
-      new RegExp('^(?:j' + A + '\\s*ai|on\\s+a|nous\\s+avons)\\s+(?:un|une|mon|ma|mes|le|la|l' + A + ')\\s*', 'i'),
-      new RegExp('^(?:je\\s+fais|on\\s+fait|faire)\\s+(?:du|de\\s+la|de\\s+l' + A + '|des|un|une|mon|ma|le|la|l' + A + ')\\s*', 'i'),
-      new RegExp('^(?:rendez-vous|rendez vous|rdv)\\s+(?:de|du|des|d' + A + '|chez\\s+(?:le|la|l' + A + ')?|pour\\s+(?:le|la|l' + A + ')?)\\s*(?=\\S)', 'i')
+      /^(?:et|ensuite|puis|alors|apr[eè]s|bon|euh|donc)(?:\s*,)?\s+/i,
+      new RegExp('^(?:je\\s+vais|on\\s+va|aller)\\s+(?:au\\s+|aux\\s+|[aà]\\s+la\\s+|[aà]\\s+l' + A + '\\s*|chez\\s+(?:le\\s+|la\\s+|l' + A + '\\s*)?)', 'i'),
+      new RegExp('^(?:il\\s+faut\\s+(?:que\\s+)?(?:je\\s+|j' + A + '\\s*)|je\\s+(?:dois|vais|veux|voudrais|aimerais|pense|compte)\\s+(?:aller\\s+)?)', 'i'),
+      new RegExp('^(?:au\\s+|aux\\s+|[aà]\\s+la\\s+|[aà]\\s+l' + A + '\\s*|chez\\s+(?:le\\s+|la\\s+|l' + A + '\\s*)?)', 'i'),
+      new RegExp('^(?:j' + A + '\\s*ai|on\\s+a|nous\\s+avons)\\s+' + ART + '?', 'i'),
+      new RegExp('^(?:je\\s+fais|on\\s+fait|faire)\\s+' + ART, 'i'),
+      new RegExp('^(?:rendez-vous|rendez\\s+vous|rdv)\\s+(?:(?:de|du|des|pour|chez)\\s+' + ART + '?|d' + A + '\\s*|(?!avec\\s)(?=\\S))', 'i')
     ];
     do { s0 = s; lead.forEach(function (re) { var r = s.replace(re, ''); if (r.trim()) s = r.trim(); }); } while (s !== s0);
     s = s.replace(/\s+avec\s+(?:mes|les|des|nos|mon|ma|notre|quelques|deux|trois|toute\s+la)\s+(?:copains?|copines?|potes?|amis?|amies?|collègues?|collegues?|frères?|freres?|sœurs?|soeurs?|cousins?|cousines?|bande|famille|enfants?|gars|meufs?|filles?)\b.*$/i, '');
