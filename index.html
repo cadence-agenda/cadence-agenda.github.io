@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7UTO1vv9lmJAmnEkMptqRyfpIvoTbnfGmQ0A/dqnozs='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-9I3nmQjgVZoJXUpyHSikaAicVokEQH4xrRGO7iCm/Fc='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1624,7 +1624,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 116;
+  var APP_VER = 117;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
@@ -6809,6 +6809,11 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
       }
       segs1.push(s);
     });
+    /* v117 : « j’ai un rendez-vous de dentiste, dentiste de 22h à 23h » : un morceau sans heure ni jour suivi d’un morceau qui répète son dernier mot → une seule chose */
+    for (var k = segs1.length - 2; k >= 0; k--) {
+      var a0 = segs1[k], b0 = segs1[k + 1], qa = parseNL(a0, quickBase()), la = nrm(a0).replace(/[^a-z0-9\s-]/g, ' ').trim().split(/\s+/).pop(), fb = nrm(b0).replace(/[^a-z0-9\s-]/g, ' ').trim().split(/\s+/)[0];
+      if (!qa.time && !qa.dateSet && !qa.rep && la && la === fb) segs1.splice(k, 2, a0 + ' ' + b0.replace(/^\S+\s*/, ''));
+    }
     segs1.forEach(function (s) {
       var parts = s.split(/\s+et\s+/i);
       if (parts.length > 1 && parts.every(function (p) { var q = parseNL(p, quickBase()); return q.text && (dictExp(p) || q.time || q.d !== quickBase() || q.rep); })) out = out.concat(parts); else out.push(s);
@@ -7849,9 +7854,9 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   /* lecture d’une phrase : type, jour, heure, date limite, importance (avec la raison) */
   /*noL*/ var ORDV = ['rdv', 'rendez-vous', 'reunion', 'dentiste', 'medecin', 'docteur', 'kine', 'osteo', 'coiffeur', 'diner', 'dejeuner', 'entretien', 'cours', 'seance', 'consultation', 'visite', 'concert', 'match', 'mariage', 'soiree', 'spectacle', 'cinema', 'resto', 'restaurant', 'apero', 'footing', 'sport', 'yoga', 'piscine', 'vol', 'train', 'anniversaire'];
   /* v116 : catégorie devinée par des mots simples (« escalade » → Sport, « dentiste » → Santé), seulement si la catégorie existe chez l’utilisateur */
-  /*noL*/ var OCATW = [['sport', /(^|\s)(sport|escalade|grimpe|bloc|muscu|musculation|salle de sport|gym|fitness|crossfit|footing|jogging|running|course a pied|foot|football|futsal|basket|hand|handball|rugby|tennis|padel|badminton|squash|ping-pong|volley|piscine|natation|nage|velo|vtt|yoga|pilates|danse|boxe|judo|karate|mma|rando|randonnee|ski|surf|skate|marche)(?=[\s,.!]|$)/], ['sante', /(^|\s)(dentiste|orthodontiste|medecin|docteur|generaliste|kine|kinesitherapeute|osteo|osteopathe|ophtalmo|ophtalmologue|dermato|dermatologue|gyneco|gynecologue|pediatre|psy|psychologue|psychiatre|hopital|clinique|pharmacie|analyses|prise de sang|vaccin|radio|irm|echographie|consultation|orthophoniste|podologue|sage-femme)(?=[\s,.!]|$)/], ['travail', /(^|\s)(reunion|boulot|travail|bureau|client|cliente|visio|call|entretien d'embauche|entretien d’embauche|collegue|collegues)(?=[\s,.!]|$)/], ['courses', /(^|\s)(courses|supermarche|marche)(?=[\s,.!]|$)/]];
+  /*noL*/ var OCATW = [['sport', /(^|\s)(sport|escalade|grimpe|bloc|muscu|musculation|salle de sport|gym|fitness|crossfit|footing|jogging|running|course a pied|foot|football|futsal|basket|hand|handball|rugby|tennis|padel|badminton|squash|ping-pong|volley|piscine|natation|nage|velo|vtt|yoga|pilates|danse|boxe|judo|karate|mma|rando|randonnee|ski|surf|skate|marche)(?=[\s,.!]|$)/], ['sante', /(^|\s)(dentiste|orthodontiste|medecin|docteur|generaliste|kine|kinesitherapeute|osteo|osteopathe|ophtalmo|ophtalmologue|dermato|dermatologue|gyneco|gynecologue|pediatre|psy|psychologue|psychiatre|hopital|clinique|pharmacie|analyses|prise de sang|vaccin|radio|irm|echographie|consultation|orthophoniste|podologue|sage-femme)(?=[\s,.!]|$)/], ['travail', /(^|\s)(reunion|boulot|travail|bureau|client|cliente|visio|call|entretien d embauche|collegue|collegues)(?=[\s,.!]|$)/], ['courses', /(^|\s)(courses|supermarche|marche)(?=[\s,.!]|$)/]];
   function orgCatGuess(text) {
-    var n = ' ' + nrm(text) + ' ', cats = S.cats || [];
+    var n = ' ' + nrm(text).replace(/[^a-z0-9\s-]/g, ' ').replace(/\s+/g, ' ') + ' ', cats = S.cats || []; /* v117 : « de l’escalade » */
     for (var i = 0; i < OCATW.length; i++) {
       if (!OCATW[i][1].test(n)) continue;
       var c = cats.filter(function (z) { return nrm(z.name).trim() === OCATW[i][0]; })[0];
@@ -7869,6 +7874,25 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     var i = m.index + m[1].length;
     return { s: s.slice(0, i) + ' ' + (+m[3]) + 'h' + (m[4] || '') + ' ' + s.slice(m.index + m[0].length), start: st, end: en };
   }
+  /* v117 : titre court : « Je fais de l’escalade avec mes copains » → « Escalade », « J’ai un rendez-vous de dentiste » → « Dentiste » (sans IA) */
+  function orgTitle(t) {
+    var A = '[\'’]', s = String(t || '').replace(/\s+/g, ' ').trim(), s0;
+    var lead = [
+      /^(?:et\s+)?(?:ensuite|puis|alors|apr[eè]s|bon|euh|donc)\s*,?\s+/i,
+      new RegExp('^(?:je\\s+vais|on\\s+va|aller)\\s+(?:au|aux|[aà]\\s+la|[aà]\\s+l' + A + '|chez\\s+(?:le|la|l' + A + ')?)\\s*', 'i'),
+      new RegExp('^(?:il\\s+faut\\s+(?:que\\s+)?(?:je|j' + A + ')\\s*|je\\s+(?:dois|vais|veux|voudrais|aimerais|pense|compte)\\s+(?:aller\\s+)?(?=\\S))', 'i'),
+      new RegExp('^(?:au|aux|[aà]\\s+la|[aà]\\s+l' + A + '|chez\\s+(?:le|la|l' + A + ')?)\\s*(?=\\S)', 'i'),
+      new RegExp('^(?:j' + A + '\\s*ai|on\\s+a|nous\\s+avons)\\s+(?:un|une|mon|ma|mes|le|la|l' + A + ')\\s*', 'i'),
+      new RegExp('^(?:je\\s+fais|on\\s+fait|faire)\\s+(?:du|de\\s+la|de\\s+l' + A + '|des|un|une|mon|ma|le|la|l' + A + ')\\s*', 'i'),
+      new RegExp('^(?:rendez-vous|rendez vous|rdv)\\s+(?:de|du|des|d' + A + '|chez\\s+(?:le|la|l' + A + ')?|pour\\s+(?:le|la|l' + A + ')?)\\s*(?=\\S)', 'i')
+    ];
+    do { s0 = s; lead.forEach(function (re) { var r = s.replace(re, ''); if (r.trim()) s = r.trim(); }); } while (s !== s0);
+    s = s.replace(/\s+avec\s+(?:mes|les|des|nos|mon|ma|notre|quelques|deux|trois|toute\s+la)\s+(?:copains?|copines?|potes?|amis?|amies?|collègues?|collegues?|frères?|freres?|sœurs?|soeurs?|cousins?|cousines?|bande|famille|enfants?|gars|meufs?|filles?)\b.*$/i, '');
+    var w = s.split(' '), out = [];
+    w.forEach(function (x) { var a = nrm(x).replace(/[^a-z0-9-]/g, ''), b = out.length ? nrm(out[out.length - 1]).replace(/[^a-z0-9-]/g, '') : null; if (a && a === b) { out[out.length - 1] = out[out.length - 1].replace(/[,;.]+$/, ''); return; } out.push(x); });
+    s = out.join(' ').replace(/^[\s,.;:–-]+|[\s,.;:–-]+$/g, '');
+    return cap1(s || String(t || '').trim());
+  }
   function orgCut(s, i, len) { return s.slice(0, i) + ' ' + s.slice(i + len); }
   function orgParse(raw, ctx) {
     var t = todayISO(), base = ctx === 'agenda' ? quickBase() : t, s = String(raw || ''), o = { kind: 'task', d: '', time: '', end: '', due: '', imp: false, why: '', rep: '', cat: '', at: '', q: /\?\s*$/.test(s.trim()), text: '', body: '' };
@@ -7880,12 +7904,12 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
     if (dm) { var pd = parseNL(dm[2], t); if (pd.dateSet) { o.due = pd.d; s = orgCut(s, dm.index + dm[1].length, dm[0].length - dm[1].length); } }
     var rg = o.kind !== 'note' ? orgRange(s) : null; if (rg) s = rg.s;
     var p = parseNL(s, base);
-    o.text = cap1(p.text || ''); o.time = p.time; o.rep = p.rep; o.cat = p.cat || (o.kind !== 'note' ? orgCatGuess(p.text) : ''); o.at = p.at || '';
+    o.text = o.kind !== 'note' ? orgTitle(p.text || '') : cap1(p.text || ''); o.time = p.time; o.rep = p.rep; o.cat = p.cat || (o.kind !== 'note' ? orgCatGuess(p.text) : ''); o.at = p.at || '';
     if (rg && o.time === rg.start) o.end = rg.end;
     if (o.kind !== 'note' && ctx === 'notes' && !p.dateSet && !p.time && !o.due && !p.rep) o.kind = 'note';
     if (o.kind !== 'note') {
-      var w = nrm(o.text).split(/\s+/), first = w[0] || '';
-      var rdvWord = ORDV.indexOf(first) >= 0 || (!/(?:er|ir|re|oir)$/.test(first) && w.some(function (z) { return ['rdv', 'rendez-vous', 'reunion'].indexOf(z) >= 0; }));
+      var w = nrm(o.text).split(/\s+/), first = w[0] || '', w0 = nrm(p.text).split(/\s+/); /* v117 : « rendez-vous » peut avoir été retiré du titre */
+      var rdvWord = ORDV.indexOf(first) >= 0 || (!/(?:er|ir|re|oir)$/.test(first) && w.some(function (z) { return ['rdv', 'rendez-vous', 'reunion'].indexOf(z) >= 0; })) || /(^|\s)(rdv|rendez-vous|rendez vous)(\s|$)/.test(w0.join(' '));
       if ((rdvWord && (p.time || p.dateSet)) || o.end) o.kind = 'rdv'; /* v116 : une plage horaire = un rendez-vous */
     }
     if (o.kind === 'note') { o.text = o.body; return o; }
