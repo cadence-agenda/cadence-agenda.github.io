@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HIHPKFqXhcclUyKp/gwXO37xhG3HKzfyvEgmNho5Epo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2eMXlmweTJxE+pwLRyBcjX3LME4KH8Jtdr11+M5qkik='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://brxynzbajlemciybghzw.supabase.co wss://brxynzbajlemciybghzw.supabase.co https://api.open-meteo.com https://geocoding-api.open-meteo.com https://data.education.gouv.fr; worker-src 'self'; manifest-src 'self'; media-src 'self' data: blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" content="#1C1C1E">
@@ -1624,7 +1624,7 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   var LOC = LANG === 'en' ? 'en-GB' : LANG === 'es' ? 'es-ES' : 'fr-FR', SRLANG = LANG === 'en' ? 'en-US' : LANG === 'es' ? 'es-ES' : 'fr-FR';
   document.documentElement.lang = LANG;
 
-  var APP_VER = 113;
+  var APP_VER = 114;
   /* v101 : fonctions retirées par Terry (7 nov. 2026). Le code reste en sommeil (retour arrière possible) ; données gardées, cachées.
      Les tests remettent tout avec localStorage cadence.allfeat=1. */
   /* v103 : accès privé (pas d'essai sans compte). Les tests le coupent avec cadence.allfeat=1. */
@@ -7851,8 +7851,8 @@ body.chatpg .pg { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
       : '<p class="empty">' + L$(L$('Rien d’important ne presse.')) + '</p>';
     h += '</section>';
     h += '<section class="blk oday"><div class="sh"><h3>' + L$(L$('Ma journée')) + '</h3><span class="cnt">' + (nRdv ? plural(nRdv, 'rendez-vous', 'rendez-vous') + ' · ' : '') + plural(nTask, L$('tâche'), L$('tâches')) + '</span></div><div class="list">' +
-      gcalWeek(t) + spCommonWeek(t) + vis.map(function (o) { o.ctx = 'today'; return itemRow(o); }).join('') + hiddenLine(hid) +
-      (!vis.length && !hid && !gcalWeek(t) && !spCommonWeek(t) ? '<p class="empty">' + L$(L$('Rien d’autre de prévu aujourd’hui.')) + '</p>' : '') + '</div></section>';
+      gcalWeek(t) + spCommonWeek(t) + vis.map(function (o) { o.ctx = 'today'; return itemRow(o); }).join('') + /* v114 : plus de lien « Terminées » sur Aujourd’hui (reste dans Tâches et Profil) */
+      (!vis.length && !gcalWeek(t) && !spCommonWeek(t) ? '<p class="empty">' + L$(L$('Rien d’autre de prévu aujourd’hui.')) + '</p>' : '') + '</div></section>';
     if (late.length) h += '<section class="blk olate"><div class="sh"><h3>' + L$(L$('En retard')) + '</h3><button type="button" class="tdb" data-act="orglate">' + L$(L$('Tout à aujourd’hui')) + '</button></div><div class="list">' + late.map(function (x) { return itemRow(octx(x, 'today')); }).join('') + '</div></section>';
     return h + sharedBlock(t);
   }
